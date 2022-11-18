@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
     </footer>
   `,
   styles: [
-    'footer { background-color: #0E246D !important; color: white; line-height: 60px; position: absolute; bottom: 0; width: 100%; }',
+    'footer { background-color: #0E246D !important; color: white; line-height: 60px;bottom: 0; width: 100%; }',
   ],
 })
 export class FooterComponent implements OnInit {
