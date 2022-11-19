@@ -11,6 +11,7 @@ import { AboutComponent } from './about/about.component';
 import { PostlistComponent } from './postlist/postlist.component';
 import { PostCreateComponent } from './postcreate/postcreate.component';
 import { PostDetailsComponent } from './postdetails/postdetails.component';
+import { SidemenuComponent } from './sidemenu/sidemenu.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { PostDetailsComponent } from './postdetails/postdetails.component';
     PostlistComponent,
     PostCreateComponent,
     PostDetailsComponent,
+    SidemenuComponent,
   ],
   imports: [
     BrowserModule,

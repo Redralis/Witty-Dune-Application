@@ -38,13 +38,6 @@ import { Component, OnInit } from '@angular/core';
               ariaCurrentWhenActive="page"
               >About</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link"
-              routerLink="/create"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-              >Create Post</a>
-            </li>
           </ul>
         </div>
       </div>
