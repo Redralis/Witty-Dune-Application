@@ -19,6 +19,8 @@ export class PostService {
   }
 
   create(data: any) {
+    console.log("hahhahahaha");
+    console.log(data.publicationdate);
     return this.httpClient.post(this.url, data);
   }
 

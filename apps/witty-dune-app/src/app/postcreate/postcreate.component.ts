@@ -14,7 +14,7 @@ export class PostCreateComponent implements OnInit {
     content: '',
     likes: 0,
     dislikes: 0,
-    publicationdate: Date,
+    publicationdate: new Date(),
   };
   submitted = false;
 
@@ -23,12 +23,13 @@ export class PostCreateComponent implements OnInit {
   ngOnInit(): void {}
 
   savePost(): void {
+    const currentdate= new Date();
     const data = {
       title: this.post.title,
       content: this.post.content,
       likes: 0,
       dislikes: 0,
-      publicationdate: Date,
+      publicationdate: currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear(),
     };
 
     this.PostService.create(data).subscribe(
@@ -49,7 +50,7 @@ export class PostCreateComponent implements OnInit {
       content: '',
       likes: 0,
       dislikes: 0,
-      publicationdate: Date,
+      publicationdate: new Date(),
     };
   }
 }
