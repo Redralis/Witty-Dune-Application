@@ -7,9 +7,11 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: 'postdetails.component.html',
   styles: [
     'button { background-color: #0E246D !important; margin-top: 15px; margin-right: 16px; width: 30%; }',
+    '.post-card { padding: 10px;}',
   ],
 })
 export class PostDetailsComponent implements OnInit {
+  isDisabled: boolean = true;
   currentPost: any;
   message = '';
 

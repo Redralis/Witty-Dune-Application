@@ -10,14 +10,14 @@ import { PostService } from '../services/post.ts.service';
           <h4>{{ post.title }}</h4>
           {{ post.content }}<br>
           <button class="btn btn-primary" routerLink="/postlist/{{ post.id }}">
-            Edit
+            Details
           </button>
         </div>
       </li>
     </ul>
 </div>`,
   styles: [
-    '.wrapper { margin-right: 40px; margin-bottom: 25px;}',
+    '.wrapper { margin-right: 24px; margin-bottom: 25px;}',
     'li { margin-top: 10px; border-radius: 3px; }',
     'button { background-color: #0E246D !important; margin-top: 15px; width: 15%; }',
   ],

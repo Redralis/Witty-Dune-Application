@@ -27,7 +27,7 @@ import { Component, OnInit } from '@angular/core';
   styles: [
     '.wrapper { border-radius: 3px; margin-top: 10px; }',
     'button { background-color: #0E246D !important; width: 100%; } ',
-    '.filters-card { margin-top: 20px; } ',
+    '.filters-card { margin-top: 20px; margin-bottom: 25px; } ',
   ],
 })
 export class SidemenuComponent implements OnInit {

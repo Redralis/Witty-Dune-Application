@@ -2,8 +2,8 @@
   <div *ngIf="currentPost" class="edit-form">
     <h4>Post</h4>
     <form>
-      <div class="form-group">
-        <label for="title">Title</label>
+      <label *ngIf="!isDisabled" for="title">Title</label>
+      <div *ngIf="!isDisabled" class="form-group">
         <input
           type="text"
           class="form-control"
@@ -12,28 +12,41 @@
           name="title"
         />
       </div>
-      <div class="form-group">
-        <label for="description">Description</label>
-        <input
+      <label *ngIf="!isDisabled" for="description">Description</label>
+      <div *ngIf="!isDisabled" class="form-group">
+        <textarea
           type="text"
           class="form-control"
           id="description"
           [(ngModel)]="currentPost.content"
           name="description"
-        />
+          style="height: 200px"
+        ></textarea>
       </div>
     </form>
 
+    <div *ngIf="isDisabled" class="card post-card">
+        <h5>{{ currentPost.title }}</h5>
+        <p>{{ currentPost.content }}</p>
+    </div>
+
     <button
-      type="submit"
       class="btn btn-primary"
-      routerLink="/postlist"
-      routerLinkActive="active"
+      *ngIf="isDisabled"
+      (click)="isDisabled = false"
+    >
+      Edit
+    </button>
+    <button
+      *ngIf="!isDisabled"
+      class="btn btn-primary"
+      (click)="isDisabled = true"
     >
       Cancel
     </button>
 
     <button
+      *ngIf="!isDisabled"
       type="submit"
       class="btn btn-primary"
       (click)="updatePost()"
@@ -43,8 +56,13 @@
       Update
     </button>
 
-    <button class="btn btn-primary mr-2" (click)="deletePost()">Delete</button>
-    
+    <button
+      *ngIf="!isDisabled"
+      class="btn btn-primary mr-2"
+      (click)="deletePost()"
+    >
+      Delete
+    </button>
   </div>
 
   <div *ngIf="!currentPost">
