@@ -23,8 +23,21 @@
           name="description"
         />
       </div>
-
-      <button (click)="savePost()" class="btn btn-success" routerLink="/postlist" routerLinkActive="active">Submit</button>
+      <button
+        class="btn btn-primary"
+        routerLink="/postlist"
+        routerLinkActive="active"
+      >
+        Back
+      </button>
+      <button
+        (click)="savePost()"
+        class="btn btn-success"
+        routerLink="/postlist"
+        routerLinkActive="active"
+      >
+        Submit
+      </button>
     </div>
   </div>
 </div>

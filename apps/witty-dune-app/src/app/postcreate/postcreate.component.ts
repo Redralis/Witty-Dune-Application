@@ -5,7 +5,7 @@ import { PostService } from '../services/post.ts.service';
   selector: 'witty-dune-postcreate',
   templateUrl: './postcreate.component.html',
   styles: [
-    'button { background-color: #0E246D !important; width: 35%; } ', 
+    'button { background-color: #0E246D !important; margin-top: 15px; margin-right: 16px; width: 30%; } ', 
   ],
 })
 export class PostCreateComponent implements OnInit {
