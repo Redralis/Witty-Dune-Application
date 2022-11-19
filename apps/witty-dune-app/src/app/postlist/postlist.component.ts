@@ -8,7 +8,9 @@ import { PostService } from '../services/post.ts.service';
       <li *ngFor="let post of posts" class="list-group-item">
         <div class="col">
           <h4>{{ post.title }}</h4>
-          {{ post.content }}<br>
+          <p class="text-muted">Posted on {{ post.publicationdate }}</p>
+          <p>{{ post.content.substring(0, 40) }}...</p>
+          <p class="text-muted">{{ post.likes }} likes - {{ post.dislikes }} dislikes</p>
           <button class="btn btn-primary" routerLink="/postlist/{{ post.id }}">
             Details
           </button>
@@ -19,7 +21,8 @@ import { PostService } from '../services/post.ts.service';
   styles: [
     '.wrapper { margin-right: 24px; margin-bottom: 25px;}',
     'li { margin-top: 10px; border-radius: 3px; }',
-    'button { background-color: #0E246D !important; margin-top: 15px; width: 15%; }',
+    'button { background-color: #0E246D !important; width: 15%; }',
+    '.text-muted { font-size: 14px; }',
   ],
 })
 export class PostlistComponent implements OnInit {

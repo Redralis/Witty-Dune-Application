@@ -26,9 +26,20 @@
     </form>
 
     <div *ngIf="isDisabled" class="card post-card">
-        <h5>{{ currentPost.title }}</h5>
-        <p>{{ currentPost.content }}</p>
+      <h5>{{ currentPost.title }}</h5>
+      <p class="text-muted">Posted on {{ currentPost.publicationdate }}</p>
+      <p>{{ currentPost.content }}</p>
+      <p class="text-muted">{{ currentPost.likes }} likes - {{ currentPost.dislikes }} dislikes</p>
     </div>
+
+    <button
+      *ngIf="isDisabled"
+      class="btn btn-primary"
+      routerLink="/postlist"
+      routerLinkActive="active"
+    >
+      Back
+    </button>
 
     <button
       class="btn btn-primary"
@@ -37,6 +48,7 @@
     >
       Edit
     </button>
+
     <button
       *ngIf="!isDisabled"
       class="btn btn-primary"

@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styles: [
     'button { background-color: #0E246D !important; margin-top: 15px; margin-right: 16px; width: 30%; }',
     '.post-card { padding: 10px;}',
+    '.text-muted { font-size: 14px; }',
   ],
 })
 export class PostDetailsComponent implements OnInit {
