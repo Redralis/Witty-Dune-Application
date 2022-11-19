@@ -12,6 +12,7 @@ import { PostlistComponent } from './postlist/postlist.component';
 import { PostCreateComponent } from './postcreate/postcreate.component';
 import { PostDetailsComponent } from './postdetails/postdetails.component';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { SidemenuComponent } from './sidemenu/sidemenu.component';
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
     HttpClientModule,
     FormsModule,
+    PdfViewerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

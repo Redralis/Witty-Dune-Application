@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'witty-dune-sidemenu',
   template: `
-    <body>
+    <div class="wrapper">
       <div class="card row">
         <div class="card-body col">
           <h2>General posts</h2>
@@ -22,10 +22,10 @@ import { Component, OnInit } from '@angular/core';
           <button class="btn btn-primary">Filter</button>
         </div>
       </div>  
-    </body>
+    </div>
   `,
   styles: [
-    'body { border-radius: 3px; margin-top: 10px; }',
+    '.wrapper { border-radius: 3px; margin-top: 10px; }',
     'button { background-color: #0E246D !important; width: 100%; } ',
     '.filters-card { margin-top: 20px; } ',
   ],

@@ -24,18 +24,27 @@
       </div>
     </form>
 
-    <button class="badge badge-danger mr-2" (click)="deletePost()">
-      Delete
+    <button
+      type="submit"
+      class="btn btn-primary"
+      routerLink="/postlist"
+      routerLinkActive="active"
+    >
+      Cancel
     </button>
 
     <button
       type="submit"
-      class="badge badge-success"
+      class="btn btn-primary"
       (click)="updatePost()"
+      routerLink="/postlist"
+      routerLinkActive="active"
     >
       Update
     </button>
-    <p>{{ message }}</p>
+
+    <button class="btn btn-primary mr-2" (click)="deletePost()">Delete</button>
+    
   </div>
 
   <div *ngIf="!currentPost">

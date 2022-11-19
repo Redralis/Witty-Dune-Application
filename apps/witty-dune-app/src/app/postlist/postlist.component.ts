@@ -3,22 +3,23 @@ import { PostService } from '../services/post.ts.service';
 
 @Component({
   selector: 'witty-dune-postlist',
-  template: ` <body>
+  template: ` <div class="wrapper">
     <ul class="list-group row">
       <li *ngFor="let post of posts" class="list-group-item">
         <div class="col">
           <h4>{{ post.title }}</h4>
-          {{ post.content }}
+          {{ post.content }}<br>
+          <button class="btn btn-primary" routerLink="/postlist/{{ post.id }}">
+            Edit
+          </button>
         </div>
-        <a class="badge badge-warning" routerLink="/postlist/{{ post.id }}">
-          Edit
-        </a>
       </li>
     </ul>
-  </body>`,
+</div>`,
   styles: [
-    'body { margin-right: 40px; margin-bottom: 25px;}',
+    '.wrapper { margin-right: 40px; margin-bottom: 25px;}',
     'li { margin-top: 10px; border-radius: 3px; }',
+    'button { background-color: #0E246D !important; margin-top: 15px; width: 15%; }',
   ],
 })
 export class PostlistComponent implements OnInit {

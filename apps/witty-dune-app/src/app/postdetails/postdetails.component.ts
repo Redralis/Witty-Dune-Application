@@ -5,7 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'witty-dune-postdetails',
   templateUrl: 'postdetails.component.html',
-  styles: [],
+  styles: [
+    'button { background-color: #0E246D !important; margin-top: 15px; margin-right: 16px; width: 30%; }',
+  ],
 })
 export class PostDetailsComponent implements OnInit {
   currentPost: any;
