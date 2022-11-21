@@ -15,13 +15,14 @@
 
       <div class="form-group">
         <label for="description">Content</label>
-        <input
+        <textarea
           class="form-control"
           id="description"
           required
           [(ngModel)]="post.content"
           name="description"
-        />
+          style="height: 200px"
+        ></textarea>
       </div>
       <button
         class="btn btn-primary"

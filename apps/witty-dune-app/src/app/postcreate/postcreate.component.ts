@@ -22,7 +22,7 @@ export class PostCreateComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  savePost(): void {
+  async savePost(): Promise<void> {
     const currentdate= new Date();
     const data = {
       title: this.post.title,
@@ -32,7 +32,7 @@ export class PostCreateComponent implements OnInit {
       publicationdate: new Date(),
     };
 
-    this.PostService.create(data).subscribe(
+    await this.PostService.create(data).subscribe(
       (response) => {
         console.log(response);
         this.submitted = true;

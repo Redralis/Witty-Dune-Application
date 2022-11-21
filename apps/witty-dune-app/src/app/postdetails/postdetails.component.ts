@@ -39,8 +39,8 @@ export class PostDetailsComponent implements OnInit {
     );
   }
 
-  updatePost(): void {
-    this.PostService.update(this.currentPost._id, this.currentPost).subscribe(
+  async updatePost(): Promise<void> {
+    await this.PostService.update(this.currentPost._id, this.currentPost).subscribe(
       (response) => {
         console.log(response);
         this.message = 'The post was updated successfully!';
@@ -51,8 +51,8 @@ export class PostDetailsComponent implements OnInit {
     );
   }
 
-  deletePost(): void {
-    this.PostService.delete(this.currentPost._id).subscribe(
+  async deletePost(): Promise<void> {
+    await this.PostService.delete(this.currentPost._id).subscribe(
       (response) => {
         console.log(response);
         this.router.navigate(['/postlist']);
