@@ -29,7 +29,7 @@ export class PostCreateComponent implements OnInit {
       content: this.post.content,
       likes: 0,
       dislikes: 0,
-      publicationdate: currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear(),
+      publicationdate: new Date(),
     };
 
     this.PostService.create(data).subscribe(

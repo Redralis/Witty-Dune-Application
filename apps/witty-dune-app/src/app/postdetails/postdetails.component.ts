@@ -40,7 +40,7 @@ export class PostDetailsComponent implements OnInit {
   }
 
   updatePost(): void {
-    this.PostService.update(this.currentPost.id, this.currentPost).subscribe(
+    this.PostService.update(this.currentPost._id, this.currentPost).subscribe(
       (response) => {
         console.log(response);
         this.message = 'The post was updated successfully!';
@@ -52,7 +52,7 @@ export class PostDetailsComponent implements OnInit {
   }
 
   deletePost(): void {
-    this.PostService.delete(this.currentPost.id).subscribe(
+    this.PostService.delete(this.currentPost._id).subscribe(
       (response) => {
         console.log(response);
         this.router.navigate(['/postlist']);

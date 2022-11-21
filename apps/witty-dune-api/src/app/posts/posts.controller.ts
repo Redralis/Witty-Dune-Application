@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { PostsService } from './posts.service';
-import { PostModel } from './posts/posts.interface';
+import { Post as ForumPost } from './post.schema';
 
 @Controller('posts')
 @ApiTags('Posts')
@@ -18,30 +18,30 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  public findAll(): Array<PostModel> {
+  public findAll(): Promise<Array<ForumPost>> {
     return this.postsService.findAll();
   }
 
   @Get(':id')
-  public findOne(@Param('id', ParseIntPipe) id: number): PostModel {
+  public findOne(@Param('id') id: string): Promise<ForumPost> {
     return this.postsService.findOne(id);
   }
 
   @Post()
-  public create(@Body() post: PostModel): PostModel {
+  public async create(@Body() post: ForumPost): Promise<ForumPost> {
     return this.postsService.create(post);
   }
 
   @Delete(':id')
-  public delete(@Param('id', ParseIntPipe) id: number): void {
+  public delete(@Param('id') id: string): void {
     this.postsService.delete(id);
   }
 
   @Put(':id')
   public update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() post: PostModel,
-  ): PostModel {
+    @Param('id') id: string,
+    @Body() post: ForumPost
+  ): Promise<ForumPost> {
     return this.postsService.update(id, post);
   }
 }
