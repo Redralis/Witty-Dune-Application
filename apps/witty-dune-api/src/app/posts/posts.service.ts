@@ -66,7 +66,7 @@ export class PostsService {
     const blogPost: Post = {
       ...post,
     };
-    const res = await this.postModel.findByIdAndUpdate(id, blogPost)
+    const res = await this.postModel.findByIdAndUpdate(id, blogPost);
     if (res == null) throw new NotFoundException('Post not found.');
     this.logger.log(`Updating post with id: ${id}.`);
 
