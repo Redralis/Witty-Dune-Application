@@ -1,84 +1,170 @@
-<div style="width: 400px; margin: auto">
+<div class="wrapper">
   <div *ngIf="currentPost" class="edit-form">
-    <h4>Post</h4>
-    <form>
-      <label *ngIf="!isDisabled" for="title">Title</label>
-      <div *ngIf="!isDisabled" class="form-group">
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          [(ngModel)]="currentPost.title"
-          name="title"
-        />
-      </div>
-      <label *ngIf="!isDisabled" for="description">Description</label>
-      <div *ngIf="!isDisabled" class="form-group">
-        <textarea
-          type="text"
-          class="form-control"
-          id="description"
-          [(ngModel)]="currentPost.content"
-          name="description"
-          style="height: 200px"
-        ></textarea>
-      </div>
-    </form>
+    <div class="content">
+      <form>
+        <label *ngIf="!isDisabled" for="title">Title</label>
+        <div *ngIf="!isDisabled" class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            [(ngModel)]="currentPost.title"
+            name="title"
+          />
+        </div>
+        <label *ngIf="!isDisabled" for="description">Description</label>
+        <div *ngIf="!isDisabled" class="form-group">
+          <textarea
+            type="text"
+            class="form-control"
+            id="description"
+            [(ngModel)]="currentPost.content"
+            name="description"
+            style="height: 200px"
+          ></textarea>
+        </div>
+      </form>
 
-    <div *ngIf="isDisabled" class="card post-card">
-      <h5>{{ currentPost.title }}</h5>
-      <p class="text-muted">Posted on {{ currentPost.publicationdate }}</p>
-      <p>{{ currentPost.content }}</p>
-      <p class="text-muted">{{ currentPost.likes }} likes - {{ currentPost.dislikes }} dislikes</p>
+      <div *ngIf="isDisabled" class="card post-card">
+        <h4>{{ currentPost.title }}</h4>
+        <p class="text-muted">Posted on {{ currentPost.publicationdate }}</p>
+        <p>{{ currentPost.content }}</p>
+        <p class="text-muted">
+          {{ currentPost.likes }} likes - {{ currentPost.dislikes }} dislikes
+        </p>
+        <button
+          *ngIf="isReplying"
+          class="btn btn-primary"
+          (click)="isReplying = false"
+        >
+          Reply
+        </button>
+        <button
+          *ngIf="!isReplying"
+          class="btn btn-primary"
+          (click)="isReplying = true"
+        >
+          Cancel
+        </button>
+        <form>
+          <div *ngIf="!isReplying" class="form-group" style="margin-top: 10px">
+            <textarea
+              type="text"
+              class="form-control"
+              id="description"
+              [(ngModel)]="reply.content"
+              name="description"
+              style="height: 200px"
+            ></textarea>
+          </div>
+          <button
+            *ngIf="!isReplying"
+            type="submit"
+            class="btn btn-primary"
+            (click)="createReply(); refresh()"
+          >
+            Create
+          </button>
+        </form>
+        <ul class="list-group row">
+          <li *ngFor="let reply of replies" class="list-group-item">
+            <div class="col">
+              <p class="text-muted">Posted on {{ reply.publicationdate }}</p>
+              <p *ngIf="isEditingReply">{{ reply.content }}</p>
+              <textarea
+                type="text"
+                class="form-control"
+                *ngIf="!isEditingReply"
+                id="description"
+                [(ngModel)]="reply.content"
+                name="description"
+                style="height: 200px"
+              ></textarea>
+              <p class="text-muted">
+                {{ reply.likes }} likes - {{ reply.dislikes }} dislikes
+              </p>
+              <button
+                class="btn btn-primary"
+                *ngIf="isEditingReply"
+                (click)="isEditingReply = false"
+              >
+                Edit
+              </button>
+              <button
+                *ngIf="!isEditingReply"
+                class="btn btn-primary"
+                (click)="isEditingReply = true"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn btn-primary mr-2"
+                (click)="deleteReply(reply._id)"
+                *ngIf="!isEditingReply"
+              >
+                Delete
+              </button>
+              <button
+                *ngIf="!isEditingReply"
+                type="submit"
+                class="btn btn-primary"
+                (click)="updateReply(reply._id, reply); refresh()"
+              >
+                Update
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <button
+        *ngIf="isDisabled"
+        class="btn btn-primary"
+        routerLink="/postlist"
+        routerLinkActive="active"
+      >
+        Back
+      </button>
+
+      <button
+        class="btn btn-primary"
+        *ngIf="isDisabled"
+        (click)="isDisabled = false"
+      >
+        Edit
+      </button>
+
+      <button
+        *ngIf="!isDisabled"
+        class="btn btn-primary"
+        (click)="isDisabled = true"
+      >
+        Cancel
+      </button>
+
+      <button
+        *ngIf="!isDisabled"
+        type="submit"
+        class="btn btn-primary"
+        (click)="updatePost()"
+        routerLink="/postlist"
+        routerLinkActive="active"
+      >
+        Update
+      </button>
+
+      <button
+        *ngIf="!isDisabled"
+        class="btn btn-primary mr-2"
+        (click)="deletePost()"
+      >
+        Delete
+      </button>
     </div>
 
-    <button
-      *ngIf="isDisabled"
-      class="btn btn-primary"
-      routerLink="/postlist"
-      routerLinkActive="active"
-    >
-      Back
-    </button>
-
-    <button
-      class="btn btn-primary"
-      *ngIf="isDisabled"
-      (click)="isDisabled = false"
-    >
-      Edit
-    </button>
-
-    <button
-      *ngIf="!isDisabled"
-      class="btn btn-primary"
-      (click)="isDisabled = true"
-    >
-      Cancel
-    </button>
-
-    <button
-      *ngIf="!isDisabled"
-      type="submit"
-      class="btn btn-primary"
-      (click)="updatePost()"
-      routerLink="/postlist"
-      routerLinkActive="active"
-    >
-      Update
-    </button>
-
-    <button
-      *ngIf="!isDisabled"
-      class="btn btn-primary mr-2"
-      (click)="deletePost()"
-    >
-      Delete
-    </button>
-  </div>
-
-  <div *ngIf="!currentPost">
-    <br />
-    <p>Cannot access this post...</p>
+    <div *ngIf="!currentPost">
+      <br />
+      <p>Cannot access this post...</p>
+    </div>
   </div>
 </div>
