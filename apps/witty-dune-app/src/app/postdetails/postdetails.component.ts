@@ -35,11 +35,14 @@ export class PostDetailsComponent implements OnInit {
     private ReplyService: ReplyService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+    //Getting post in constructor AND ngOnInit to make sure it is always retrieved before it is used.
+    if (this.currentPost == null) this.getPost(this.route.snapshot.paramMap.get('id'));
+  }
 
   async ngOnInit(): Promise<void> {
     this.message = '';
-    this.getPost(this.route.snapshot.paramMap.get('id'));
+    if (this.currentPost == null) this.getPost(this.route.snapshot.paramMap.get('id'));
     this.ReplyService.getAll().subscribe((response) => {
       this.result = response;
       this.replies = this.result.filter(
@@ -48,8 +51,8 @@ export class PostDetailsComponent implements OnInit {
     });
   }
 
-  getPost(id: any): void {
-    this.PostService.get(id).subscribe(
+  async getPost(id: any): Promise<void> {
+    await this.PostService.get(id).subscribe(
       (data) => {
         this.currentPost = data;
         console.log(data);
