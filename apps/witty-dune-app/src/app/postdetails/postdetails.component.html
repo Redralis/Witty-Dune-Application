@@ -61,7 +61,7 @@
             *ngIf="!isReplying"
             type="submit"
             class="btn btn-primary"
-            (click)="createReply(); refresh()"
+            (click)="createReply();"
           >
             Create
           </button>
@@ -108,7 +108,7 @@
                 *ngIf="!isEditingReply"
                 type="submit"
                 class="btn btn-primary"
-                (click)="updateReply(reply._id, reply); refresh()"
+                (click)="updateReply(reply._id, reply);"
               >
                 Update
               </button>

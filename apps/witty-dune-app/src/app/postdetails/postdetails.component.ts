@@ -102,6 +102,7 @@ export class PostDetailsComponent implements OnInit {
     await this.ReplyService.create(data).subscribe(
       (response) => {
         console.log(response);
+        this.refresh();
       },
       (error) => {
         console.log(error);
@@ -114,6 +115,7 @@ export class PostDetailsComponent implements OnInit {
       (response) => {
         console.log(response);
         this.message = 'The post was updated successfully!';
+        this.refresh();
       },
       (error) => {
         console.log(error);
