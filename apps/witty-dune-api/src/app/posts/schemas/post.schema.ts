@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { Reply } from '../replies/reply.schema';
-import { ApiProperty } from "@nestjs/swagger";
+import { Comment } from './comment.schema';
+import { ApiProperty } from '@nestjs/swagger';
 
 export type PostDocument = HydratedDocument<Post>;
 
@@ -26,8 +26,8 @@ export class Post {
   @Prop()
   publicationdate: Date;
   @Prop({ type: [{ type: mongoose.Schema.Types.Array }] })
-  @ApiProperty({ type: [Reply] })
-  replies: Reply;
+  @ApiProperty({ type: [Comment] })
+  comments: Comment;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

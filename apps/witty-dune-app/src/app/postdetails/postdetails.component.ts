@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../services/post.ts.service';
-import { ReplyService } from '../services/reply.ts.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -20,7 +19,7 @@ export class PostDetailsComponent implements OnInit {
   isCreatingComment: boolean = false;
   currentPost: any;
   result: any;
-  newreply = {
+  newcomment = {
     content: '',
     likes: 0,
     dislikes: 0,
@@ -30,7 +29,6 @@ export class PostDetailsComponent implements OnInit {
 
   constructor(
     private PostService: PostService,
-    private ReplyService: ReplyService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -82,13 +80,13 @@ export class PostDetailsComponent implements OnInit {
   }
 
   async createComment(): Promise<void> {
-    this.currentPost.replies.push(new Array(this.newreply));
+    this.currentPost.comments.push(new Array(this.newcomment));
     this.updatePost();
     this.refresh();
   }
 
   async deleteComment(id: number): Promise<void> {
-    this.currentPost.replies.splice(id);
+    this.currentPost.comments.splice(id);
     this.updatePost();
   }
 

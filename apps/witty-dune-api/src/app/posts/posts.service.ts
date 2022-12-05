@@ -6,7 +6,7 @@ import {
 } from '@nestjs/swagger';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Post, PostDocument } from './post.schema';
+import { Post, PostDocument } from './schemas/post.schema';
 
 @Injectable()
 export class PostsService {

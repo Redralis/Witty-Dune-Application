@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { PostsService } from './posts.service';
-import { Post as ForumPost } from './post.schema';
+import { Post as ForumPost } from './schemas/post.schema';
 
 @Controller('posts')
 @ApiTags('Posts')

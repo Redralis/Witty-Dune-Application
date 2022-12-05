@@ -44,28 +44,28 @@
           class="list-group-flush row-12"
           style="margin-top: 10px; padding-left: 0px"
         >
-          <li *ngFor="let reply of currentPost.replies" class="list-group-item">
+          <li *ngFor="let comment of currentPost.comments" class="list-group-item">
             <div class="col">
               <!-- Comment publication date -->
-              <p class="text-muted">Posted on {{ reply[0].publicationdate }}</p>
+              <p class="text-muted">Posted on {{ comment[0].publicationdate }}</p>
               <!-- End of comment publication date -->
 
-              <!-- Reply content -->
-              <p *ngIf="!isEditing">{{ reply[0].content }}</p>
+              <!-- Comment content -->
+              <p *ngIf="!isEditing">{{ comment[0].content }}</p>
               <p *ngIf="isEditing">
                 <textarea
                   type="text"
                   class="form-control"
                   id="description"
-                  [(ngModel)]="reply[0].content"
+                  [(ngModel)]="comment[0].content"
                   name="description"
                 ></textarea>
               </p>
-              <!-- End of reply content -->
+              <!-- End of comment content -->
 
               <!-- Comment likes and dislikes -->
               <p class="text-muted">
-                {{ reply[0].likes }} likes - {{ reply[0].dislikes }} dislikes
+                {{ comment[0].likes }} likes - {{ comment[0].dislikes }} dislikes
               </p>
               <!-- End of comment likes and dislikes -->
 
@@ -73,7 +73,7 @@
               <button
                 *ngIf="isEditing"
                 class="btn btn-primary mr-2"
-                (click)="deleteComment(reply.indexOf())"
+                (click)="deleteComment(comment.indexOf())"
               >
                 Delete
               </button>
@@ -99,7 +99,7 @@
             type="text"
             class="form-control"
             id="description"
-            [(ngModel)]="newreply.content"
+            [(ngModel)]="newcomment.content"
             name="description"
           ></textarea>
         </p>
