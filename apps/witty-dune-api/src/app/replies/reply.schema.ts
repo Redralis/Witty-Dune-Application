@@ -10,9 +10,6 @@ export class Reply {
     id: string;
     @Prop()
     @ApiProperty({ type: String })
-    postid: string;
-    @Prop()
-    @ApiProperty({ type: String })
     content: string;
     @Prop()
     @ApiProperty({ type: Number })

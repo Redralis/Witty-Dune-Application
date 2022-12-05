@@ -1,9 +1,9 @@
 <div class="wrapper">
   <div *ngIf="currentPost" class="edit-form">
     <div class="content">
-      <form>
-        <label *ngIf="!isDisabled" for="title">Title</label>
-        <div *ngIf="!isDisabled" class="form-group">
+      <div class="card post-card">
+        <!-- Title -->
+        <p *ngIf="isEditing">
           <input
             type="text"
             class="form-control"
@@ -11,160 +11,178 @@
             [(ngModel)]="currentPost.title"
             name="title"
           />
-        </div>
-        <label *ngIf="!isDisabled" for="description">Description</label>
-        <div *ngIf="!isDisabled" class="form-group">
+        </p>
+        <h4 *ngIf="!isEditing">{{ currentPost.title }}</h4>
+        <!-- End of title -->
+
+        <!-- Publication date -->
+        <p class="text-muted">Posted on {{ currentPost.publicationdate }}</p>
+        <!-- End of publication date-->
+
+        <!-- Content -->
+        <p *ngIf="!isEditing">{{ currentPost.content }}</p>
+        <p *ngIf="isEditing">
           <textarea
             type="text"
             class="form-control"
             id="description"
             [(ngModel)]="currentPost.content"
             name="description"
-            style="height: 200px"
+            style="height: 100px"
           ></textarea>
-        </div>
-      </form>
+        </p>
+        <!-- End of content -->
 
-      <div *ngIf="isDisabled" class="card post-card">
-        <h4>{{ currentPost.title }}</h4>
-        <p class="text-muted">Posted on {{ currentPost.publicationdate }}</p>
-        <p>{{ currentPost.content }}</p>
+        <!-- Likes and dislikes -->
         <p class="text-muted">
           {{ currentPost.likes }} likes - {{ currentPost.dislikes }} dislikes
         </p>
-        <button
-          *ngIf="isReplying"
-          class="btn btn-primary"
-          (click)="isReplying = false"
+        <!-- End of likes and dislikes -->
+
+        <!-- Comments -->
+        <ul
+          class="list-group-flush row-12"
+          style="margin-top: 10px; padding-left: 0px"
         >
-          Reply
-        </button>
-        <button
-          *ngIf="!isReplying"
-          class="btn btn-primary"
-          (click)="isReplying = true"
-        >
-          Cancel
-        </button>
-        <form>
-          <div *ngIf="!isReplying" class="form-group" style="margin-top: 10px">
-            <textarea
-              type="text"
-              class="form-control"
-              id="description"
-              [(ngModel)]="reply.content"
-              name="description"
-              style="height: 200px"
-            ></textarea>
-          </div>
-          <button
-            *ngIf="!isReplying"
-            type="submit"
-            class="btn btn-primary"
-            (click)="createReply();"
-          >
-            Create
-          </button>
-        </form>
-        <ul class="list-group-flush row-12" style="margin-top: 10px; padding-left: 0px;">
-          <li *ngFor="let reply of replies" class="list-group-item">
+          <li *ngFor="let reply of currentPost.replies" class="list-group-item">
             <div class="col">
-              <p class="text-muted">Posted on {{ reply.publicationdate }}</p>
-              <p *ngIf="isEditingReply">{{ reply.content }}</p>
-              <textarea
-                type="text"
-                class="form-control"
-                *ngIf="!isEditingReply"
-                id="description"
-                [(ngModel)]="reply.content"
-                name="description"
-                style="height: 200px"
-              ></textarea>
-              <p class="text-muted">
-                {{ reply.likes }} likes - {{ reply.dislikes }} dislikes
+              <!-- Comment publication date -->
+              <p class="text-muted">Posted on {{ reply[0].publicationdate }}</p>
+              <!-- End of comment publication date -->
+
+              <!-- Reply content -->
+              <p *ngIf="!isEditing">{{ reply[0].content }}</p>
+              <p *ngIf="isEditing">
+                <textarea
+                  type="text"
+                  class="form-control"
+                  id="description"
+                  [(ngModel)]="reply[0].content"
+                  name="description"
+                ></textarea>
               </p>
+              <!-- End of reply content -->
+
+              <!-- Comment likes and dislikes -->
+              <p class="text-muted">
+                {{ reply[0].likes }} likes - {{ reply[0].dislikes }} dislikes
+              </p>
+              <!-- End of comment likes and dislikes -->
+
+              <!-- Delete comment button -->
               <button
-                class="btn btn-primary"
-                *ngIf="isEditingReply"
-                (click)="isEditingReply = false"
-              >
-                Edit
-              </button>
-              <button
-                *ngIf="!isEditingReply"
-                class="btn btn-primary"
-                (click)="isEditingReply = true"
-              >
-                Cancel
-              </button>
-              <button
+                *ngIf="isEditing"
                 class="btn btn-primary mr-2"
-                (click)="deleteReply(reply._id)"
-                *ngIf="!isEditingReply"
+                (click)="deleteComment(reply.indexOf())"
               >
                 Delete
               </button>
-              <button
-                *ngIf="!isEditingReply"
-                type="submit"
-                class="btn btn-primary"
-                (click)="updateReply(reply._id, reply);"
-              >
-                Update
-              </button>
+              <!-- End of delete comment button -->
             </div>
           </li>
         </ul>
+        <!-- End of comments -->
+
+        <!-- Button to start creating comment mode -->
+        <button
+          class="btn btn-primary"
+          *ngIf="!isCreatingComment && !isEditing"
+          (click)="isCreatingComment = true"
+        >
+          Comment
+        </button>
+        <!-- End of button to start creating comment mode -->
+
+        <!-- Form for creating a comment -->
+        <p *ngIf="isCreatingComment">
+          <textarea
+            type="text"
+            class="form-control"
+            id="description"
+            [(ngModel)]="newreply.content"
+            name="description"
+          ></textarea>
+        </p>
+
+        <!-- Buttons to cancel creating a comment or create comment -->
+        <div class="col" style="padding-left: 0">
+          <button
+            *ngIf="isCreatingComment"
+            class="btn btn-primary"
+            (click)="isCreatingComment = false"
+          >
+            Cancel
+          </button>
+
+          <button
+            *ngIf="isCreatingComment"
+            class="btn btn-primary"
+            (click)="createComment()"
+          >
+            Create
+          </button>
+        </div>
+        <!-- End of button to cancel creating a comment or create comment -->
+
+        <!-- End of form for creating a comment -->
       </div>
 
+      <!-- Button to return to posts list -->
       <button
-        *ngIf="isDisabled"
-        class="btn btn-primary"
+        *ngIf="!isEditing"
+        class="btn btn-primary bottom-button"
         routerLink="/postlist"
         routerLinkActive="active"
       >
         Back
       </button>
+      <!-- End of button to return to posts list -->
 
+      <!-- Buttons to start & cancel edit mode -->
       <button
-        class="btn btn-primary"
-        *ngIf="isDisabled"
-        (click)="isDisabled = false"
+        class="btn btn-primary bottom-button"
+        *ngIf="!isEditing"
+        (click)="isEditing = true"
       >
         Edit
       </button>
 
       <button
-        *ngIf="!isDisabled"
-        class="btn btn-primary"
-        (click)="isDisabled = true"
+        *ngIf="isEditing"
+        class="btn btn-primary bottom-button"
+        (click)="isEditing = false"
       >
         Cancel
       </button>
+      <!-- End of buttons to start & cancel edit mode -->
 
+      <!-- Button to update post -->
       <button
-        *ngIf="!isDisabled"
+        *ngIf="isEditing"
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-primary bottom-button"
         (click)="updatePost()"
-        routerLink="/postlist"
-        routerLinkActive="active"
       >
         Update
       </button>
+      <!-- End of button to update post -->
 
+      <!-- Button to delete post -->
       <button
-        *ngIf="!isDisabled"
-        class="btn btn-primary mr-2"
+        *ngIf="isEditing"
+        class="btn btn-primary mr-2 bottom-button"
         (click)="deletePost()"
       >
         Delete
       </button>
+      <!-- End of button to delete post -->
     </div>
 
+    <!-- Error if post does not exist -->
     <div *ngIf="!currentPost">
       <br />
       <p>Cannot access this post...</p>
     </div>
+    <!-- End of error if post does not exist. -->
   </div>
 </div>

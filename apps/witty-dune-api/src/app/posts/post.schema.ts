@@ -17,6 +17,7 @@ export class Post {
   @Prop()
   content: string;
   @Prop()
+  @ApiProperty({ type: Number })
   likes: number;
   @ApiProperty({ type: Number })
   @Prop()
@@ -24,8 +25,9 @@ export class Post {
   @ApiProperty({ type: String, format: 'date-time' })
   @Prop()
   publicationdate: Date;
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reply' }] })
-  reply: Reply[];
+  @Prop({ type: [{ type: mongoose.Schema.Types.Array }] })
+  @ApiProperty({ type: [Reply] })
+  replies: Reply;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

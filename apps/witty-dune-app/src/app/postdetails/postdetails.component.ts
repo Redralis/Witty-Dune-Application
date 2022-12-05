@@ -10,19 +10,17 @@ import { ActivatedRoute, Router } from '@angular/router';
     '.wrapper { margin-bottom: 25px; margin-right: 24px;}',
     '.content { margin-top: 10px; }',
     '.post-card { padding: 12px 20px; }',
-    'button { background-color: #0E246D !important; margin-top: 15px; margin-right: 16px; width: 30%; }',
+    'button { background-color: #0E246D !important; margin-right: 16px; width: 30%; }',
+    '.bottom-button { margin-top: 15px; }',
     '.text-muted { font-size: 14px; }',
   ],
 })
 export class PostDetailsComponent implements OnInit {
-  isDisabled: boolean = true;
-  isReplying: boolean = true;
-  isEditingReply: boolean = true;
+  isEditing: boolean = false;
+  isCreatingComment: boolean = false;
   currentPost: any;
-  replies: any;
   result: any;
-  reply = {
-    postid: 0,
+  newreply = {
     content: '',
     likes: 0,
     dislikes: 0,
@@ -41,19 +39,13 @@ export class PostDetailsComponent implements OnInit {
     this.message = '';
     if (this.currentPost == null)
       this.getPost(this.route.snapshot.paramMap.get('id'));
-    this.ReplyService.getAll().subscribe((response) => {
-      this.result = response;
-      this.replies = this.result.filter(
-        (r: any) => r.postid == this.route.snapshot.paramMap.get('id')
-      );
-    });
   }
 
   async getPost(id: any): Promise<void> {
     await this.PostService.get(id).subscribe(
       (data) => {
         this.currentPost = data;
-        console.log(data);
+        console.log(this.currentPost);
       },
       (error) => {
         console.log(error);
@@ -74,6 +66,7 @@ export class PostDetailsComponent implements OnInit {
         console.log(error);
       }
     );
+    this.refresh();
   }
 
   async deletePost(): Promise<void> {
@@ -88,49 +81,15 @@ export class PostDetailsComponent implements OnInit {
     );
   }
 
-  async createReply(): Promise<void> {
-    const data = {
-      postid: this.currentPost._id,
-      content: this.reply.content,
-      likes: 0,
-      dislikes: 0,
-      publicationdate: new Date(),
-    };
-
-    await this.ReplyService.create(data).subscribe(
-      (response) => {
-        console.log(response);
-        this.refresh();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  async createComment(): Promise<void> {
+    this.currentPost.replies.push(new Array(this.newreply));
+    this.updatePost();
+    this.refresh();
   }
 
-  async updateReply(id: string, reply: any): Promise<void> {
-    await this.ReplyService.update(id, reply).subscribe(
-      (response) => {
-        console.log(response);
-        this.message = 'The post was updated successfully!';
-        this.refresh();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
-
-  async deleteReply(id: string): Promise<void> {
-    await this.ReplyService.delete(id).subscribe(
-      (response) => {
-        console.log(response);
-        this.refresh();
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  async deleteComment(id: number): Promise<void> {
+    this.currentPost.replies.splice(id);
+    this.updatePost();
   }
 
   refresh(): void {
