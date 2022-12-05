@@ -1,0 +1,53 @@
+<div class="wrapper">
+  <div class="card post-card">
+    <!-- Input for new title -->
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        required
+        [(ngModel)]="post.title"
+        name="title"
+      />
+    </div>
+    <!-- End of input for new title -->
+
+    <!-- Input for content of new post -->
+    <div class="form-group">
+      <label for="description">Content</label>
+      <textarea
+        class="form-control"
+        id="description"
+        required
+        [(ngModel)]="post.content"
+        name="description"
+        style="height: 100px"
+      ></textarea>
+    </div>
+    <!-- End of input for content of new post -->
+  </div>
+
+  <!-- Buttons to cancel or submit a new post -->
+  <div class="col bottom-col">
+    <button
+      class="btn btn-primary bottom-button"
+      routerLink="/postlist"
+      routerLinkActive="active"
+    >
+      Back
+    </button>
+    <button
+      (click)="savePost()"
+      class="btn btn-success bottom-button"
+      routerLink="/postlist"
+      routerLinkActive="active"
+    >
+      Submit
+    </button>
+    <!-- End of buttons to cancel or submit a new post -->
+    <div class="filler">
+    </div>
+  </div>
+</div>

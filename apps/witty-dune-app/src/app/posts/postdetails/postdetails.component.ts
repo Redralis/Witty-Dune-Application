@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PostService } from '../services/post.ts.service';
+import { PostService } from '../../services/post.ts.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styles: [
     '.wrapper { margin-bottom: 25px; margin-right: 10px; }',
     '.content { margin-top: 10px; margin-left: -15px }',
-    '.post-card { padding: 12px 20px; }',
+    '.post-card { padding: 12px 35px; }',
     'button { background-color: #0E246D !important; margin-right: 16px; width: 30%; }',
     '.bottom-button { margin-top: 15px; }',
     '.text-muted { font-size: 14px; }',

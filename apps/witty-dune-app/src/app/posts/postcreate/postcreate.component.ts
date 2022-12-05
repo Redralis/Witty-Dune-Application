@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { PostService } from '../services/post.ts.service';
+import { PostService } from '../../services/post.ts.service';
 
 @Component({
   selector: 'witty-dune-postcreate',
   templateUrl: './postcreate.component.html',
   styles: [
-    'button { background-color: #0E246D !important; margin-top: 15px; margin-right: 16px; width: 30%; } ', 
+    'button { background-color: #0E246D !important; margin-top: 15px; margin-right: 16px; width: 30%; } ',
+    '.post-card { padding: 12px 35px; }',
+    '.wrapper { margin-bottom: 25px; margin-right: 10px; margin-top: 10px; margin-left: -15px; }',
+    '.bottom-button { margin-top: 15px; }',
+    '.bottom-col { padding: 0px }',
   ],
 })
 export class PostCreateComponent implements OnInit {
@@ -23,7 +27,7 @@ export class PostCreateComponent implements OnInit {
   ngOnInit(): void {}
 
   async savePost(): Promise<void> {
-    const currentdate= new Date();
+    const currentdate = new Date();
     const data = {
       title: this.post.title,
       content: this.post.content,

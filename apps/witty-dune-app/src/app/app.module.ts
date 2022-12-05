@@ -8,9 +8,9 @@ import { appRoutes } from './app.routes';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
-import { PostlistComponent } from './postlist/postlist.component';
-import { PostCreateComponent } from './postcreate/postcreate.component';
-import { PostDetailsComponent } from './postdetails/postdetails.component';
+import { PostlistComponent } from './posts/postlist/postlist.component';
+import { PostCreateComponent } from './posts/postcreate/postcreate.component';
+import { PostDetailsComponent } from './posts/postdetails/postdetails.component';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PostService } from '../services/post.ts.service';
+import { PostService } from '../../services/post.ts.service';
 
 @Component({
   selector: 'witty-dune-postlist',
