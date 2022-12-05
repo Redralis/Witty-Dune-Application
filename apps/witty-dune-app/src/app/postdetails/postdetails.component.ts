@@ -7,8 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   selector: 'witty-dune-postdetails',
   templateUrl: 'postdetails.component.html',
   styles: [
-    '.wrapper { margin-bottom: 25px; margin-right: 24px;}',
-    '.content { margin-top: 10px; }',
+    '.wrapper { margin-bottom: 25px; margin-right: 10px; }',
+    '.content { margin-top: 10px; margin-left: -15px }',
     '.post-card { padding: 12px 20px; }',
     'button { background-color: #0E246D !important; margin-right: 16px; width: 30%; }',
     '.bottom-button { margin-top: 15px; }',

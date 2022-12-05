@@ -25,7 +25,7 @@ import { Component, OnInit } from '@angular/core';
     </div>
   `,
   styles: [
-    '.wrapper { border-radius: 3px; margin-top: 10px; }',
+    '.wrapper { border-radius: 3px; margin-top: 10px;}',
     'button { background-color: #0E246D !important; width: 100%; } ',
     '.filters-card { margin-top: 20px; margin-bottom: 25px; } ',
   ],
