@@ -10,7 +10,7 @@ import { GameService } from '../../services/game.ts.service';
           <div class="col-md-1">
             <img [src]="game.logo" />
           </div>
-          <div class="col-md-6 game">
+          <div class="col-md-7 game">
             <h4>{{ game.name }}</h4>
             <p>{{ game.description.substring(0, 42) }}...</p>
           </div>

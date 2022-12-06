@@ -13,7 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
     '.bottom-button { margin-top: 15px; }',
     '.text-muted { font-size: 14px; }',
     'img { height: 70px; width: 70px; }',
-    '.name-and-releasedate { margin-left: 20px; margin-top: 5px; }'
+    '.name-and-releasedate { margin-left: 20px; margin-top: 5px; }',
+    '.description { margin-top: 15px; }'
   ],
 })
 export class GamedetailsComponent implements OnInit {

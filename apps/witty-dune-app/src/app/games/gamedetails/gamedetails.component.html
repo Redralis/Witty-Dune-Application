@@ -3,44 +3,69 @@
     <div class="content">
       <div class="card post-card">
         <div class="row">
+          <!-- Logo display -->
           <div class="col-md-1">
-            <img [src]="currentGame.logo">
+            <img [src]="currentGame.logo" />
           </div>
-          <div class="col-md-10 name-and-releasedate">
-            <!-- Name -->
-            <p *ngIf="isEditing">
-              <input
-                type="text"
-                class="form-control"
-                id="title"
-                [(ngModel)]="currentGame.name"
-                name="title"
-              />
-            </p>
-            <h4 *ngIf="!isEditing">{{ currentGame.name }}</h4>
-            <!-- End of name -->
+          <!-- End of logo display -->
+          <div class="col-md-11">
+            <div class="name-and-releasedate">
+              <!-- Name -->
+              <p *ngIf="isEditing">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  [(ngModel)]="currentGame.name"
+                  name="title"
+                />
+              </p>
+              <h4 *ngIf="!isEditing">{{ currentGame.name }}</h4>
+              <!-- End of name -->
 
-            <!-- Publication date -->
-            <p class="text-muted">
-              Released on {{ currentGame.publicationdate }}
-            </p>
-            <!-- End of publication date-->
+              <!-- Release date -->
+              <p *ngIf="!isEditing" class="text-muted">
+                Released on {{ currentGame.releasedate }}
+              </p>
+              <input
+                *ngIf="isEditing"
+                class="form-control"
+                type="date"
+                id="release-date"
+                required
+                [(ngModel)]="currentGame.releasedate"
+                name="release-date"
+              />
+              <!-- End of release date-->
+            </div>
           </div>
         </div>
 
-        <!-- Content -->
+        <!-- description -->
         <p *ngIf="!isEditing">{{ currentGame.description }}</p>
         <p *ngIf="isEditing">
           <textarea
             type="text"
-            class="form-control"
+            class="form-control description"
             id="description"
             [(ngModel)]="currentGame.description"
             name="description"
             style="height: 110px"
           ></textarea>
         </p>
-        <!-- End of content -->
+        <!-- End of description -->
+        <!-- Logo input -->
+        <label *ngIf="isEditing" for="logo">Logo URL:</label>
+        <div *ngIf="isEditing">
+          <input
+            class="form-control"
+            id="logo"
+            required
+            [(ngModel)]="currentGame.logo"
+            name="logo"
+          />
+        </div>
+        <!-- End of logo input -->
       </div>
 
       <!-- Button to return to games list -->

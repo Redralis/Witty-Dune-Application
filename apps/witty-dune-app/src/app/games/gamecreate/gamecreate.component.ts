@@ -17,6 +17,8 @@ export class GamecreateComponent implements OnInit {
   game = {
     name: '',
     description: '',
+    releasedate: new Date(),
+    logo: '',
   };
   submitted = false;
 
@@ -29,6 +31,8 @@ export class GamecreateComponent implements OnInit {
     const data = {
       name: this.game.name,
       description: this.game.description,
+      releasedate: this.game.releasedate,
+      logo: this.game.logo,
     };
 
     await this.GameService.create(data).subscribe(
@@ -42,13 +46,5 @@ export class GamecreateComponent implements OnInit {
     );
 
     this.router.navigate(['/gamelist']);
-  }
-
-  newGame(): void {
-    this.submitted = false;
-    this.game = {
-      name: '',
-      description: '',
-    };
   }
 }

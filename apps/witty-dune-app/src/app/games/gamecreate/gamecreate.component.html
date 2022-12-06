@@ -27,6 +27,33 @@
         ></textarea>
       </div>
       <!-- End of input for content of new game -->
+
+      <!-- Input for release date of new game -->
+      <div class="form-group">
+        <label for="release-date">Release date</label>
+        <input
+          class="form-control"
+          type="date"
+          id="release-date"
+          required
+          [(ngModel)]="game.releasedate"
+          name="release-date"
+        >
+      </div>
+      <!-- End of input for release date of new game -->
+
+      <!-- Input for logo of new game -->
+      <div class="form-group">
+        <label for="logo">Logo URL</label>
+        <input
+          class="form-control"
+          id="logo"
+          required
+          [(ngModel)]="game.logo"
+          name="logo"
+        >
+      </div>
+      <!-- End of input for logo of new game -->
     </div>
   
     <!-- Buttons to cancel or submit a new game -->

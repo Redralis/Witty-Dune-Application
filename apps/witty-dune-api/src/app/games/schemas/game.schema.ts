@@ -16,7 +16,7 @@ export class Game {
   description: string;
   @Prop()
   @ApiProperty({ type: String, format: 'date-time' })
-  publicationdate: Date;
+  releasedate: Date;
   @Prop()
   @ApiProperty({ type: String })
   logo: string;
