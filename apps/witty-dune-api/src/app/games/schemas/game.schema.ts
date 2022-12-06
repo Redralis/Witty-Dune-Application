@@ -17,6 +17,9 @@ export class Game {
   @Prop()
   @ApiProperty({ type: String, format: 'date-time' })
   publicationdate: Date;
+  @Prop()
+  @ApiProperty({ type: String })
+  logo: string;
 }
 
 export const GameSchema = SchemaFactory.createForClass(Game);
