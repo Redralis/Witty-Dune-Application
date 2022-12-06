@@ -13,6 +13,8 @@ import { PostCreateComponent } from './posts/postcreate/postcreate.component';
 import { PostDetailsComponent } from './posts/postdetails/postdetails.component';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { GamelistComponent } from './games/gamelist/gamelist.component';
+import { GamedetailsComponent } from './games/gamedetails/gamedetails.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     PostCreateComponent,
     PostDetailsComponent,
     SidemenuComponent,
+    GamelistComponent,
+    GamedetailsComponent,
   ],
   imports: [
     BrowserModule,

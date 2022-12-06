@@ -5,8 +5,8 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class ReplyService {
-  private url = environment.API_URL + "/replies";
+export class GameService {
+  private url = environment.API_URL + "/games";
 
   constructor(private httpClient: HttpClient) {}
 

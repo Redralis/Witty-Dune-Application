@@ -6,22 +6,45 @@ import { Component, OnInit } from '@angular/core';
     <div class="wrapper">
       <div class="card row">
         <div class="card-body col">
-          <h2>General posts</h2>
+          <h2>Make a post!</h2>
           <p class="card-text">
             To create a new post, press the 'create post' button.
           </p>
-          <button class="btn btn-primary" routerLink="/create" routerLinkActive="active">Create post</button>
+          <button
+            class="btn btn-primary"
+            routerLink="/create"
+            routerLinkActive="active"
+          >
+            Create post
+          </button>
+        </div>
+      </div>
+      <div class="card row filters-card">
+        <div class="card-body col">
+          <h2>Submit a game!</h2>
+          <p class="card-text">
+            To submit a new game, press the 'submit game'
+            button.
+          </p>
+          <button
+            class="btn btn-primary"
+            routerLink="/create"
+            routerLinkActive="active"
+          >
+            Create post
+          </button>
         </div>
       </div>
       <div class="card row filters-card">
         <div class="card-body col">
           <h2>Filters</h2>
           <p class="card-text">
-            The posts can be filtered in a number of ways. Find a filter that applies to you and select it!
+            The posts can be filtered in a number of ways. Find a filter that
+            applies to you and select it!
           </p>
           <button class="btn btn-primary">Filter</button>
         </div>
-      </div>  
+      </div>
     </div>
   `,
   styles: [

@@ -1,0 +1,104 @@
+<div class="wrapper">
+  <div *ngIf="currentGame" class="edit-form">
+    <div class="content">
+      <div class="card post-card">
+        <div class="row">
+          <div class="col-md-1">
+            <img [src]="currentGame.logo">
+          </div>
+          <div class="col-md-10 name-and-releasedate">
+            <!-- Name -->
+            <p *ngIf="isEditing">
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                [(ngModel)]="currentGame.name"
+                name="title"
+              />
+            </p>
+            <h4 *ngIf="!isEditing">{{ currentGame.name }}</h4>
+            <!-- End of name -->
+
+            <!-- Publication date -->
+            <p class="text-muted">
+              Released on {{ currentGame.publicationdate }}
+            </p>
+            <!-- End of publication date-->
+          </div>
+        </div>
+
+        <!-- Content -->
+        <p *ngIf="!isEditing">{{ currentGame.description }}</p>
+        <p *ngIf="isEditing">
+          <textarea
+            type="text"
+            class="form-control"
+            id="description"
+            [(ngModel)]="currentGame.description"
+            name="description"
+            style="height: 110px"
+          ></textarea>
+        </p>
+        <!-- End of content -->
+      </div>
+
+      <!-- Button to return to games list -->
+      <button
+        *ngIf="!isEditing"
+        class="btn btn-primary bottom-button"
+        routerLink="/gamelist"
+        routerLinkActive="active"
+      >
+        Back
+      </button>
+      <!-- End of button to return to games list -->
+
+      <!-- Buttons to start & cancel edit mode -->
+      <button
+        class="btn btn-primary bottom-button"
+        *ngIf="!isEditing"
+        (click)="isEditing = true"
+      >
+        Edit
+      </button>
+
+      <button
+        *ngIf="isEditing"
+        class="btn btn-primary bottom-button"
+        (click)="isEditing = false"
+      >
+        Cancel
+      </button>
+      <!-- End of buttons to start & cancel edit mode -->
+
+      <!-- Button to update game -->
+      <button
+        *ngIf="isEditing"
+        type="submit"
+        class="btn btn-primary bottom-button"
+        (click)="updateGame()"
+      >
+        Update
+      </button>
+      <!-- End of button to update game -->
+
+      <!-- Button to delete game -->
+      <button
+        *ngIf="isEditing"
+        class="btn btn-primary mr-2 bottom-button"
+        (click)="deleteGame()"
+      >
+        Delete
+      </button>
+      <!-- End of button to delete game -->
+    </div>
+
+    <!-- Error if game does not exist -->
+    <div *ngIf="!currentGame">
+      <br />
+      <p>Cannot access this game...</p>
+    </div>
+    <!-- End of error if game does not exist. -->
+  </div>
+</div>

@@ -1,0 +1,79 @@
+import { Component, OnInit } from '@angular/core';
+import { GameService } from '../../services/game.ts.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
+@Component({
+  selector: 'witty-dune-gamedetails',
+  templateUrl: './gamedetails.component.html',
+  styles: [
+    '.wrapper { margin-bottom: 25px; margin-right: 10px; }',
+    '.content { margin-top: 10px; margin-left: -15px }',
+    '.post-card { padding: 12px 35px; }',
+    'button { background-color: #0E246D !important; margin-right: 16px; width: 30%; }',
+    '.bottom-button { margin-top: 15px; }',
+    '.text-muted { font-size: 14px; }',
+    'img { height: 70px; width: 70px; }',
+    '.name-and-releasedate { margin-left: 20px; margin-top: 5px; }'
+  ],
+})
+export class GamedetailsComponent implements OnInit {
+  isEditing: boolean = false;
+  currentGame: any;
+  result: any;
+  message = '';
+
+  constructor(
+    private GameService: GameService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    if (this.currentGame == null)
+      this.getGame(this.route.snapshot.paramMap.get('id'));
+  }
+
+  async getGame(id: any): Promise<void> {
+    await this.GameService.get(id).subscribe(
+      (data) => {
+        this.currentGame = data;
+        console.log(this.currentGame);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  async updateGame(): Promise<void> {
+    await this.GameService.update(
+      this.currentGame._id,
+      this.currentGame
+    ).subscribe(
+      (response) => {
+        console.log(response);
+        this.message = 'The post was updated successfully!';
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    this.refresh();
+  }
+
+  async deleteGame(): Promise<void> {
+    await this.GameService.delete(this.currentGame._id).subscribe(
+      (response) => {
+        console.log(response);
+        this.router.navigate(['/postlist']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  refresh(): void {
+    window.location.reload();
+  }
+}
