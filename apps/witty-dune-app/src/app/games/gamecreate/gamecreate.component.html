@@ -1,0 +1,50 @@
+<div class="wrapper">
+    <div class="card post-card">
+      <!-- Input for new name -->
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          required
+          [(ngModel)]="game.name"
+          name="name"
+        />
+      </div>
+      <!-- End of input for new name -->
+  
+      <!-- Input for description of new game -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          required
+          [(ngModel)]="game.description"
+          name="description"
+          style="height: 100px"
+        ></textarea>
+      </div>
+      <!-- End of input for content of new game -->
+    </div>
+  
+    <!-- Buttons to cancel or submit a new game -->
+    <div class="col bottom-col">
+      <button
+        class="btn btn-primary bottom-button"
+        routerLink="/gamelist"
+        routerLinkActive="active"
+      >
+        Back
+      </button>
+      <button
+        (click)="saveGame()"
+        class="btn btn-success bottom-button"
+      >
+        Submit
+      </button>
+      <!-- End of buttons to cancel or submit a new game -->
+    </div>
+  </div>
+  

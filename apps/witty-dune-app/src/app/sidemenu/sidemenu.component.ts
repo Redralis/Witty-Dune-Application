@@ -12,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
           </p>
           <button
             class="btn btn-primary"
-            routerLink="/create"
+            routerLink="/postcreate"
             routerLinkActive="active"
           >
             Create post
@@ -28,10 +28,10 @@ import { Component, OnInit } from '@angular/core';
           </p>
           <button
             class="btn btn-primary"
-            routerLink="/create"
+            routerLink="/gamecreate"
             routerLinkActive="active"
           >
-            Create post
+            Submit game
           </button>
         </div>
       </div>

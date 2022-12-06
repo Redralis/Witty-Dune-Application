@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PostService } from '../../services/post.ts.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class PostCreateComponent implements OnInit {
   };
   submitted = false;
 
-  constructor(private PostService: PostService) {}
+  constructor(private PostService: PostService,
+    private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -45,6 +47,7 @@ export class PostCreateComponent implements OnInit {
         console.log(error);
       }
     );
+    this.router.navigate(['/postlist']);
   }
 
   newPost(): void {

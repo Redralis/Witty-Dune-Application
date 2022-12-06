@@ -52,7 +52,7 @@ export class GamedetailsComponent implements OnInit {
     ).subscribe(
       (response) => {
         console.log(response);
-        this.message = 'The post was updated successfully!';
+        this.message = 'The game was updated successfully!';
       },
       (error) => {
         console.log(error);
@@ -65,12 +65,12 @@ export class GamedetailsComponent implements OnInit {
     await this.GameService.delete(this.currentGame._id).subscribe(
       (response) => {
         console.log(response);
-        this.router.navigate(['/postlist']);
       },
       (error) => {
         console.log(error);
       }
     );
+    this.router.navigate(['/gamelist']);
   }
 
   refresh(): void {

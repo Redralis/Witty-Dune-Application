@@ -15,6 +15,7 @@ import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { GamelistComponent } from './games/gamelist/gamelist.component';
 import { GamedetailsComponent } from './games/gamedetails/gamedetails.component';
+import { GamecreateComponent } from './games/gamecreate/gamecreate.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { GamedetailsComponent } from './games/gamedetails/gamedetails.component'
     SidemenuComponent,
     GamelistComponent,
     GamedetailsComponent,
+    GamecreateComponent,
   ],
   imports: [
     BrowserModule,

@@ -71,12 +71,12 @@ export class PostDetailsComponent implements OnInit {
     await this.PostService.delete(this.currentPost._id).subscribe(
       (response) => {
         console.log(response);
-        this.router.navigate(['/postlist']);
       },
       (error) => {
         console.log(error);
       }
     );
+    this.router.navigate(['/postlist']);
   }
 
   async createComment(): Promise<void> {
