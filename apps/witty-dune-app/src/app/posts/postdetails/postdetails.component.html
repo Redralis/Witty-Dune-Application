@@ -16,7 +16,7 @@
         <!-- End of title -->
 
         <!-- Publication date -->
-        <p class="text-muted">Posted on {{ currentPost.publicationdate }}</p>
+        <p class="text-muted">Posted on {{ currentPost.publicationdate.substring(0, 10) }}</p>
         <!-- End of publication date-->
 
         <!-- Content -->
@@ -47,7 +47,7 @@
           <li *ngFor="let comment of currentPost.comments" class="list-group-item">
             <div class="col">
               <!-- Comment publication date -->
-              <p class="text-muted">Posted on {{ comment[0].publicationdate }}</p>
+              <p class="text-muted">Posted on {{ comment[0].publicationdate.substring(0, 10) }}</p>
               <!-- End of comment publication date -->
 
               <!-- Comment content -->

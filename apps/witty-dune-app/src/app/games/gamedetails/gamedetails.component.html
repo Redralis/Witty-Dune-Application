@@ -25,7 +25,7 @@
 
               <!-- Release date -->
               <p *ngIf="!isEditing" class="text-muted">
-                Released on {{ currentGame.releasedate }}
+                Released on {{ currentGame.releasedate.substring(0, 10) }}
               </p>
               <input
                 *ngIf="isEditing"

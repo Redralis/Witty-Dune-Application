@@ -8,7 +8,7 @@ import { PostService } from '../../services/post.ts.service';
       <li *ngFor="let post of posts" class="list-group-item">
         <div class="col">
           <h4>{{ post.title }}</h4>
-          <p class="text-muted">Posted on {{ post.publicationdate }}</p>
+          <p class="text-muted">Posted on {{ post.publicationdate.substring(0, 10) }}</p>
           <p>{{ post.content.substring(0, 40) }}...</p>
           <p class="text-muted">
             {{ post.likes }} likes - {{ post.dislikes }} dislikes
