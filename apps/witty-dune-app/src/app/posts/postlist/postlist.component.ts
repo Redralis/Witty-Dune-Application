@@ -13,6 +13,7 @@ import { PostService } from '../../services/post.ts.service';
               class="float-right"
               *ngIf="post.associatedgame[0] != null"
               [src]="post.associatedgame[0].logo"
+              routerLink="/gamelist/{{ post.associatedgame[0]._id }}"
             />
           </h4>
           <p class="text-muted">

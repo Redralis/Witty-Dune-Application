@@ -25,7 +25,10 @@
             <!-- End of publication date-->
           </div>
           <div class="col-1 image-col">
-            <img [src]="currentPost.associatedgame[0].logo">
+            <img
+              [src]="currentPost.associatedgame[0].logo"
+              routerLink="/gamelist/{{ currentPost.associatedgame[0]._id }}"
+            />
           </div>
         </div>
 

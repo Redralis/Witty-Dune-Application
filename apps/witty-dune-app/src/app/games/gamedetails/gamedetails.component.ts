@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../../services/game.ts.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'witty-dune-gamedetails',
@@ -26,7 +27,8 @@ export class GamedetailsComponent implements OnInit {
   constructor(
     private GameService: GameService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private _location: Location
   ) {}
 
   ngOnInit(): void {
@@ -76,5 +78,9 @@ export class GamedetailsComponent implements OnInit {
 
   refresh(): void {
     window.location.reload();
+  }
+
+  backClicked() {
+    this._location.back();
   }
 }

@@ -17,7 +17,7 @@ export class GamesService {
   @ApiOkResponse({ description: 'Games retrieved successfully.' })
   public findAll(): Promise<Game[]> {
     this.logger.log('Returning all games.');
-    return this.gameModel.find().exec();
+    return this.gameModel.find().sort({ name : 1}).exec();
   }
 
   @ApiOkResponse({ description: 'Game retrieved successfully.' })

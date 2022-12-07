@@ -72,8 +72,7 @@
       <button
         *ngIf="!isEditing"
         class="btn btn-primary bottom-button"
-        routerLink="/gamelist"
-        routerLinkActive="active"
+        (click)="backClicked()"
       >
         Back
       </button>
