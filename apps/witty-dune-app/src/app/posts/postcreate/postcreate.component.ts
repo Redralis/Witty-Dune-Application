@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PostService } from '../../services/post.ts.service';
+import { GameService } from '../../services/game.ts.service';
 
 @Component({
   selector: 'witty-dune-postcreate',
@@ -20,22 +21,30 @@ export class PostCreateComponent implements OnInit {
     likes: 0,
     dislikes: 0,
     publicationdate: new Date(),
+    associatedgame: {},
   };
+  selected: any;
+  games: any;
   submitted = false;
 
   constructor(private PostService: PostService,
+    private GameService: GameService,
     private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.GameService.getAll().subscribe((response) => {
+      this.games = response;
+    });
+  }
 
   async savePost(): Promise<void> {
-    const currentdate = new Date();
     const data = {
       title: this.post.title,
       content: this.post.content,
       likes: 0,
       dislikes: 0,
       publicationdate: new Date(),
+      associatedgame: this.selected,
     };
 
     await this.PostService.create(data).subscribe(
@@ -50,14 +59,4 @@ export class PostCreateComponent implements OnInit {
     this.router.navigate(['/postlist']);
   }
 
-  newPost(): void {
-    this.submitted = false;
-    this.post = {
-      title: '',
-      content: '',
-      likes: 0,
-      dislikes: 0,
-      publicationdate: new Date(),
-    };
-  }
 }

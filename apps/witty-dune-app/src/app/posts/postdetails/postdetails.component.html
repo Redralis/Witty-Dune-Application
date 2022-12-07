@@ -2,26 +2,37 @@
   <div *ngIf="currentPost" class="edit-form">
     <div class="content">
       <div class="card post-card">
-        <!-- Title -->
-        <p *ngIf="isEditing">
-          <input
-            type="text"
-            class="form-control"
-            id="title"
-            [(ngModel)]="currentPost.title"
-            name="title"
-          />
-        </p>
-        <h4 *ngIf="!isEditing">{{ currentPost.title }}</h4>
-        <!-- End of title -->
+        <div class="row">
+          <div class="col-11 title-date-col">
+            <!-- Title -->
+            <p *ngIf="isEditing">
+              <label for="title">Title:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                [(ngModel)]="currentPost.title"
+                name="title"
+              />
+            </p>
+            <h4 *ngIf="!isEditing">{{ currentPost.title }}</h4>
+            <!-- End of title -->
 
-        <!-- Publication date -->
-        <p class="text-muted">Posted on {{ currentPost.publicationdate.substring(0, 10) }}</p>
-        <!-- End of publication date-->
+            <!-- Publication date -->
+            <p class="text-muted">
+              Posted on {{ currentPost.publicationdate.substring(0, 10) }}
+            </p>
+            <!-- End of publication date-->
+          </div>
+          <div class="col-1 image-col">
+            <img [src]="currentPost.associatedgame[0].logo">
+          </div>
+        </div>
 
         <!-- Content -->
         <p *ngIf="!isEditing">{{ currentPost.content }}</p>
         <p *ngIf="isEditing">
+          <label for="description">Content:</label>
           <textarea
             type="text"
             class="form-control"
@@ -32,6 +43,19 @@
           ></textarea>
         </p>
         <!-- End of content -->
+
+        <!-- Selector for associated game -->
+        <div *ngIf="isEditing">
+          <label for="associatedgame">Associated game:</label>
+          <p>
+            <select [(ngModel)]="selected">
+              <option *ngFor="let game of games" [ngValue]="game">
+                {{ game.name }}
+              </option>
+            </select>
+          </p>
+        </div>
+        <!-- End of selector for associated game -->
 
         <!-- Likes and dislikes -->
         <p class="text-muted">
@@ -44,10 +68,15 @@
           class="list-group-flush row-12"
           style="margin-top: 10px; padding-left: 0px"
         >
-          <li *ngFor="let comment of currentPost.comments" class="list-group-item">
+          <li
+            *ngFor="let comment of currentPost.comments"
+            class="list-group-item"
+          >
             <div class="col">
               <!-- Comment publication date -->
-              <p class="text-muted">Posted on {{ comment[0].publicationdate.substring(0, 10) }}</p>
+              <p class="text-muted">
+                Posted on {{ comment[0].publicationdate.substring(0, 10) }}
+              </p>
               <!-- End of comment publication date -->
 
               <!-- Comment content -->
@@ -65,7 +94,8 @@
 
               <!-- Comment likes and dislikes -->
               <p class="text-muted">
-                {{ comment[0].likes }} likes - {{ comment[0].dislikes }} dislikes
+                {{ comment[0].likes }} likes -
+                {{ comment[0].dislikes }} dislikes
               </p>
               <!-- End of comment likes and dislikes -->
 

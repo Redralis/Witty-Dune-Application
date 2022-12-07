@@ -27,6 +27,15 @@
       ></textarea>
     </div>
     <!-- End of input for content of new post -->
+
+    <!-- Selector for associated game -->
+    <label for="associatedgame">Associated game:</label>
+    <select  [(ngModel)]="selected">
+      <option *ngFor="let game of games" [ngValue]="game">
+           {{game.name}}
+       </option>
+    </select>
+    <!-- End of selector for associated game -->
   </div>
 
   <!-- Buttons to cancel or submit a new post -->
@@ -38,10 +47,7 @@
     >
       Back
     </button>
-    <button
-      (click)="savePost()"
-      class="btn btn-success bottom-button"
-    >
+    <button (click)="savePost()" class="btn btn-success bottom-button">
       Submit
     </button>
     <!-- End of buttons to cancel or submit a new post -->

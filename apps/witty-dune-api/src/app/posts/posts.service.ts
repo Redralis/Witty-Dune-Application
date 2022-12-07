@@ -17,14 +17,14 @@ export class PostsService {
   @ApiOkResponse({ description: 'Posts retrieved successfully.' })
   public findAll(): Promise<Post[]> {
     this.logger.log('Returning all posts.');
-    return this.postModel.find().exec();
+    return this.postModel.find().populate("associatedgame").exec();
   }
 
   @ApiOkResponse({ description: 'Post retrieved successfully.' })
   @ApiNotFoundResponse({ description: 'Post not found.' })
   public findOne(id: string): Promise<Post> {
     this.logger.log(`Attempting to return post with id: ${id}.`);
-    const post = this.postModel.findById(id).exec();
+    const post = this.postModel.findById(id).populate("associatedgame").exec();
 
     if (!post) {
       this.logger.log(`No post with id: ${id} found.`);

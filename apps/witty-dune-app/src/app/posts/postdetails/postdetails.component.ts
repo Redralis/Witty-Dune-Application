@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.ts.service';
+import { GameService } from '../../services/game.ts.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -12,6 +13,10 @@ import { ActivatedRoute, Router } from '@angular/router';
     'button { background-color: #0E246D !important; margin-right: 16px; width: 30%; }',
     '.bottom-button { margin-top: 15px; }',
     '.text-muted { font-size: 14px; }',
+    'img { width: 70px; height: 70px; }',
+    '.image-col { padding: 0px; }',
+    '.title-date-col { padding-right: 0px; }',
+    'label { font-weight: bold; }',
   ],
 })
 export class PostDetailsComponent implements OnInit {
@@ -19,6 +24,8 @@ export class PostDetailsComponent implements OnInit {
   isCreatingComment: boolean = false;
   currentPost: any;
   result: any;
+  selected: any;
+  games: any;
   newcomment = {
     content: '',
     likes: 0,
@@ -29,6 +36,7 @@ export class PostDetailsComponent implements OnInit {
 
   constructor(
     private PostService: PostService,
+    private GameService: GameService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -37,6 +45,9 @@ export class PostDetailsComponent implements OnInit {
     this.message = '';
     if (this.currentPost == null)
       this.getPost(this.route.snapshot.paramMap.get('id'));
+    this.GameService.getAll().subscribe((response) => {
+      this.games = response;
+    });
   }
 
   async getPost(id: any): Promise<void> {
@@ -52,6 +63,7 @@ export class PostDetailsComponent implements OnInit {
   }
 
   async updatePost(): Promise<void> {
+    this.currentPost.associatedgame = this.selected;
     await this.PostService.update(
       this.currentPost._id,
       this.currentPost
