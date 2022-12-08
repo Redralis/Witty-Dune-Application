@@ -52,6 +52,26 @@ import { Component, OnInit } from '@angular/core';
               >
             </li>
           </ul>
+          <ul class="navbar-nav flex-grow-2">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/login"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Login</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/register"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Register</a
+              >
+            </li>
+          </ul>
         </div>
       </div>
     </nav>`,
