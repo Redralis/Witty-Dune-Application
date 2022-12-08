@@ -8,7 +8,9 @@ import { UserService } from '../services/user.ts.service';
     <div class="wrapper">
       <div class="card post-card">
         <h4>Register account</h4>
-        <p></p>
+        <div *ngIf="hasError" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
         <!-- Input for username -->
         <div class="form-group">
           <label for="username">Username</label>
@@ -53,7 +55,7 @@ import { UserService } from '../services/user.ts.service';
         </div>
         <!-- End of checkbox to make user agree to terms and conditions -->
       </div>
-      <button (click)="register()" class="btn btn-success bottom-button">
+      <button (click)="validate()" class="btn btn-success bottom-button">
         Register
       </button>
     </div>
@@ -64,6 +66,7 @@ import { UserService } from '../services/user.ts.service';
     '.wrapper { margin-bottom: 25px; margin-right: 10px; margin-top: 10px; margin-left: -15px; }',
     '.bottom-button { margin-top: 15px; }',
     '.bottom-col { padding: 0px }',
+    'h4 { margin-bottom: 20px }',
   ],
 })
 export class RegisterComponent implements OnInit {
@@ -73,29 +76,40 @@ export class RegisterComponent implements OnInit {
   };
   isAuthorized = false;
   agreed = false;
+  errorMessage = '';
+  hasError = false;
 
   constructor(private router: Router, private UserService: UserService) {}
 
   ngOnInit(): void {}
 
   async register(): Promise<void> {
-    if (this.agreed) {
-      const data = {
-        username: this.user.username,
-        password: this.user.password,
-      };
+    const data = {
+      username: this.user.username,
+      password: this.user.password,
+    };
 
-      await this.UserService.register(data).subscribe(
-        (response) => {
-          console.log(response);
-          this.router.navigate(['/login']);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    await this.UserService.register(data).subscribe(
+      (response) => {
+        console.log(response);
+        this.router.navigate(['/login']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  validate(): void {
+    if (!this.agreed) {
+      this.hasError = true;
+      this.errorMessage =
+        'Please agree to the terms & conditions to register an account.';
+    } else if (this.user.username == '' || this.user.password == '') {
+      this.hasError = true;
+      this.errorMessage = 'Please make sure every field has a value.';
     } else {
-      console.log("SUNKBHJNAJKLS")
+      this.register();
     }
   }
 }

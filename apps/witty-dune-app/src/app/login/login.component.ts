@@ -7,7 +7,10 @@ import { UserService } from '../services/user.ts.service';
   template: `
     <div class="wrapper">
       <div class="card post-card">
-        <h4>Log in</h4><p></p>
+        <h4>Log in</h4>
+        <div *ngIf="hasError" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
         <!-- Input for username -->
         <div class="form-group">
           <label for="username">Username</label>
@@ -36,7 +39,7 @@ import { UserService } from '../services/user.ts.service';
         </div>
         <!-- End of input for password -->
       </div>
-      <button (click)="login()" class="btn btn-success bottom-button">
+      <button (click)="validate()" class="btn btn-success bottom-button">
         Log in
       </button>
     </div>
@@ -47,6 +50,7 @@ import { UserService } from '../services/user.ts.service';
     '.wrapper { margin-bottom: 25px; margin-right: 10px; margin-top: 10px; margin-left: -15px; }',
     '.bottom-button { margin-top: 15px; }',
     '.bottom-col { padding: 0px }',
+    'h4 { margin-bottom: 20px }',
   ],
 })
 export class LoginComponent implements OnInit {
@@ -55,6 +59,8 @@ export class LoginComponent implements OnInit {
     password: '',
   };
   isAuthorized = false;
+  errorMessage = '';
+  hasError = false;
 
   constructor(private router: Router, private UserService: UserService) {}
 
@@ -73,7 +79,18 @@ export class LoginComponent implements OnInit {
       },
       (error) => {
         console.log(error);
+        this.hasError = true;
+        this.errorMessage = 'Username or password incorrect.'
       }
     );
+  }
+
+  validate(): void {
+    if (this.user.username == '' || this.user.password == '') {
+      this.hasError = true;
+      this.errorMessage = 'Please make sure every field has a value.';
+    } else {
+      this.login();
+    }
   }
 }
