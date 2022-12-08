@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FuncsService } from '../services/funcs.services';
 
 @Component({
   selector: 'witty-dune-navbar',
@@ -52,26 +53,28 @@ import { Component, OnInit } from '@angular/core';
               >
             </li>
           </ul>
-          <ul class="navbar-nav flex-grow-2">
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                routerLink="/login"
-                routerLinkActive="active"
-                ariaCurrentWhenActive="page"
-                >Login</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                routerLink="/register"
-                routerLinkActive="active"
-                ariaCurrentWhenActive="page"
-                >Register</a
-              >
-            </li>
-          </ul>
+          <div *ngIf="isExpired" class="">
+            <ul class="navbar-nav flex-grow-2">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  routerLink="/login"
+                  routerLinkActive="active"
+                  ariaCurrentWhenActive="page"
+                  >Login</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  routerLink="/register"
+                  routerLinkActive="active"
+                  ariaCurrentWhenActive="page"
+                  >Register</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </nav>`,
@@ -81,7 +84,11 @@ import { Component, OnInit } from '@angular/core';
   ],
 })
 export class NavbarComponent implements OnInit {
-  constructor() {}
+  isExpired = false;
 
-  ngOnInit(): void {}
+  constructor(private funcs: FuncsService) {}
+
+  ngOnInit(): void {
+    this.isExpired = this.funcs.isLoggedIn();
+  }
 }

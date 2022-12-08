@@ -61,6 +61,7 @@ export class LoginComponent implements OnInit {
   isAuthorized = false;
   errorMessage = '';
   hasError = false;
+  res: any;
 
   constructor(private router: Router, private UserService: UserService) {}
 
@@ -75,12 +76,16 @@ export class LoginComponent implements OnInit {
     await this.UserService.login(data).subscribe(
       (response) => {
         console.log(response);
-        this.router.navigate(['/postlist']);
+        this.res = response;
+        localStorage.setItem('jwt', this.res.access_token);
+        this.router.navigate(['/postlist']).then(() => {
+          this.refresh();
+        });
       },
       (error) => {
         console.log(error);
         this.hasError = true;
-        this.errorMessage = 'Username or password incorrect.'
+        this.errorMessage = 'Username or password incorrect.';
       }
     );
   }
@@ -92,5 +97,9 @@ export class LoginComponent implements OnInit {
     } else {
       this.login();
     }
+  }
+
+  refresh(): void {
+    window.location.reload();
   }
 }
