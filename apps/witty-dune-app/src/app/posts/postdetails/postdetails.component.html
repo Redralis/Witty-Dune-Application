@@ -201,7 +201,7 @@
   <!-- Buttons to start & cancel edit mode -->
   <button
     class="btn btn-primary bottom-button"
-    *ngIf="!isEditing && isLoggedIn"
+    *ngIf="!isEditing && isLoggedIn && isPostedByLoggedInUser"
     (click)="isEditing = true"
   >
     Edit

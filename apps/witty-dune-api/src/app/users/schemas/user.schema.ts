@@ -23,6 +23,9 @@ export class User {
   @ApiProperty({ type: String })
   email: string;
   @Prop()
+  @ApiProperty({ type: Boolean })
+  iseighteen: boolean;
+  @Prop()
   @ApiProperty({ type: String })
   profilepic: string;
   @ApiProperty({ type: String, format: 'date-time' })

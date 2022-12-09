@@ -31,6 +31,7 @@ export class PostDetailsComponent implements OnInit {
   selected: any;
   isLoggedIn: boolean = false;
   games: any;
+  isPostedByLoggedInUser: boolean = false;
   newcomment = {
     postedBy: localStorage.getItem('username'),
     content: '',
@@ -66,6 +67,7 @@ export class PostDetailsComponent implements OnInit {
     await this.PostService.get(id).subscribe(
       (data) => {
         this.currentPost = data;
+        if (localStorage.getItem('username') == this.currentPost.postedBy) this.isPostedByLoggedInUser = true;
         console.log(this.currentPost);
       },
       (error) => {
