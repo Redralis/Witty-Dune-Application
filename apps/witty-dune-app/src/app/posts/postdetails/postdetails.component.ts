@@ -29,6 +29,7 @@ export class PostDetailsComponent implements OnInit {
   isLoggedIn: boolean = false;
   games: any;
   newcomment = {
+    postedBy: localStorage.getItem('username'),
     content: '',
     likes: 0,
     dislikes: 0,

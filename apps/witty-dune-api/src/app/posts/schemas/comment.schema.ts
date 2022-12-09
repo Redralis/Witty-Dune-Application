@@ -7,6 +7,9 @@ export type CommentDocument = HydratedDocument<Comment>;
 export class Comment {
   @Prop()
   id: string;
+  @ApiProperty({ type: String })
+  @Prop()
+  postedBy: string;
   @Prop()
   @ApiProperty({ type: String })
   content: string;

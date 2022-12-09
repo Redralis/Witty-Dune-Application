@@ -7,11 +7,13 @@ import {
   Body,
   Delete,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 
 @Controller()
+@ApiTags('Auth')
 export class AppController {
   constructor(private authService: AuthService) {}
 
