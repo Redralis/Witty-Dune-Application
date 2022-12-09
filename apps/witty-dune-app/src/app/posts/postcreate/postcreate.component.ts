@@ -17,6 +17,7 @@ import { FuncsService } from '../../services/funcs.services';
 })
 export class PostCreateComponent implements OnInit {
   post = {
+    postedBy: '',
     title: '',
     content: '',
     likes: 0,
@@ -44,6 +45,7 @@ export class PostCreateComponent implements OnInit {
 
   async savePost(): Promise<void> {
     const data = {
+      postedBy: localStorage.getItem('username'),
       title: this.post.title,
       content: this.post.content,
       likes: 0,

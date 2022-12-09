@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.ts.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'witty-dune-register',
@@ -39,7 +40,7 @@ import { UserService } from '../services/user.ts.service';
         </div>
         <!-- End of input for password -->
         <!-- Checkbox to make user agree to terms and conditions -->
-        <div class="form-check">
+        <div class="form-check form-group">
           <input
             class="form-check-input"
             type="checkbox"
@@ -55,6 +56,9 @@ import { UserService } from '../services/user.ts.service';
         </div>
         <!-- End of checkbox to make user agree to terms and conditions -->
       </div>
+      <button (click)="backClicked()" class="btn btn-success bottom-button">
+        Back
+      </button>
       <button (click)="validate()" class="btn btn-success bottom-button">
         Register
       </button>
@@ -79,7 +83,11 @@ export class RegisterComponent implements OnInit {
   errorMessage = '';
   hasError = false;
 
-  constructor(private router: Router, private UserService: UserService) {}
+  constructor(
+    private router: Router,
+    private UserService: UserService,
+    private _location: Location
+  ) {}
 
   ngOnInit(): void {}
 
@@ -111,5 +119,9 @@ export class RegisterComponent implements OnInit {
     } else {
       this.register();
     }
+  }
+
+  backClicked() {
+    this._location.back();
   }
 }

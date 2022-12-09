@@ -39,6 +39,10 @@ import { Location } from '@angular/common';
           />
         </div>
         <!-- End of input for password -->
+        <p>
+          Don't have an account? Create one
+          <a routerLink="/register" routerLinkActive="active">here</a>.
+        </p>
       </div>
       <button (click)="backClicked()" class="btn btn-success bottom-button">
         Back

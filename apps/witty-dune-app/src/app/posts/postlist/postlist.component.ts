@@ -17,7 +17,7 @@ import { PostService } from '../../services/post.ts.service';
             />
           </h4>
           <p class="text-muted">
-            Posted on {{ post.publicationdate.substring(0, 10) }}
+            Posted on {{ post.publicationdate.substring(0, 10) }} by {{ post.postedBy }}
           </p>
           <p>{{ post.content.substring(0, 40) }}...</p>
           <p class="text-muted">

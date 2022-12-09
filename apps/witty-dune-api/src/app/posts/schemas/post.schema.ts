@@ -13,6 +13,9 @@ export class Post {
   id: string;
   @ApiProperty({ type: String })
   @Prop()
+  postedBy: string;
+  @ApiProperty({ type: String })
+  @Prop()
   title: string;
   @ApiProperty({ type: String })
   @Prop()
