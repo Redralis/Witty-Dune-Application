@@ -35,6 +35,12 @@ export class Post {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Game" }] })
   @ApiProperty({ type: Game })
   associatedgame: Game;
+  @Prop({ type: [{ type: mongoose.Schema.Types.Array }] })
+  @ApiProperty({ type: [String] })
+  likedBy: string;
+  @Prop({ type: [{ type: mongoose.Schema.Types.Array }] })
+  @ApiProperty({ type: [String] })
+  dislikedBy: string;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

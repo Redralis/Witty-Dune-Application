@@ -3,118 +3,144 @@
     <div class="content">
       <div class="card post-card">
         <div class="row">
-          <div class="col-11 title-date-col">
-            <!-- Title -->
-            <p *ngIf="isEditing">
-              <label for="title">Title:</label>
-              <input
-                type="text"
-                class="form-control"
-                id="title"
-                [(ngModel)]="currentPost.title"
-                name="title"
-              />
-            </p>
-            <h4 *ngIf="!isEditing">{{ currentPost.title }}</h4>
-            <!-- End of title -->
-
-            <!-- Publication date -->
-            <p class="text-muted">
-              Posted on {{ currentPost.publicationdate.substring(0, 10) }} by {{ currentPost.postedBy }}
-            </p>
-            <!-- End of publication date-->
-          </div>
-          <div class="col-1 image-col">
-            <img
-              [src]="currentPost.associatedgame[0].logo"
-              routerLink="/gamelist/{{ currentPost.associatedgame[0]._id }}"
-            />
-          </div>
-        </div>
-
-        <!-- Content -->
-        <p *ngIf="!isEditing">{{ currentPost.content }}</p>
-        <p *ngIf="isEditing">
-          <label for="description">Content:</label>
-          <textarea
-            type="text"
-            class="form-control"
-            id="description"
-            [(ngModel)]="currentPost.content"
-            name="description"
-            style="height: 100px"
-          ></textarea>
-        </p>
-        <!-- End of content -->
-
-        <!-- Selector for associated game -->
-        <div *ngIf="isEditing">
-          <label for="associatedgame">Associated game:</label>
-          <p>
-            <select [(ngModel)]="selected">
-              <option *ngFor="let game of games" [ngValue]="game">
-                {{ game.name }}
-              </option>
-            </select>
-          </p>
-        </div>
-        <!-- End of selector for associated game -->
-
-        <!-- Likes and dislikes -->
-        <p class="text-muted">
-          {{ currentPost.likes }} likes - {{ currentPost.dislikes }} dislikes
-        </p>
-        <!-- End of likes and dislikes -->
-
-        <!-- Comments -->
-        <ul
-          class="list-group-flush row-12"
-          style="margin-top: 10px; padding-left: 0px"
-        >
-          <li
-            *ngFor="let comment of currentPost.comments"
-            class="list-group-item"
-          >
-            <div class="col">
-              <!-- Comment publication date -->
-              <p class="text-muted">
-                Posted on {{ comment[0].publicationdate.substring(0, 10) }} by {{ comment[0].postedBy }}
-              </p>
-              <!-- End of comment publication date -->
-
-              <!-- Comment content -->
-              <p *ngIf="!isEditing">{{ comment[0].content }}</p>
-              <p *ngIf="isEditing">
-                <textarea
-                  type="text"
-                  class="form-control"
-                  id="description"
-                  [(ngModel)]="comment[0].content"
-                  name="description"
-                ></textarea>
-              </p>
-              <!-- End of comment content -->
-
-              <!-- Comment likes and dislikes -->
-              <p class="text-muted">
-                {{ comment[0].likes }} likes -
-                {{ comment[0].dislikes }} dislikes
-              </p>
-              <!-- End of comment likes and dislikes -->
-
-              <!-- Delete comment button -->
-              <button
-                *ngIf="isEditing"
-                class="btn btn-primary mr-2"
-                (click)="deleteComment(comment.indexOf())"
-              >
-                Delete
-              </button>
-              <!-- End of delete comment button -->
+          <div class="col-1 like-dislike-col">
+            <div *ngIf="liked" class="icon">
+              <img class="text-center" src="assets/images/upvote-filled.png" />
             </div>
-          </li>
-        </ul>
-        <!-- End of comments -->
+            <div *ngIf="!liked" class="icon">
+              <img src="assets/images/upvote.png" />
+            </div>
+            <p class="karma text-center">
+              {{ currentPost.likes - currentPost.dislikes }}
+            </p>
+            <div *ngIf="liked" class="icon">
+              <img src="assets/images/downvote-filled.png" />
+            </div>
+            <div *ngIf="!liked" class="icon">
+              <img src="assets/images/downvote.png" />
+            </div>
+          </div>
+          <div class="col-10">
+            <div class="row">
+              <div class="col-11">
+                <div class="col-10 title-date-col">
+                  <!-- Title -->
+                  <p *ngIf="isEditing">
+                    <label for="title">Title:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="title"
+                      [(ngModel)]="currentPost.title"
+                      name="title"
+                    />
+                  </p>
+                  <h4 *ngIf="!isEditing">{{ currentPost.title }}</h4>
+                  <!-- End of title -->
+
+                  <!-- Publication date -->
+                  <p class="text-muted">
+                    Posted on
+                    {{ currentPost.publicationdate.substring(0, 10) }} by
+                    {{ currentPost.postedBy }}
+                  </p>
+                  <!-- End of publication date-->
+                </div>
+                <!-- Content -->
+                <p *ngIf="!isEditing">{{ currentPost.content }}</p>
+                <p *ngIf="isEditing">
+                  <label for="description">Content:</label>
+                  <textarea
+                    type="text"
+                    class="form-control"
+                    id="description"
+                    [(ngModel)]="currentPost.content"
+                    name="description"
+                    style="height: 100px"
+                  ></textarea>
+                </p>
+                <!-- End of content -->
+
+                <!-- Selector for associated game -->
+                <div *ngIf="isEditing">
+                  <label for="associatedgame">Associated game:</label>
+                  <p>
+                    <select [(ngModel)]="selected">
+                      <option *ngFor="let game of games" [ngValue]="game">
+                        {{ game.name }}
+                      </option>
+                    </select>
+                  </p>
+                </div>
+                <!-- End of selector for associated game -->
+
+                <!-- Likes and dislikes -->
+                <p class="text-muted">
+                  {{ currentPost.likes }} likes -
+                  {{ currentPost.dislikes }} dislikes
+                </p>
+                <!-- End of likes and dislikes -->
+              </div>
+              <div class="col-1">
+                <img
+                  [src]="currentPost.associatedgame[0].logo"
+                  routerLink="/gamelist/{{ currentPost.associatedgame[0]._id }}"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments -->
+          <ul
+            class="list-group-flush row-12 col-12"
+            style="margin-top: 10px; padding-left: 0px"
+          >
+            <li
+              *ngFor="let comment of currentPost.comments"
+              class="list-group-item"
+            >
+              <div class="col">
+                <!-- Comment publication date -->
+                <p class="text-muted">
+                  Posted on {{ comment[0].publicationdate.substring(0, 10) }} by
+                  {{ comment[0].postedBy }}
+                </p>
+                <!-- End of comment publication date -->
+
+                <!-- Comment content -->
+                <p *ngIf="!isEditing">{{ comment[0].content }}</p>
+                <p *ngIf="isEditing">
+                  <textarea
+                    type="text"
+                    class="form-control"
+                    id="description"
+                    [(ngModel)]="comment[0].content"
+                    name="description"
+                  ></textarea>
+                </p>
+                <!-- End of comment content -->
+
+                <!-- Comment likes and dislikes -->
+                <p class="text-muted">
+                  {{ comment[0].likes }} likes -
+                  {{ comment[0].dislikes }} dislikes
+                </p>
+                <!-- End of comment likes and dislikes -->
+
+                <!-- Delete comment button -->
+                <button
+                  *ngIf="isEditing"
+                  class="btn btn-primary mr-2"
+                  (click)="deleteComment(comment.indexOf())"
+                >
+                  Delete
+                </button>
+                <!-- End of delete comment button -->
+              </div>
+            </li>
+          </ul>
+          <!-- End of comments -->
+        </div>
 
         <!-- Button to start creating comment mode -->
         <button
@@ -136,86 +162,86 @@
             name="description"
           ></textarea>
         </p>
-
-        <!-- Buttons to cancel creating a comment or create comment -->
-        <div class="col" style="padding-left: 0">
-          <button
-            *ngIf="isCreatingComment"
-            class="btn btn-primary"
-            (click)="isCreatingComment = false"
-          >
-            Cancel
-          </button>
-
-          <button
-            *ngIf="isCreatingComment"
-            class="btn btn-primary"
-            (click)="createComment()"
-          >
-            Create
-          </button>
-        </div>
-        <!-- End of button to cancel creating a comment or create comment -->
-
-        <!-- End of form for creating a comment -->
       </div>
 
-      <!-- Button to return to posts list -->
-      <button
-        *ngIf="!isEditing"
-        class="btn btn-primary bottom-button"
-        routerLink="/postlist"
-        routerLinkActive="active"
-      >
-        Back
-      </button>
-      <!-- End of button to return to posts list -->
+      <!-- Buttons to cancel creating a comment or create comment -->
+      <div class="col" style="padding-left: 0">
+        <button
+          *ngIf="isCreatingComment"
+          class="btn btn-primary"
+          (click)="isCreatingComment = false"
+        >
+          Cancel
+        </button>
 
-      <!-- Buttons to start & cancel edit mode -->
-      <button
-        class="btn btn-primary bottom-button"
-        *ngIf="!isEditing && isLoggedIn"
-        (click)="isEditing = true"
-      >
-        Edit
-      </button>
+        <button
+          *ngIf="isCreatingComment"
+          class="btn btn-primary"
+          (click)="createComment()"
+        >
+          Create
+        </button>
+      </div>
+      <!-- End of button to cancel creating a comment or create comment -->
 
-      <button
-        *ngIf="isEditing"
-        class="btn btn-primary bottom-button"
-        (click)="isEditing = false"
-      >
-        Cancel
-      </button>
-      <!-- End of buttons to start & cancel edit mode -->
-
-      <!-- Button to update post -->
-      <button
-        *ngIf="isEditing"
-        type="submit"
-        class="btn btn-primary bottom-button"
-        (click)="updatePost()"
-      >
-        Update
-      </button>
-      <!-- End of button to update post -->
-
-      <!-- Button to delete post -->
-      <button
-        *ngIf="isEditing"
-        class="btn btn-primary mr-2 bottom-button"
-        (click)="deletePost()"
-      >
-        Delete
-      </button>
-      <!-- End of button to delete post -->
+      <!-- End of form for creating a comment -->
     </div>
-
-    <!-- Error if post does not exist -->
-    <div *ngIf="!currentPost">
-      <br />
-      <p>Cannot access this post...</p>
-    </div>
-    <!-- End of error if post does not exist. -->
   </div>
+
+  <!-- Button to return to posts list -->
+  <button
+    *ngIf="!isEditing"
+    class="btn btn-primary bottom-button"
+    routerLink="/postlist"
+    routerLinkActive="active"
+  >
+    Back
+  </button>
+  <!-- End of button to return to posts list -->
+
+  <!-- Buttons to start & cancel edit mode -->
+  <button
+    class="btn btn-primary bottom-button"
+    *ngIf="!isEditing && isLoggedIn"
+    (click)="isEditing = true"
+  >
+    Edit
+  </button>
+
+  <button
+    *ngIf="isEditing"
+    class="btn btn-primary bottom-button"
+    (click)="isEditing = false"
+  >
+    Cancel
+  </button>
+  <!-- End of buttons to start & cancel edit mode -->
+
+  <!-- Button to update post -->
+  <button
+    *ngIf="isEditing"
+    type="submit"
+    class="btn btn-primary bottom-button"
+    (click)="updatePost()"
+  >
+    Update
+  </button>
+  <!-- End of button to update post -->
+
+  <!-- Button to delete post -->
+  <button
+    *ngIf="isEditing"
+    class="btn btn-primary mr-2 bottom-button"
+    (click)="deletePost()"
+  >
+    Delete
+  </button>
+  <!-- End of button to delete post -->
 </div>
+
+<!-- Error if post does not exist -->
+<div *ngIf="!currentPost">
+  <br />
+  <p>Cannot access this post...</p>
+</div>
+<!-- End of error if post does not exist. -->

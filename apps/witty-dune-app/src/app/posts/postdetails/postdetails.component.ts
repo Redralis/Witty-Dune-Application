@@ -14,10 +14,13 @@ import { FuncsService } from '../../services/funcs.services';
     'button { background-color: #0E246D !important; margin-right: 16px; width: 30%; }',
     '.bottom-button { margin-top: 15px; }',
     '.text-muted { font-size: 14px; }',
-    'img { width: 70px; height: 70px; }',
-    '.image-col { padding: 0px; }',
-    '.title-date-col { padding-right: 0px; }',
+    'img { width: 80px; height: 80px; }',
+    '.image-col { padding: 0px; margin-left: 10px; }',
+    '.title-date-col { padding-right: 0px; padding-left: 0px; }',
     'label { font-weight: bold; }',
+    '.icon img { width: 100%; height: 100%; justify-content: center; cursor: pointer; }',
+    '.karma { margin-bottom: 0px; }',
+    '.like-dislike-col { padding-left: 11px; }',
   ],
 })
 export class PostDetailsComponent implements OnInit {
@@ -35,6 +38,8 @@ export class PostDetailsComponent implements OnInit {
     dislikes: 0,
     publicationdate: new Date(),
   };
+  liked: boolean = false;
+  disliked: boolean = false;
   message = '';
 
   constructor(
