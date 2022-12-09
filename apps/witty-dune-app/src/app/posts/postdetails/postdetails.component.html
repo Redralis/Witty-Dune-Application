@@ -162,27 +162,26 @@
             name="description"
           ></textarea>
         </p>
-      </div>
+        <!-- Buttons to cancel creating a comment or create comment -->
+        <div class="col" style="padding-left: 0">
+          <button
+            *ngIf="isCreatingComment"
+            class="btn btn-primary"
+            (click)="isCreatingComment = false"
+          >
+            Cancel
+          </button>
 
-      <!-- Buttons to cancel creating a comment or create comment -->
-      <div class="col" style="padding-left: 0">
-        <button
-          *ngIf="isCreatingComment"
-          class="btn btn-primary"
-          (click)="isCreatingComment = false"
-        >
-          Cancel
-        </button>
-
-        <button
-          *ngIf="isCreatingComment"
-          class="btn btn-primary"
-          (click)="createComment()"
-        >
-          Create
-        </button>
+          <button
+            *ngIf="isCreatingComment"
+            class="btn btn-primary"
+            (click)="createComment()"
+          >
+            Create
+          </button>
+        </div>
+        <!-- End of button to cancel creating a comment or create comment -->
       </div>
-      <!-- End of button to cancel creating a comment or create comment -->
 
       <!-- End of form for creating a comment -->
     </div>

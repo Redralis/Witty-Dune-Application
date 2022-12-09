@@ -86,6 +86,16 @@ import { FuncsService } from '../services/funcs.services';
                   >Logout</a
                 >
               </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  routerLink="/profile"
+                  routerLinkActive="active"
+                  ariaCurrentWhenActive="page"
+                  style="cursor: pointer;"
+                  >{{ this.username }}</a
+                >
+              </li>
             </ul>
           </div>
         </div>
@@ -98,6 +108,7 @@ import { FuncsService } from '../services/funcs.services';
 })
 export class NavbarComponent implements OnInit {
   isExpired = false;
+  username = localStorage.getItem('username')
 
   constructor(private funcs: FuncsService) {}
 

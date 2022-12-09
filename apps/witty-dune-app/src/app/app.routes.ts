@@ -8,6 +8,7 @@ import { GamedetailsComponent } from './games/gamedetails/gamedetails.component'
 import { GamecreateComponent } from './games/gamecreate/gamecreate.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const appRoutes: Route[] = [
   { path: '', redirectTo: 'postlist', pathMatch: 'full' },
@@ -20,4 +21,5 @@ export const appRoutes: Route[] = [
   { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'profile', component: ProfileComponent },
 ];
