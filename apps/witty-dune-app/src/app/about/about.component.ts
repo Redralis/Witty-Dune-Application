@@ -15,7 +15,7 @@ import { Component, OnInit } from '@angular/core';
 export class AboutComponent implements OnInit {
   constructor() {}
 
-  pdfSrc = "assets/pdf/Casus-Form-Project.pdf";
+  pdfSrc = "assets/pdf/Casus-Witty-Dune.pdf";
 
   ngOnInit(): void {}
 }
