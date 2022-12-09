@@ -15,14 +15,14 @@ export class GamesService {
   constructor(@InjectModel(Game.name) private gameModel: Model<GameDocument>) {}
 
   @ApiOkResponse({ description: 'Games retrieved successfully.' })
-  public findAll(): Promise<Game[]> {
+  public findAll(): Promise<Game[]> | any {
     this.logger.log('Returning all games.');
     return this.gameModel.find().sort({ name : 1}).exec();
   }
 
   @ApiOkResponse({ description: 'Game retrieved successfully.' })
   @ApiNotFoundResponse({ description: 'Game not found.' })
-  public findOne(id: string): Promise<Game> {
+  public findOne(id: string): Promise<Game> | any {
     this.logger.log(`Attempting to return game with id: ${id}.`);
     const game = this.gameModel.findById(id).exec();
 
