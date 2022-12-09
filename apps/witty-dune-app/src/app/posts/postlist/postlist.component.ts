@@ -73,6 +73,8 @@ export class PostlistComponent implements OnInit {
   constructor(private service: PostService) {}
 
   ngOnInit(): void {
+    localStorage.setItem('sortby', '')
+    localStorage.setItem('game', '')
     this.service.getAll().subscribe((response) => {
       this.result = response;
       if (localStorage.getItem('game') != '') {
