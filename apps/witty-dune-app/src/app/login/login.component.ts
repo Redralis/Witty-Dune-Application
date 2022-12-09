@@ -78,6 +78,7 @@ export class LoginComponent implements OnInit {
         console.log(response);
         this.res = response;
         localStorage.setItem('jwt', this.res.access_token);
+        localStorage.setItem('username', this.res.username);
         this.router.navigate(['/postlist']).then(() => {
           this.refresh();
         });

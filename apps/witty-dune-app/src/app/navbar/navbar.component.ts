@@ -75,6 +75,19 @@ import { FuncsService } from '../services/funcs.services';
               </li>
             </ul>
           </div>
+          <div *ngIf="!isExpired" class="">
+            <ul class="navbar-nav flex-grow-2">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  ariaCurrentWhenActive="page"
+                  (click)="logout()"
+                  style="cursor: pointer;"
+                  >Logout</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </nav>`,
@@ -90,5 +103,14 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.isExpired = this.funcs.isLoggedIn();
+  }
+
+  logout(): void {
+    localStorage.setItem('jwt', '');
+    this.refresh();
+  }
+
+  refresh(): void {
+    window.location.reload();
   }
 }
