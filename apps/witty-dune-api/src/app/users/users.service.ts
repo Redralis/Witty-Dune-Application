@@ -34,7 +34,9 @@ export class UsersService {
   @ApiNotFoundResponse({ description: 'User not found.' })
   async profile(username: string): Promise<any | undefined> {
     this.logger.log(`Attempting to return user with username: ${username}.`);
-    var user: any = await this.userModel.findOne({ username: username });
+    var user: any = await this.userModel
+      .findOne({ username: username })
+      .populate('following');
 
     if (!user) {
       this.logger.log(`No user with username: ${username} found.`);
@@ -44,6 +46,13 @@ export class UsersService {
     const newUser = {
       _id: user._id,
       username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      dateofbirth: user.dateofbirth,
+      country: user.country,
+      following: user.following,
+      profilepic: user.profilepic,
       __v: user.__v,
     };
 
@@ -70,13 +79,29 @@ export class UsersService {
     return newUser;
   }
 
+  @ApiOkResponse({ description: 'User updated successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  public async update(id: string, user: User): Promise<User> {
+    this.logger.log(`Attempting to update user with id: ${id}.`);
+    const newUser: User = {
+      ...user,
+    };
+    const res = await this.userModel.findByIdAndUpdate(id, newUser);
+    if (res == null) throw new NotFoundException('User not found.');
+    this.logger.log(`Updating user with id: ${id}.`);
+
+    return newUser;
+  }
+
   @ApiOkResponse({ description: 'User deleted successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
-  public async delete(username: string): Promise<void> {
-    this.logger.log(`Attempting to delete user with username: ${username}.`);
-    const res = await this.userModel.deleteOne({ username: username });
+  public async delete(id: string): Promise<void> {
+    this.logger.log(
+      `Attempting to delete user with id: ${id}.`
+    );
+    const res = await this.userModel.findByIdAndDelete(id);
     if (res == null) throw new NotFoundException('User not found.');
-    this.logger.log(`Deleting user with username: ${username}.`);
-    this.userModel.remove(username);
+    this.logger.log(`Deleting user with id: ${id}.`);
+    this.userModel.remove(id);
   }
 }

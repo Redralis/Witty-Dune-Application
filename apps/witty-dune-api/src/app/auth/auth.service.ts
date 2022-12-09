@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   @ApiCreatedResponse({ description: 'User created successfully.' })
-  public async register(credentials: any): Promise<any> {
+  public async register(credentials: User): Promise<any> {
     const user = await this.usersService.create(credentials);
     return user;
   }
@@ -44,9 +44,15 @@ export class AuthService {
   }
 
   @ApiCreatedResponse({ description: 'User created successfully.' })
-  public async delete(body: any): Promise<any> {
-    const user = await this.usersService.delete(body.username);
-    return user;
+  public async update(user: any): Promise<any> {
+    const result = await this.usersService.update(user._id, user);
+    return result;
+  }
+
+  @ApiCreatedResponse({ description: 'User created successfully.' })
+  public async delete(id: string): Promise<any> {
+    const result = await this.usersService.delete(id);
+    return result;
   }
 
   async login(user: any) {

@@ -2,15 +2,18 @@ import {
   Controller,
   Request,
   Post,
+  Put,
   UseGuards,
   Get,
   Body,
   Delete,
+  Param,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
+import { User } from './users/schemas/user.schema';
 
 @Controller()
 @ApiTags('Auth')
@@ -24,18 +27,25 @@ export class AppController {
   }
 
   @Post('auth/register')
-  async register(@Body() user) {
+  async register(@Body() user: User) {
     return this.authService.register(user);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Body() user) {
-    return this.authService.profile(user.username);
+  @Get('auth/:username')
+  getProfile(@Param('username') username: string) {
+    return this.authService.profile(username);
   }
 
-  @Delete('profile')
-  async delete(@Body() user) {
-    return this.authService.delete(user);
+  @UseGuards(JwtAuthGuard)
+  @Put('auth/')
+  async update(@Body() user: User) {
+    return this.authService.update(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('auth/:id')
+  async delete(@Param('id') id: string) {
+    return this.authService.delete(id);
   }
 }
