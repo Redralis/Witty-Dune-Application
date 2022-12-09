@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../../services/game.ts.service';
 import { Router } from '@angular/router';
+import { FuncsService } from '../../services/funcs.services';
 
 @Component({
   selector: 'witty-dune-gamecreate',
@@ -22,10 +23,17 @@ export class GamecreateComponent implements OnInit {
   };
   submitted = false;
 
-  constructor(private GameService: GameService,
-    private router: Router) {}
+  constructor(
+    private GameService: GameService,
+    private router: Router,
+    private funcs: FuncsService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.funcs.isExpired) {
+      this.router.navigate(['/login']);
+    }
+  }
 
   async saveGame(): Promise<void> {
     const data = {

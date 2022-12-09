@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GameService } from '../../services/game.ts.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { FuncsService } from '../../services/funcs.services';
 
 @Component({
   selector: 'witty-dune-gamedetails',
@@ -15,25 +16,30 @@ import { Location } from '@angular/common';
     '.text-muted { font-size: 14px; }',
     'img { height: 70px; width: 70px; }',
     '.name-and-releasedate { margin-left: 20px; margin-top: 5px; }',
-    '.description { margin-top: 15px; }'
+    '.description { margin-top: 15px; }',
   ],
 })
 export class GamedetailsComponent implements OnInit {
   isEditing: boolean = false;
   currentGame: any;
   result: any;
+  isLoggedIn: boolean = false;
   message = '';
 
   constructor(
     private GameService: GameService,
     private route: ActivatedRoute,
     private router: Router,
-    private _location: Location
+    private _location: Location,
+    private funcs: FuncsService
   ) {}
 
   ngOnInit(): void {
     if (this.currentGame == null)
       this.getGame(this.route.snapshot.paramMap.get('id'));
+    if (!this.funcs.isExpired) {
+      this.isLoggedIn = true;
+    }
   }
 
   async getGame(id: any): Promise<void> {

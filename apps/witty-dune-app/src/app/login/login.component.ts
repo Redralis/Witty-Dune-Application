@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.ts.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'witty-dune-login',
@@ -39,6 +40,9 @@ import { UserService } from '../services/user.ts.service';
         </div>
         <!-- End of input for password -->
       </div>
+      <button (click)="backClicked()" class="btn btn-success bottom-button">
+        Back
+      </button>
       <button (click)="validate()" class="btn btn-success bottom-button">
         Log in
       </button>
@@ -63,7 +67,11 @@ export class LoginComponent implements OnInit {
   hasError = false;
   res: any;
 
-  constructor(private router: Router, private UserService: UserService) {}
+  constructor(
+    private router: Router,
+    private UserService: UserService,
+    private _location: Location
+  ) {}
 
   ngOnInit(): void {}
 
@@ -102,5 +110,9 @@ export class LoginComponent implements OnInit {
 
   refresh(): void {
     window.location.reload();
+  }
+
+  backClicked() {
+    this._location.back();
   }
 }

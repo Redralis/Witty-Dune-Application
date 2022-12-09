@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FuncsService } from '../services/funcs.services';
 
 @Component({
   selector: 'witty-dune-sidemenu',
@@ -12,6 +14,7 @@ import { Component, OnInit } from '@angular/core';
           </p>
           <button
             class="btn btn-primary"
+            (click)="checkIfLoggedIn()"
             routerLink="/postcreate"
             routerLinkActive="active"
           >
@@ -23,11 +26,11 @@ import { Component, OnInit } from '@angular/core';
         <div class="card-body col">
           <h2>Submit a game!</h2>
           <p class="card-text">
-            To submit a new game, press the 'submit game'
-            button.
+            To submit a new game, press the 'submit game' button.
           </p>
           <button
             class="btn btn-primary"
+            (click)="checkIfLoggedIn()"
             routerLink="/gamecreate"
             routerLinkActive="active"
           >
@@ -54,7 +57,13 @@ import { Component, OnInit } from '@angular/core';
   ],
 })
 export class SidemenuComponent implements OnInit {
-  constructor() {}
+  constructor(private funcs: FuncsService, private router: Router) {}
 
   ngOnInit(): void {}
+
+  checkIfLoggedIn() {
+    if (this.funcs.isExpired) {
+      this.router.navigate(['/login']);
+    }
+  }
 }

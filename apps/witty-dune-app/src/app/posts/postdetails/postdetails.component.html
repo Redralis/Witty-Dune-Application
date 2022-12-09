@@ -120,7 +120,7 @@
         <button
           class="btn btn-primary"
           *ngIf="!isCreatingComment && !isEditing"
-          (click)="isCreatingComment = true"
+          (click)="checkIfLoggedIn(); isCreatingComment = true"
         >
           Comment
         </button>
@@ -174,7 +174,7 @@
       <!-- Buttons to start & cancel edit mode -->
       <button
         class="btn btn-primary bottom-button"
-        *ngIf="!isEditing"
+        *ngIf="!isEditing && isLoggedIn"
         (click)="isEditing = true"
       >
         Edit

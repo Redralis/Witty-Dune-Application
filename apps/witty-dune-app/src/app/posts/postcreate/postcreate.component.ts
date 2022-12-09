@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PostService } from '../../services/post.ts.service';
 import { GameService } from '../../services/game.ts.service';
+import { FuncsService } from '../../services/funcs.services';
 
 @Component({
   selector: 'witty-dune-postcreate',
@@ -29,9 +30,13 @@ export class PostCreateComponent implements OnInit {
 
   constructor(private PostService: PostService,
     private GameService: GameService,
-    private router: Router) {}
+    private router: Router,
+    private funcs: FuncsService) {}
 
   ngOnInit(): void {
+    if (this.funcs.isExpired) {
+      this.router.navigate(['/login']);
+    }
     this.GameService.getAll().subscribe((response) => {
       this.games = response;
     });

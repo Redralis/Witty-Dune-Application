@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.ts.service';
 import { GameService } from '../../services/game.ts.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FuncsService } from '../../services/funcs.services';
 
 @Component({
   selector: 'witty-dune-postdetails',
@@ -25,6 +26,7 @@ export class PostDetailsComponent implements OnInit {
   currentPost: any;
   result: any;
   selected: any;
+  isLoggedIn: boolean = false;
   games: any;
   newcomment = {
     content: '',
@@ -38,7 +40,8 @@ export class PostDetailsComponent implements OnInit {
     private PostService: PostService,
     private GameService: GameService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private funcs: FuncsService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -48,6 +51,9 @@ export class PostDetailsComponent implements OnInit {
     this.GameService.getAll().subscribe((response) => {
       this.games = response;
     });
+    if (!this.funcs.isExpired) {
+      this.isLoggedIn = true;
+    }
   }
 
   async getPost(id: any): Promise<void> {
@@ -100,6 +106,10 @@ export class PostDetailsComponent implements OnInit {
   async deleteComment(id: number): Promise<void> {
     this.currentPost.comments.splice(id);
     this.updatePost();
+  }
+
+  checkIfLoggedIn() {
+    if (!this.isLoggedIn) this.router.navigate(['/login']);
   }
 
   refresh(): void {
