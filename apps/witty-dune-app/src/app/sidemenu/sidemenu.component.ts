@@ -41,10 +41,10 @@ import { FuncsService } from '../services/funcs.services';
       </div>
       <div class="card row filters-card">
         <div class="card-body col">
-          <h2>Filters</h2>
+          <h2>Filter and sort!</h2>
           <p class="card-text">
-            The posts can be filtered in a number of ways. Find a filter that
-            applies to you and select it!
+            The posts can be filtered and sorted in a number of ways. Find a
+            filter that applies to you and select it!
           </p>
           <!-- Selector for associated game -->
           <label for="associatedgame">Filter by game:</label>
@@ -55,8 +55,19 @@ import { FuncsService } from '../services/funcs.services';
               </option>
             </select>
           </p>
-          <button class="btn btn-primary" (click)="filter()">Filter</button>
-          <button class="btn btn-primary" (click)="clearFilter()">Clear filters</button>
+          <label for="sort">Sort by:</label>
+          <p>
+            <select [(ngModel)]="selectedsort">
+              <option value="likesdesc">Most likes</option>
+              <option value="likesasc">Least likes</option>
+              <option value="dislikesdesc">Most dislikes</option>
+              <option value="dislikesasc">Least dislikes</option>
+            </select>
+          </p>
+          <button class="btn btn-primary" (click)="filter(); sort();">Filter</button>
+          <button class="btn btn-primary" (click)="clearFilters()">
+            Clear filters
+          </button>
           <!-- End of selector for associated game -->
         </div>
       </div>
@@ -66,11 +77,12 @@ import { FuncsService } from '../services/funcs.services';
     '.wrapper { border-radius: 3px; margin-top: 10px;}',
     'button { background-color: #0E246D !important; width: 100%; margin-bottom: 5px; } ',
     '.filters-card { margin-top: 20px; margin-bottom: 25px; } ',
-    'select { width: 100%; }'
+    'select { width: 100%; }',
   ],
 })
 export class SidemenuComponent implements OnInit {
   selected: any;
+  selectedsort: any;
   games: any;
 
   constructor(
@@ -92,12 +104,19 @@ export class SidemenuComponent implements OnInit {
   }
 
   filter() {
-    localStorage.setItem('game', this.selected.name);
+    if (this.selected != undefined) {
+      localStorage.setItem('game', this.selected.name);
+    }
+  }
+
+  sort() {
+    localStorage.setItem('sortby', this.selectedsort);
     this.refresh();
   }
 
-  clearFilter() {
+  clearFilters() {
     localStorage.setItem('game', '');
+    localStorage.setItem('sortby', '');
     this.refresh();
   }
 

@@ -82,6 +82,34 @@ export class PostlistComponent implements OnInit {
       } else {
         this.posts = this.result;
       }
+      this.checkIfSort();
     });
+  }
+
+  checkIfSort() {
+    if (localStorage.getItem('sortby') != '') {
+      switch (localStorage.getItem('sortby')) {
+        case 'likesdesc':
+          this.posts.sort(function (a: any, b: any) {
+            return b.likes - a.likes;
+          });
+          break;
+        case 'likesasc':
+          this.posts.sort(function (a: any, b: any) {
+            return a.likes - b.likes;
+          });
+          break;
+        case 'dislikesasc':
+          this.posts.sort(function (a: any, b: any) {
+            return a.dislikes - b.dislikes;
+          });
+          break;
+        case 'dislikesdesc':
+          this.posts.sort(function (a: any, b: any) {
+            return b.dislikes - a.dislikes;
+          });
+          break;
+      }
+    }
   }
 }
