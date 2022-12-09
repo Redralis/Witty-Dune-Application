@@ -34,7 +34,7 @@ import { PostService } from '../../services/post.ts.service';
             </h4>
             <p class="text-muted">
               Posted on {{ post.publicationdate.substring(0, 10) }} by
-              {{ post.postedBy }}
+              <a style="color: #707070; font-weight: bold;" routerLink="/auth/{{ post.postedBy }}">{{ post.postedBy }}</a>
             </p>
             <p>{{ post.content.substring(0, 40) }}...</p>
             <p class="text-muted">

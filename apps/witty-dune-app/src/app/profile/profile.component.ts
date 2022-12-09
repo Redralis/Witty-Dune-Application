@@ -118,9 +118,9 @@ import { FuncsService } from '../services/funcs.services';
                     *ngFor="let followed of user.following"
                     class="list-group-item followingname"
                   >
-                    <div class="col">
+                    <div class="col username-text">
                       <!-- Followed username -->
-                      {{ followed.username }}
+                      <a (click)="navigate(followed.username)">{{ followed.username }}</a>
                       <!-- End of followed username -->
                     </div>
                   </li>
@@ -262,6 +262,8 @@ import { FuncsService } from '../services/funcs.services';
     '.gamelogo { width: 10%; height: 10%;}',
     '.profilepicture { width: 100px; height: 100px;}',
     '.followingname { padding-left: 0px; padding-right: 0px;}',
+    '.username-text { color: #707070; font-weight: bold; cursor: pointer; }',
+    '.username-text:hover { text-decoration: underline; }',
   ],
 })
 export class ProfileComponent implements OnInit {
@@ -364,6 +366,12 @@ export class ProfileComponent implements OnInit {
       }
     );
     this.refresh();
+  }
+
+  navigate(username: string): void {
+    this.router.navigate(['/postlist']).then(()=>{
+      this.router.navigate(['/auth/' + username])
+    });
   }
 
   refresh(): void {
