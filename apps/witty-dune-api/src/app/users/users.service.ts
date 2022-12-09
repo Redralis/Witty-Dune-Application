@@ -2,7 +2,12 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
-import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -40,7 +45,7 @@ export class UsersService {
       _id: user._id,
       username: user.username,
       __v: user.__v,
-    }
+    };
 
     this.logger.log(`Returning user with username: ${username}.`);
     return newUser;
@@ -48,10 +53,15 @@ export class UsersService {
 
   @ApiCreatedResponse({ description: 'User created successfully.' })
   public async create(user: User): Promise<User> {
-    this.logger.log(`Attempting to create new user with username: ${user.username}.`);
+    this.logger.log(
+      `Attempting to create new user with username: ${user.username}.`
+    );
+    const saltOrRounds = 10;
+    const hash = await bcrypt.hash(user.password, saltOrRounds);
 
     const newUser: User = {
       ...user,
+      password: hash,
     };
 
     this.logger.log(`Creating new user.`);
@@ -69,5 +79,4 @@ export class UsersService {
     this.logger.log(`Deleting user with username: ${username}.`);
     this.userModel.remove(username);
   }
-  
 }
