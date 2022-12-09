@@ -19,7 +19,7 @@ import { PostService } from '../../services/post.ts.service';
               <img src="assets/images/downvote-filled.png" />
             </div>
             <div *ngIf="!liked" class="icon">
-              <img  src="assets/images/downvote.png" />
+              <img src="assets/images/downvote.png" />
             </div>
           </div>
           <div class="col-11 postcontent">
@@ -65,6 +65,7 @@ import { PostService } from '../../services/post.ts.service';
   ],
 })
 export class PostlistComponent implements OnInit {
+  result: any;
   posts: any;
   liked: boolean = false;
   disliked: boolean = false;
@@ -73,7 +74,14 @@ export class PostlistComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getAll().subscribe((response) => {
-      this.posts = response;
+      this.result = response;
+      if (localStorage.getItem('game') != '') {
+        this.posts = this.result.filter(
+          (p: any) => p.associatedgame[0].name == localStorage.getItem('game')
+        );
+      } else {
+        this.posts = this.result;
+      }
     });
   }
 }
