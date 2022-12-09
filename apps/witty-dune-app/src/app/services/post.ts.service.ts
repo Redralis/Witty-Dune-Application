@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -7,6 +7,9 @@ import { environment } from '../../environments/environment';
 })
 export class PostService {
   private url = environment.API_URL + "/posts";
+  private headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set("Authorization", "Bearer " + localStorage.getItem('jwt'));
 
   constructor(private httpClient: HttpClient) {}
 
@@ -19,14 +22,14 @@ export class PostService {
   }
 
   create(data: any) {
-    return this.httpClient.post(this.url, data);
+    return this.httpClient.post(this.url, data, { 'headers': this.headers });
   }
 
   update(id: any, data: any) {
-    return this.httpClient.put(`${this.url}/${id}`, data);
+    return this.httpClient.put(`${this.url}/${id}`, data, { 'headers': this.headers });
   }
 
   delete(id: any) {
-    return this.httpClient.delete(`${this.url}/${id}`);
+    return this.httpClient.delete(`${this.url}/${id}`, { 'headers': this.headers });
   }
 }

@@ -12,9 +12,9 @@ export class UsersService {
 
   @ApiOkResponse({ description: 'User retrieved successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
-  async findOne(username: string): Promise<User | undefined> {
+  async findOne(username: string): Promise<any | undefined> {
     this.logger.log(`Attempting to return user with username: ${username}.`);
-    const user: any = this.userModel.findOne({ username: username });
+    var user: any = await this.userModel.findOne({ username: username });
 
     if (!user) {
       this.logger.log(`No user with username: ${username} found.`);
@@ -23,6 +23,27 @@ export class UsersService {
 
     this.logger.log(`Returning user with username: ${username}.`);
     return user;
+  }
+
+  @ApiOkResponse({ description: 'User retrieved successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  async profile(username: string): Promise<any | undefined> {
+    this.logger.log(`Attempting to return user with username: ${username}.`);
+    var user: any = await this.userModel.findOne({ username: username });
+
+    if (!user) {
+      this.logger.log(`No user with username: ${username} found.`);
+      throw new NotFoundException('User not found.');
+    }
+
+    const newUser = {
+      _id: user._id,
+      username: user.username,
+      __v: user.__v,
+    }
+
+    this.logger.log(`Returning user with username: ${username}.`);
+    return newUser;
   }
 
   @ApiCreatedResponse({ description: 'User created successfully.' })

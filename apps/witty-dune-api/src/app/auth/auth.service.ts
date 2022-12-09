@@ -30,6 +30,18 @@ export class AuthService {
     return user;
   }
 
+  @ApiCreatedResponse({ description: 'User retrieved successfully.' })
+  public async findOne(username: string): Promise<any> {
+    const user = await this.usersService.findOne(username);
+    return user;
+  }
+
+  @ApiCreatedResponse({ description: 'User retrieved successfully.' })
+  public async profile(username: string): Promise<any> {
+    const user = await this.usersService.profile(username);
+    return user;
+  }
+
   @ApiCreatedResponse({ description: 'User created successfully.' })
   public async delete(body: any): Promise<any> {
     const user = await this.usersService.delete(body.username);

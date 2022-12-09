@@ -7,8 +7,10 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { GamesService } from './games.service';
 import { Game } from './schemas/game.schema';
 
@@ -27,16 +29,19 @@ export class GamesController {
     return this.gamesService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   public async create(@Body() game: Game): Promise<Game> {
     return this.gamesService.create(game);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   public delete(@Param('id') id: string): void {
     this.gamesService.delete(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   public update(
     @Param('id') id: string,
