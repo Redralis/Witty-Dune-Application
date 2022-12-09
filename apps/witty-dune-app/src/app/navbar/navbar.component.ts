@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FuncsService } from '../services/funcs.services';
 
 @Component({
@@ -89,9 +90,8 @@ import { FuncsService } from '../services/funcs.services';
               <li class="nav-item">
                 <a
                   class="nav-link"
-                  routerLink="/profile"
-                  routerLinkActive="active"
                   ariaCurrentWhenActive="page"
+                  (click)="navigate()"
                   style="cursor: pointer;"
                   >{{ this.username }}</a
                 >
@@ -108,12 +108,19 @@ import { FuncsService } from '../services/funcs.services';
 })
 export class NavbarComponent implements OnInit {
   isExpired = false;
-  username = localStorage.getItem('username')
+  username = localStorage.getItem('username');
+  profilepage = '/auth/' + this.username;
 
-  constructor(private funcs: FuncsService) {}
+  constructor(private router: Router, private funcs: FuncsService) {}
 
   ngOnInit(): void {
     this.isExpired = this.funcs.isLoggedIn();
+  }
+
+  navigate(): void {
+    this.router.navigate(['/postlist']).then(()=>{
+      this.router.navigate([this.profilepage])
+    });
   }
 
   logout(): void {

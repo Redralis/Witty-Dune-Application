@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.ts.service';
 import { PostService } from '../services/post.ts.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FuncsService } from '../services/funcs.services';
 
 @Component({
   selector: 'witty-dune-profile',
@@ -13,7 +14,11 @@ import { Router } from '@angular/router';
             <div class="row">
               <!-- Profile picture -->
               <div class="col-2">
-                <img class="profilepicture" alt="User's profile picture" [src]="user.profilepic" />
+                <img
+                  class="profilepicture"
+                  alt="User's profile picture"
+                  [src]="user.profilepic"
+                />
               </div>
               <!-- End of profile picture -->
               <div class="col-6">
@@ -111,7 +116,7 @@ import { Router } from '@angular/router';
                 >
                   <li
                     *ngFor="let followed of user.following"
-                    class="list-group-item"
+                    class="list-group-item followingname"
                   >
                     <div class="col">
                       <!-- Followed username -->
@@ -185,11 +190,28 @@ import { Router } from '@angular/router';
           <!-- Buttons to start & cancel edit mode -->
           <button
             class="btn btn-primary bottom-button"
-            *ngIf="!isEditing"
+            *ngIf="!isEditing && isCurrentUser"
             (click)="isEditing = true"
           >
             Edit
           </button>
+
+          <!-- Follow and unfollow buttons -->
+          <button
+            class="btn btn-primary bottom-button"
+            *ngIf="!isEditing && !isCurrentUser && !isFollowing"
+            (click)="follow()"
+          >
+            Follow
+          </button>
+          <button
+            class="btn btn-primary bottom-button"
+            *ngIf="!isEditing && !isCurrentUser && isFollowing"
+            (click)="follow()"
+          >
+            Unfollow
+          </button>
+          <!-- End of follow and unfollow buttons -->
 
           <button
             *ngIf="isEditing"
@@ -239,34 +261,59 @@ import { Router } from '@angular/router';
     '.karma { margin-bottom: 0px; }',
     '.gamelogo { width: 10%; height: 10%;}',
     '.profilepicture { width: 100px; height: 100px;}',
+    '.followingname { padding-left: 0px; padding-right: 0px;}',
   ],
 })
 export class ProfileComponent implements OnInit {
+  isCurrentUser: boolean = false;
   username: any = {
-    username: localStorage.getItem('username') || '',
+    username: this.route.snapshot.paramMap.get('username'),
+  };
+  loggedInUsername: any = {
+    username: localStorage.getItem('username'),
   };
   user: any;
   isEditing: boolean = false;
   result: any;
+  loggedInUser: any;
   posts: any;
+  filteredList: any;
+  isFollowing: boolean = false;
   liked: boolean = false;
   disliked: boolean = false;
 
   constructor(
     private UsersService: UserService,
     private PostService: PostService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private funcs: FuncsService
   ) {}
 
   ngOnInit(): void {
+    if (this.funcs.isExpired) {
+      this.router.navigate(['/login']);
+    }
+    if (
+      localStorage.getItem('username') ==
+      this.route.snapshot.paramMap.get('username')
+    )
+      this.isCurrentUser = true;
     this.UsersService.profile(this.username).subscribe((response) => {
       this.user = response;
-      console.log(this.user);
+    });
+    this.UsersService.profile(this.loggedInUsername).subscribe((response) => {
+      this.loggedInUser = response;
+      console.log(this.loggedInUser.following);
+      this.filteredList = this.loggedInUser.following.filter(
+        (f: any) => f._id == this.user._id
+      );
+      if (this.filteredList.length == 1) this.isFollowing = true;
     });
     this.PostService.getAll().subscribe((response) => {
       this.result = response;
       this.posts = this.result.filter(
-        (p: any) => p.postedBy == localStorage.getItem('username')
+        (p: any) => p.postedBy == this.route.snapshot.paramMap.get('username')
       );
     });
   }
@@ -294,6 +341,29 @@ export class ProfileComponent implements OnInit {
       }
     );
     this.router.navigate(['/login']);
+  }
+
+  async follow(): Promise<void> {
+    console.log(this.loggedInUser);
+    if (this.isFollowing) {
+      this.isFollowing = false;
+      this.loggedInUser.following.splice(
+        this.loggedInUser.following.indexOf(this.user._id),
+        1
+      );
+    } else {
+      this.isFollowing = true;
+      this.loggedInUser.following.push(new Array(this.user._id));
+    }
+    await this.UsersService.update(this.loggedInUser).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    this.refresh();
   }
 
   refresh(): void {

@@ -22,7 +22,7 @@ export class UserService {
   }
 
   profile(data: any) {
-    return this.httpClient.get(this.url + localStorage.getItem('username'), { 'headers': this.headers });
+    return this.httpClient.get(this.url + data.username, { 'headers': this.headers });
   }
 
   update(data: any) {
