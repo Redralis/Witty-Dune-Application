@@ -1,0 +1,67 @@
+.wrapper {
+  margin-bottom: 25px;
+  margin-right: 10px;
+}
+
+.content {
+  margin-top: 10px;
+  margin-left: -15px;
+}
+
+.user-card {
+  padding: 12px 35px;
+}
+
+button {
+  background-color: #0e246d !important;
+  margin-right: 16px;
+  width: 30%;
+}
+
+.bottom-button {
+  margin-top: 15px;
+}
+
+.text-muted {
+  font-size: 14px;
+}
+
+label {
+  font-weight: bold;
+}
+
+.icon img {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.karma {
+  margin-bottom: 0px;
+}
+
+.gamelogo {
+  width: 10%;
+  height: 10%;
+}
+
+.profilepicture {
+  width: 100px;
+  height: 100px;
+}
+
+.followingname {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.username-text {
+  color: #707070;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.username-text:hover {
+  text-decoration: underline;
+}

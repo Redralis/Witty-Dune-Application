@@ -42,7 +42,11 @@
                   <p class="text-muted">
                     Posted on
                     {{ currentPost.publicationdate.substring(0, 10) }} by
-                    <a style="color: #707070; font-weight: bold;" routerLink="/auth/{{ currentPost.postedBy }}">{{ currentPost.postedBy }}</a>
+                    <a
+                      style="color: #707070; font-weight: bold"
+                      routerLink="/auth/{{ currentPost.postedBy }}"
+                      >{{ currentPost.postedBy }}</a
+                    >
                   </p>
                   <!-- End of publication date-->
                 </div>
@@ -103,7 +107,11 @@
                 <!-- Comment publication date -->
                 <p class="text-muted">
                   Posted on {{ comment[0].publicationdate.substring(0, 10) }} by
-                  <a style="color: #707070; font-weight: bold;" routerLink="/auth/{{ comment[0].postedBy }}">{{ comment[0].postedBy }}</a>
+                  <a
+                    style="color: #707070; font-weight: bold"
+                    routerLink="/auth/{{ comment[0].postedBy }}"
+                    >{{ comment[0].postedBy }}</a
+                  >
                 </p>
                 <!-- End of comment publication date -->
 
