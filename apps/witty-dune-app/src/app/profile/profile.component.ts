@@ -113,7 +113,7 @@ export class ProfileComponent implements OnInit {
 
   navigate(username: string): void {
     this.router.navigate(['/postlist']).then(() => {
-      this.router.navigate(['/auth/' + username]);
+      this.router.navigate(['/user/' + username]);
     });
   }
 

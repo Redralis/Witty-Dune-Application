@@ -44,7 +44,7 @@
                     {{ currentPost.publicationdate.substring(0, 10) }} by
                     <a
                       style="color: #707070; font-weight: bold"
-                      routerLink="/auth/{{ currentPost.postedBy }}"
+                      routerLink="/user/{{ currentPost.postedBy }}"
                       >{{ currentPost.postedBy }}</a
                     >
                   </p>
@@ -109,7 +109,7 @@
                   Posted on {{ comment[0].publicationdate.substring(0, 10) }} by
                   <a
                     style="color: #707070; font-weight: bold"
-                    routerLink="/auth/{{ comment[0].postedBy }}"
+                    routerLink="/user/{{ comment[0].postedBy }}"
                     >{{ comment[0].postedBy }}</a
                   >
                 </p>

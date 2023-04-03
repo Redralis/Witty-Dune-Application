@@ -10,7 +10,7 @@ import { FuncsService } from '../services/funcs.services';
 export class NavbarComponent implements OnInit {
   isExpired = false;
   username = localStorage.getItem('username');
-  profilepage = '/auth/' + this.username;
+  profilepage = '/user/' + this.username;
 
   constructor(private router: Router, private funcs: FuncsService) {}
 
