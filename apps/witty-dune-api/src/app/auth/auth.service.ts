@@ -13,12 +13,12 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService
-  ) {}  
+  ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.usersService.findOne(username);
 
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       const { password, ...result } = user;
       return result;
     }
@@ -46,12 +46,6 @@ export class AuthService {
   @ApiCreatedResponse({ description: 'User created successfully.' })
   public async update(user: any): Promise<any> {
     const result = await this.usersService.update(user._id, user);
-    return result;
-  }
-
-  @ApiCreatedResponse({ description: 'User created successfully.' })
-  public async delete(id: string): Promise<any> {
-    const result = await this.usersService.delete(id);
     return result;
   }
 
