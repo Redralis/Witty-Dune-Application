@@ -11,11 +11,16 @@ export class PostlistComponent implements OnInit {
   disliked: boolean = false;
   result: any;
   posts: any;
+  filter: String = '';
 
   constructor(private service: PostService) {}
 
   ngOnInit(): void {
-    this.service.getAll().subscribe((response) => {
+    this.getPosts('');
+  }
+
+  getPosts(filter: String) {
+    this.service.getAll(filter).subscribe((response) => {
       this.result = response;
       if (localStorage.getItem('game') != '') {
         this.posts = this.result.filter(

@@ -55,7 +55,7 @@ export class ProfileComponent implements OnInit {
       );
       if (this.filteredList.length == 1) this.isFollowing = true;
     });
-    this.PostService.getAll().subscribe((response) => {
+    this.PostService.getAll('').subscribe((response) => {
       this.result = response;
       this.posts = this.result.filter(
         (p: any) => p.postedBy == this.route.snapshot.paramMap.get('username')

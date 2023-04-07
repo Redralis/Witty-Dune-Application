@@ -15,13 +15,19 @@ export class PostsService {
   constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
   @ApiOkResponse({ description: 'Posts retrieved successfully.' })
-  public findAll(): Promise<Post[]> {
-    this.logger.log('Returning all posts.');
-    return this.postModel
-      .find()
-      .populate('associatedgame')
-      .sort({ publicationdate: -1 })
-      .exec();
+  public findAll(filter: String): Promise<Post[]> {
+    if (filter == 'following') {
+      this.logger.log('filtering by following');
+    } else if (filter == 'foryou') {
+      this.logger.log('filtering by foryou');
+    } else {
+      this.logger.log('Returning all posts.');
+      return this.postModel
+        .find()
+        .populate('associatedgame')
+        .sort({ publicationdate: -1 })
+        .exec();
+    }
   }
 
   @ApiOkResponse({ description: 'Post retrieved successfully.' })

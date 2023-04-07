@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -20,8 +21,8 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  public findAll(): Promise<Array<ForumPost>> {
-    return this.postsService.findAll();
+  public findAll(@Query() params: any): Promise<Array<ForumPost>> {
+    return this.postsService.findAll(params.filter);
   }
 
   @Get(':id')
