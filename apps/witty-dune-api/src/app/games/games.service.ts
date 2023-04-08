@@ -25,12 +25,10 @@ export class GamesService {
   public findOne(id: string): Promise<Game> | any {
     this.logger.log(`Attempting to return game with id: ${id}.`);
     const game = this.gameModel.findById(id).exec();
-
     if (!game) {
       this.logger.log(`No game with id: ${id} found.`);
       throw new NotFoundException('Game not found.');
     }
-
     this.logger.log(`Returning game with id: ${id}.`);
     return game;
   }
@@ -38,14 +36,11 @@ export class GamesService {
   @ApiCreatedResponse({ description: 'Game created successfully.' })
   public async create(game: Game): Promise<Game> {
     this.logger.log(`Attempting to create new game with name: ${game.name}.`);
-
     const blogGame: Game = {
       ...game,
     };
-
-    this.logger.log(`Creating new game.`);
+    this.logger.log(`Creating new game with name: ${game.name}.`);
     this.gameModel.create(blogGame);
-
     return blogGame;
   }
 
@@ -69,7 +64,6 @@ export class GamesService {
     const res = await this.gameModel.findByIdAndUpdate(id, blogGame);
     if (res == null) throw new NotFoundException('Game not found.');
     this.logger.log(`Updating game with id: ${id}.`);
-
     return blogGame;
   }
 }

@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -15,9 +14,12 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PostsService } from './posts.service';
 import { Post as ForumPost } from './schemas/post.schema';
 import { Neo4jService } from '../neo/neo4j.service';
-import { CreatePostQuery, DeletePostAndRelationshipQuery, LinkPostToUserQuery } from '../neo/cypher.queries';
-import { AuthUser } from '../decorators/auth.user';
-import fs = require('fs');
+import {
+  CreatePostQuery,
+  DeletePostAndRelationshipQuery,
+  LinkPostToUserQuery,
+} from '../neo/cypher.queries';
+import { AuthUser } from '../decorators/user.decorator';
 
 @Controller('posts')
 @ApiTags('Posts')
@@ -28,7 +30,7 @@ export class PostsController {
   ) {}
 
   @Get()
-  public findAll(@Query() params: { filter: string, userId: string }) {
+  public findAll(@Query() params: { filter: string; userId: string }) {
     return this.postsService.findAll(params.filter, params.userId);
   }
 

@@ -1,14 +1,12 @@
-import { Body, Injectable, Logger } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 import { User } from '../users/schemas/user.schema';
-import { UsersModule } from '../users/users.module';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(UsersService.name);
 
   constructor(
     private usersService: UsersService,
@@ -17,7 +15,6 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.usersService.findOne(username);
-
     if (user && (await bcrypt.compare(password, user.password))) {
       return { username: user.username, objectId: user._id };
     }
@@ -49,9 +46,8 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const user2 = await this.usersService.findOne(user.username)
-    const payload = { username: user.username, sub: user2._id.toString()};
-  
+    const loggedInUser = await this.usersService.findOne(user.username)
+    const payload = { username: user.username, sub: loggedInUser._id.toString()};
     return {
       access_token: this.jwtService.sign(payload),
       username: user.username,

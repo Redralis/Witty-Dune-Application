@@ -29,13 +29,14 @@ export class UsersService {
   async findOne(username: string) {
     this.logger.log(`Attempting to return user with username: ${username}.`);
     var user: any = await this.userModel.findOne({ username: username });
-    // uiadwbndawukj
-
+    const neo4jRecords = await this.neo4jService.read(GetFollowedUsers, {
+      userIdParam: user._id.toString(),
+    });
+    user.following = neo4jRecords.records.map(record => record.get('f').properties.username);
     if (!user) {
       this.logger.log(`No user with username: ${username} found.`);
       throw new NotFoundException('User not found.');
     }
-
     this.logger.log(`Returning user with username: ${username}.`);
     return user;
   }
@@ -49,12 +50,10 @@ export class UsersService {
       userIdParam: user._id.toString(),
     });
     const usernames = neo4jRecords.records.map(record => record.get('f').properties.username);
-
     if (!user) {
       this.logger.log(`No user with username: ${username} found.`);
       throw new NotFoundException('User not found.');
     }
-
     const newUser = {
       _id: user._id,
       username: user.username,
@@ -67,7 +66,6 @@ export class UsersService {
       profilepic: user.profilepic,
       __v: user.__v,
     };
-
     this.logger.log(`Returning user with username: ${username}.`);
     return newUser;
   }
@@ -99,14 +97,11 @@ export class UsersService {
     );
     const saltOrRounds = 10;
     const hash = await bcrypt.hash(user.password, saltOrRounds);
-
     const newUser: User = {
       ...user,
       password: hash,
     };
-
     this.logger.log(`Creating new user.`);
-
     return await this.userModel.create(newUser);
   }
 
@@ -120,7 +115,6 @@ export class UsersService {
     const res = await this.userModel.findByIdAndUpdate(id, newUser);
     if (res == null) throw new NotFoundException('User not found.');
     this.logger.log(`Updating user with id: ${id}.`);
-
     return newUser;
   }
 
