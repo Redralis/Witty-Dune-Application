@@ -28,7 +28,7 @@ export class PostsController {
   ) {}
 
   @Get()
-  public findAll(@Query() params: { filter: string, userId: string }): Promise<Array<ForumPost>> {
+  public findAll(@Query() params: { filter: string, userId: string }) {
     return this.postsService.findAll(params.filter, params.userId);
   }
 

@@ -8,7 +8,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './schemas/post.schema';
 import { Neo4jService } from '../neo/neo4j.service';
-import { GetPostsLinkedWithUser } from '../neo/cypher.queries';
+import { GetPostsLinkedWithUser, GetPostsOfUsersFollowedByUser, GetPostsOfUsersFollowedByUsersFollowedByUserExcludingUsersFollowedByUser} from '../neo/cypher.queries';
 
 @Injectable()
 export class PostsService {
@@ -18,7 +18,7 @@ export class PostsService {
 
   @ApiOkResponse({ description: 'Posts retrieved successfully.' })
   public async findAll(filter: String, userId: String): Promise<Post[]> {
-    if (userId) {
+    if (!filter && userId) {
       this.logger.log(`filtering by user: ${userId}`);
       const neo4jRecords = await this.Neo4jService.read(GetPostsLinkedWithUser, {
         userIdParam: userId,
@@ -31,9 +31,27 @@ export class PostsService {
         .exec();
     }
     if (filter == 'following') {
-      this.logger.log('filtering by following');
+      this.logger.log('Filtering by following');
+      const neo4jRecords = await this.Neo4jService.read(GetPostsOfUsersFollowedByUser, {
+        userIdParam: userId,
+      });
+      const postIds = neo4jRecords.records.map(record => record.get('p').properties.objectId);
+      return this.postModel
+        .find({ _id: { $in: postIds } })
+        .populate('associatedgame')
+        .sort({ publicationdate: -1 })
+        .exec();
     } else if (filter == 'foryou') {
-      this.logger.log('filtering by foryou');
+      this.logger.log('Filtering by foryou');
+      const neo4jRecords = await this.Neo4jService.read(GetPostsOfUsersFollowedByUsersFollowedByUserExcludingUsersFollowedByUser, {
+        userIdParam: userId,
+      });
+      const postIds = neo4jRecords.records.map(record => record.get('p').properties.objectId);
+      return this.postModel
+        .find({ _id: { $in: postIds } })
+        .populate('associatedgame')
+        .sort({ publicationdate: -1 })
+        .exec();
     } else {
       this.logger.log('Returning all posts.');
       return this.postModel

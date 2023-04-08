@@ -1,8 +1,8 @@
 <div class="wrapper">
-  <div class="row text-center">
-    <button class="col-4" (click)="this.getPosts('')">All</button>
-    <button class="col-4" (click)="this.getPosts('following')">Following</button>
-    <button class="col-4" (click)="this.getPosts('foryou')">For you</button>
+  <div class="row text-center" style="margin-top: 10px;">
+    <button class="col-4 btn btn-primary" style="border-top-right-radius : 0; border-bottom-right-radius: 0;"(click)="this.getPosts('', '')">All</button>
+    <button class="col-4 btn btn-primary" style="border-radius: 0;" (click)="this.getPosts('following', this.userId)">Following</button>
+    <button class="col-4 btn btn-primary" style="border-top-left-radius : 0; border-bottom-left-radius: 0;" (click)="this.getPosts('foryou', this.userId)">For you</button>
   </div>
   <ul class="list-group row">
     <li *ngFor="let post of posts" class="list-group-item">

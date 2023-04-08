@@ -35,6 +35,7 @@ export class SidemenuComponent implements OnInit {
     if (this.selected != undefined) {
       localStorage.setItem('game', this.selected.name);
     }
+    this.refresh();
   }
 
   sort() {

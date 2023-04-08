@@ -13,7 +13,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { User } from './schemas/user.schema';
 import { Neo4jService } from '../neo/neo4j.service';
-import { DeleteUserAndAllLinkedPostsQuery } from '../neo/cypher.queries';
+import { DeleteUserAndAllLinkedPostsAndAllRelationships } from '../neo/cypher.queries';
 import { AuthUser } from '../decorators/auth.user';
 
 @Controller('users')
@@ -48,8 +48,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    await this.UsersService.delete(id);
-    await this.Neo4jService.write(DeleteUserAndAllLinkedPostsQuery, {
+    await this.Neo4jService.write(DeleteUserAndAllLinkedPostsAndAllRelationships, {
       idParam: id,
     });
     return this.UsersService.delete(id);

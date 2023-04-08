@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.ts.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'witty-dune-postlist',
@@ -12,15 +13,18 @@ export class PostlistComponent implements OnInit {
   result: any;
   posts: any;
   filter: String = '';
+  helper = new JwtHelperService();
+  token = localStorage.getItem('jwt') || '';
+  userId = this.helper.decodeToken(this.token).sub;
 
   constructor(private service: PostService) {}
 
   ngOnInit(): void {
-    this.getPosts('');
+    this.getPosts('', '');
   }
 
-  getPosts(filter: String) {
-    this.service.getAll(filter, '').subscribe((response) => {
+  getPosts(filter: String, userId: String) {
+    this.service.getAll(filter, userId).subscribe((response) => {
       this.result = response;
       if (localStorage.getItem('game') != '') {
         this.posts = this.result.filter(

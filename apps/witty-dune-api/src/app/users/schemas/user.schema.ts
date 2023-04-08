@@ -43,6 +43,6 @@ export const UserSchema = SchemaFactory.createForClass(User);
 
 UserSchema.post('findOneAndDelete', async (doc: UserDocument) => {
   try {
-    await doc.$model('Post').deleteMany({ userRef: doc._id });
+    await doc.$model('Post').deleteMany({ postedBy: doc.username });
   } catch (error) {}
 });
