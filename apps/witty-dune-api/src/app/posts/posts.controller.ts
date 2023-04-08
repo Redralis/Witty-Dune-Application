@@ -15,7 +15,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PostsService } from './posts.service';
 import { Post as ForumPost } from './schemas/post.schema';
 import { Neo4jService } from '../neo/neo4j.service';
-import { CreatePostQuery, LinkPostToUserQuery } from '../neo/cypher.queries';
+import { CreatePostQuery, DeletePostAndRelationshipQuery, LinkPostToUserQuery } from '../neo/cypher.queries';
 import { AuthUser } from '../decorators/auth.user';
 import fs = require('fs');
 
@@ -57,8 +57,11 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  public delete(@Param('id') id: string): void {
-    this.postsService.delete(id);
+  public async delete(@Param('id') id: string) {
+    await this.postsService.delete(id);
+    await this.Neo4JService.write(DeletePostAndRelationshipQuery, {
+      idParam: id,
+    });
   }
 
   @UseGuards(JwtAuthGuard)

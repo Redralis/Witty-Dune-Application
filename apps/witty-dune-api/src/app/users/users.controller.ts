@@ -11,11 +11,13 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { User } from './schemas/user.schema';
+import { Neo4jService } from '../neo/neo4j.service';
+import { DeleteUserAndAllLinkedPostsQuery } from '../neo/cypher.queries';
 
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
-  constructor(private readonly UsersService: UsersService) {}
+  constructor(private readonly UsersService: UsersService, private readonly Neo4jService: Neo4jService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get(':username')
@@ -32,6 +34,10 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string) {
+    await this.UsersService.delete(id);
+    await this.Neo4jService.write(DeleteUserAndAllLinkedPostsQuery, {
+      idParam: id,
+    });
     return this.UsersService.delete(id);
   }
 }

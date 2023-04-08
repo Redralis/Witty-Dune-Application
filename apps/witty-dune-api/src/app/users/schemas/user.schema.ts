@@ -34,9 +34,15 @@ export class User {
   @Prop()
   @ApiProperty({ type: String })
   country: string;
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }] })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
   @ApiProperty({ type: [User] })
   following: User;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.post('findOneAndDelete', async (doc: UserDocument) => {
+  try {
+    await doc.$model('Post').deleteMany({ userRef: doc._id });
+  } catch (error) {}
+});
