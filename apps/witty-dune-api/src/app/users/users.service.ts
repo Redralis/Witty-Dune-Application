@@ -9,18 +9,27 @@ import {
 } from '@nestjs/swagger';
 import * as bcrypt from 'bcrypt';
 import { Neo4jService } from '../neo/neo4j.service';
+import {
+  FollowOtherUserByName,
+  GetFollowedUsers,
+  UnfollowOtherUserByName,
+} from '../neo/cypher.queries';
 
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
 
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private neo4jService: Neo4jService
+  ) {}
 
   @ApiOkResponse({ description: 'User retrieved successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   async findOne(username: string) {
     this.logger.log(`Attempting to return user with username: ${username}.`);
     var user: any = await this.userModel.findOne({ username: username });
+    // uiadwbndawukj
 
     if (!user) {
       this.logger.log(`No user with username: ${username} found.`);
@@ -35,9 +44,11 @@ export class UsersService {
   @ApiNotFoundResponse({ description: 'User not found.' })
   async profile(username: string): Promise<any | undefined> {
     this.logger.log(`Attempting to return user with username: ${username}.`);
-    var user: any = await this.userModel
-      .findOne({ username: username })
-      .populate('following');
+    var user: any = await this.userModel.findOne({ username: username });
+    const neo4jRecords = await this.neo4jService.read(GetFollowedUsers, {
+      userIdParam: user._id.toString(),
+    });
+    const usernames = neo4jRecords.records.map(record => record.get('f').properties.username);
 
     if (!user) {
       this.logger.log(`No user with username: ${username} found.`);
@@ -52,13 +63,33 @@ export class UsersService {
       email: user.email,
       dateofbirth: user.dateofbirth,
       country: user.country,
-      following: user.following,
+      following: usernames,
       profilepic: user.profilepic,
       __v: user.__v,
     };
 
     this.logger.log(`Returning user with username: ${username}.`);
     return newUser;
+  }
+
+  @ApiOkResponse({ description: 'User followed successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  async follow(currentUserId: String, username: string) {
+    this.logger.log(`Attempting to follow user with username: ${username}.`);
+    await this.neo4jService.write(FollowOtherUserByName, {
+      userIdParam: currentUserId,
+      usernameParam: username,
+    });
+  }
+
+  @ApiOkResponse({ description: 'User followed successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  async unfollow(currentUserId: String, username: string) {
+    this.logger.log(`Attempting to unfollow user with username: ${username}.`);
+    await this.neo4jService.write(UnfollowOtherUserByName, {
+      userIdParam: currentUserId,
+      usernameParam: username,
+    });
   }
 
   @ApiCreatedResponse({ description: 'User created successfully.' })
@@ -96,9 +127,7 @@ export class UsersService {
   @ApiOkResponse({ description: 'User deleted successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   public async delete(id: string): Promise<void> {
-    this.logger.log(
-      `Attempting to delete user with id: ${id}.`
-    );
+    this.logger.log(`Attempting to delete user with id: ${id}.`);
     const res = await this.userModel.findByIdAndDelete(id);
     if (res == null) throw new NotFoundException('User not found.');
     this.logger.log(`Deleting user with id: ${id}.`);

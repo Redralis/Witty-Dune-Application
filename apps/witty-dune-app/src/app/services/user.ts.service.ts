@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { JsonPipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,18 @@ export class UserService {
 
   profile(data: any) {
     return this.httpClient.get(this.userUrl + data.username, {
+      headers: this.headers,
+    });
+  }
+
+  follow(data: any) {
+    return this.httpClient.post(this.userUrl + 'follow/' + data, {}, {
+      headers: this.headers,
+    });
+  }
+
+  unfollow(data: any) {
+    return this.httpClient.post(this.userUrl + 'unfollow/' + data, {}, {  
       headers: this.headers,
     });
   }

@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
@@ -13,6 +14,7 @@ import { UsersService } from './users.service';
 import { User } from './schemas/user.schema';
 import { Neo4jService } from '../neo/neo4j.service';
 import { DeleteUserAndAllLinkedPostsQuery } from '../neo/cypher.queries';
+import { AuthUser } from '../decorators/auth.user';
 
 @Controller('users')
 @ApiTags('Users')
@@ -23,6 +25,18 @@ export class UsersController {
   @Get(':username')
   getProfile(@Param('username') username: string) {
     return this.UsersService.profile(username);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @Post('follow/:username')
+  follow(@Param('username') username: string, @AuthUser() user: any) {
+    return this.UsersService.follow(user.userId, username);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('unfollow/:username')
+  unfollow(@Param('username') username: string, @AuthUser() user: any) {
+    return this.UsersService.unfollow(user.userId, username);
   }
 
   @UseGuards(JwtAuthGuard)

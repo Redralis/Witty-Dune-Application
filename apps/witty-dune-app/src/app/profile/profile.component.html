@@ -111,8 +111,8 @@
               >
                 <div class="col username-text">
                   <!-- Followed username -->
-                  <a (click)="navigate(followed.username)">{{
-                    followed.username
+                  <a (click)="navigate(followed)">{{
+                    followed
                   }}</a>
                   <!-- End of followed username -->
                 </div>
@@ -198,7 +198,7 @@
       <button
         class="btn btn-primary bottom-button"
         *ngIf="!isEditing && !isCurrentUser && isFollowing"
-        (click)="follow()"
+        (click)="unfollow()"
       >
         Unfollow
       </button>

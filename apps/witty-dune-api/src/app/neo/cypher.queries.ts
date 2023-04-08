@@ -4,3 +4,6 @@ export const LinkPostToUserQuery = `MATCH (u:User {objectId: $userIdParam}), (p:
 export const DeleteUserAndAllLinkedPostsQuery = `MATCH (u:User {objectId: $idParam})-[r:POSTED]->(p:Post) DELETE u, r, p`;
 export const DeletePostAndRelationshipQuery = `MATCH (u:User)-[r:POSTED]->(p:Post {objectId: $idParam}) DELETE r, p`;
 export const GetPostsLinkedWithUser = `MATCH (u:User {objectId: $userIdParam})-[r:POSTED]->(p:Post) RETURN p`;
+export const GetFollowedUsers = `MATCH (u:User {objectId: $userIdParam})-[r:FOLLOWS]->(f:User) RETURN f`;
+export const FollowOtherUserByName = `MATCH (u:User {objectId: $userIdParam}), (f:User {username: $usernameParam}) CREATE (u)-[:FOLLOWS]->(f)`;
+export const UnfollowOtherUserByName = `MATCH (u:User {objectId: $userIdParam})-[r:FOLLOWS]->(f:User {username: $usernameParam}) DELETE r`;

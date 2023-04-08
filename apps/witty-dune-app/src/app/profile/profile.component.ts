@@ -53,11 +53,10 @@ export class ProfileComponent implements OnInit {
     });
     this.UsersService.profile(this.loggedInUsername).subscribe((response) => {
       this.loggedInUser = response;
-      console.log(this.loggedInUser.following);
       this.filteredList = this.loggedInUser.following.filter(
-        (f: any) => f._id == this.user._id
+        (f: any) => f == this.user.username
       );
-      if (this.filteredList.length == 1) this.isFollowing = true;
+      if (this.filteredList.length > 0) this.isFollowing = true;
     });
   }
 
@@ -87,26 +86,27 @@ export class ProfileComponent implements OnInit {
   }
 
   async follow(): Promise<void> {
-    console.log(this.loggedInUser);
-    if (this.isFollowing) {
-      this.isFollowing = false;
-      this.loggedInUser.following.splice(
-        this.loggedInUser.following.indexOf(this.user._id),
-        1
-      );
-    } else {
-      this.isFollowing = true;
-      this.loggedInUser.following.push(new Array(this.user._id));
-    }
-    await this.UsersService.update(this.loggedInUser).subscribe(
+    await this.UsersService.follow(this.user.username).subscribe(
       (response) => {
         console.log(response);
+        this.isFollowing = true;
       },
       (error) => {
         console.log(error);
       }
     );
-    this.refresh();
+  }
+
+  async unfollow(): Promise<void> {
+    await this.UsersService.unfollow(this.user.username).subscribe(
+      (response) => {
+        console.log(response);
+        this.isFollowing = false;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   navigate(username: string): void {
