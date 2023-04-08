@@ -4,33 +4,107 @@
     <div *ngIf="hasError" class="alert alert-danger" role="alert">
       {{ errorMessage }}
     </div>
-    <!-- Input for username -->
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input
-        type="text"
-        class="form-control"
-        id="username"
-        required
-        [(ngModel)]="user.username"
-        name="username"
-      />
-    </div>
-    <!-- End of input for username -->
+    <div class="row">
+      <!-- Input for username -->
+      <div class="form-group col-12">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          required
+          [(ngModel)]="user.username"
+          name="username"
+        />
+      </div>
+      <!-- End of input for username -->
 
-    <!-- Input for password -->
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input
-        class="form-control"
-        type="password"
-        id="password"
-        required
-        [(ngModel)]="user.password"
-        name="password"
-      />
+      <!-- Input for password -->
+      <div class="form-group col-12">
+        <label for="password">Password</label>
+        <input
+          class="form-control"
+          type="password"
+          id="password"
+          required
+          [(ngModel)]="user.password"
+          name="password"
+        />
+      </div>
+      <!-- End of input for password -->
+
+      <!-- Input for email -->
+      <div class="form-group col-6">
+        <label for="password">Email</label>
+        <input
+          class="form-control"
+          type="text"
+          id="email"
+          required
+          [(ngModel)]="user.email"
+          name="email"
+        />
+      </div>
+      <!-- End of input for email -->
+
+      <!-- Input for country -->
+      <div class="form-group col-6">
+        <label for="password">Country</label>
+        <input
+          class="form-control"
+          type="text"
+          id="country"
+          required
+          [(ngModel)]="user.country"
+          name="country"
+        />
+      </div>
+      <!-- End of input for country -->
+
+      <!-- Input for first name -->
+      <div class="form-group col-4">
+        <label for="password">First name</label>
+        <input
+          class="form-control"
+          type="text"
+          id="firstname"
+          required
+          [(ngModel)]="user.firstname"
+          name="firstname"
+        />
+      </div>
+      <!-- End of input for first name -->
+
+      <!-- Input for first name -->
+      <div class="form-group col-4">
+        <label for="password">Last name</label>
+        <input
+          class="form-control"
+          type="text"
+          id="lastname"
+          required
+          [(ngModel)]="user.lastname"
+          name="lastname"
+        />
+      </div>
+      <!-- End of input for first name -->
+
+      <!-- Input for dateofbirth -->
+      <div class="form-group col-4">
+        <label for="dateofbirth">Date of birth:</label>
+        <input
+          name="dateofbirth"
+          type="date"
+          class="form-control"
+          id="dateofbirth"
+          [(ngModel)]="user.dateofbirth"
+          aria-describedby="dateHelp"
+          lang="fr-CA"
+        />
+      </div>
+      <!-- End of input for dateofbirth -->
     </div>
-    <!-- End of input for password -->
+
     <!-- Checkbox to make user agree to terms and conditions -->
     <div class="form-check form-group">
       <input

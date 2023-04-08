@@ -12,6 +12,12 @@ export class RegisterComponent implements OnInit {
   user = {
     username: '',
     password: '',
+    email: '',
+    country: '',
+    firstname: '',
+    lastname: '',
+    dateofbirth: new Date().toISOString(),
+    profilepic: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-9…',
   };
   isAuthorized = false;
   agreed = false;
@@ -27,9 +33,9 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {}
 
   async register(): Promise<void> {
+    if (this.user.dateofbirth) this.user.dateofbirth = new Date(this.user.dateofbirth).toISOString();
     const data = {
-      username: this.user.username,
-      password: this.user.password,
+      ...this.user,
     };
 
     await this.UserService.register(data).subscribe(
