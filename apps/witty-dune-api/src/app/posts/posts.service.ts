@@ -7,15 +7,29 @@ import {
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './schemas/post.schema';
+import { Neo4jService } from '../neo/neo4j.service';
+import { GetPostsLinkedWithUser } from '../neo/cypher.queries';
 
 @Injectable()
 export class PostsService {
   private readonly logger = new Logger(PostsService.name);
 
-  constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
+  constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>, private Neo4jService: Neo4jService) {}
 
   @ApiOkResponse({ description: 'Posts retrieved successfully.' })
-  public findAll(filter: String): Promise<Post[]> {
+  public async findAll(filter: String, userId: String): Promise<Post[]> {
+    if (userId) {
+      this.logger.log(`filtering by user: ${userId}`);
+      const neo4jRecords = await this.Neo4jService.read(GetPostsLinkedWithUser, {
+        userIdParam: userId,
+      });
+      const postIds = neo4jRecords.records.map(record => record.get('p').properties.objectId);
+      return this.postModel
+        .find({ _id: { $in: postIds } })
+        .populate('associatedgame')
+        .sort({ publicationdate: -1 })
+        .exec();
+    }
     if (filter == 'following') {
       this.logger.log('filtering by following');
     } else if (filter == 'foryou') {

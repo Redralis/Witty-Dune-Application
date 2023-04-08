@@ -20,7 +20,7 @@ export class PostlistComponent implements OnInit {
   }
 
   getPosts(filter: String) {
-    this.service.getAll(filter).subscribe((response) => {
+    this.service.getAll(filter, '').subscribe((response) => {
       this.result = response;
       if (localStorage.getItem('game') != '') {
         this.posts = this.result.filter(

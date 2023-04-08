@@ -28,8 +28,8 @@ export class PostsController {
   ) {}
 
   @Get()
-  public findAll(@Query() params: any): Promise<Array<ForumPost>> {
-    return this.postsService.findAll(params.filter);
+  public findAll(@Query() params: { filter: string, userId: string }): Promise<Array<ForumPost>> {
+    return this.postsService.findAll(params.filter, params.userId);
   }
 
   @Get(':id')

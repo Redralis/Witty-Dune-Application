@@ -13,8 +13,8 @@ export class PostService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getAll(filter: String) {
-    return this.httpClient.get(this.url + '?filter=' + filter);
+  getAll(filter: String, userId: String) {
+    return this.httpClient.get(this.url + '?filter=' + filter + '&userId=' + userId);
   }
 
   get(id: any) {

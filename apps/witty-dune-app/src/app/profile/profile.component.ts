@@ -46,6 +46,10 @@ export class ProfileComponent implements OnInit {
       this.isCurrentUser = true;
     this.UsersService.profile(this.username).subscribe((response) => {
       this.user = response;
+      this.PostService.getAll('', this.user._id).subscribe((response) => {
+        this.result = response;
+        this.posts = this.result;
+      });
     });
     this.UsersService.profile(this.loggedInUsername).subscribe((response) => {
       this.loggedInUser = response;
@@ -54,12 +58,6 @@ export class ProfileComponent implements OnInit {
         (f: any) => f._id == this.user._id
       );
       if (this.filteredList.length == 1) this.isFollowing = true;
-    });
-    this.PostService.getAll('').subscribe((response) => {
-      this.result = response;
-      this.posts = this.result.filter(
-        (p: any) => p.postedBy == this.route.snapshot.paramMap.get('username')
-      );
     });
   }
 
