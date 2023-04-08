@@ -19,8 +19,7 @@ export class AuthService {
     const user = await this.usersService.findOne(username);
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, ...result } = user;
-      return result;
+      return { username: user.username, objectId: user._id };
     }
     return null;
   }
@@ -50,7 +49,9 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    const user2 = await this.usersService.findOne(user.username)
+    const payload = { username: user.username, sub: user2._id.toString()};
+  
     return {
       access_token: this.jwtService.sign(payload),
       username: user.username,

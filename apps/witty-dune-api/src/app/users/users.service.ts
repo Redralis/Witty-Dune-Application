@@ -8,6 +8,7 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 import * as bcrypt from 'bcrypt';
+import { Neo4jService } from '../neo/neo4j.service';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +18,7 @@ export class UsersService {
 
   @ApiOkResponse({ description: 'User retrieved successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
-  async findOne(username: string): Promise<any | undefined> {
+  async findOne(username: string) {
     this.logger.log(`Attempting to return user with username: ${username}.`);
     var user: any = await this.userModel.findOne({ username: username });
 
@@ -74,9 +75,8 @@ export class UsersService {
     };
 
     this.logger.log(`Creating new user.`);
-    this.userModel.create(newUser);
 
-    return newUser;
+    return await this.userModel.create(newUser);
   }
 
   @ApiOkResponse({ description: 'User updated successfully.' })

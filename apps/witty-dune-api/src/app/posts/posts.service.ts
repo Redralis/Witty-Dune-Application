@@ -46,7 +46,7 @@ export class PostsService {
   }
 
   @ApiCreatedResponse({ description: 'Post created successfully.' })
-  public async create(post: Post): Promise<Post> {
+  public async create(post: Post) {
     this.logger.log(`Attempting to create new post with title: ${post.title}.`);
 
     const blogPost: Post = {
@@ -54,9 +54,7 @@ export class PostsService {
     };
 
     this.logger.log(`Creating new post.`);
-    this.postModel.create(blogPost);
-
-    return blogPost;
+    return await this.postModel.create(blogPost);
   }
 
   @ApiOkResponse({ description: 'Post deleted successfully.' })
