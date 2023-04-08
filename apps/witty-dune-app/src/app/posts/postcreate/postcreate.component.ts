@@ -22,6 +22,8 @@ export class PostCreateComponent implements OnInit {
   selected: any;
   games: any;
   submitted = false;
+  error: boolean = false;
+  errormessage: string = '';
 
   constructor(
     private PostService: PostService,
@@ -53,12 +55,20 @@ export class PostCreateComponent implements OnInit {
     await this.PostService.create(data).subscribe(
       (response) => {
         console.log(response);
-        this.submitted = true;
       },
       (error) => {
-        console.log(error);
+        this.setError(true, error.error.text);
+        if (error.error.text == 'Post created successfully.') {
+          this.submitted = true;
+          this.router.navigate(['/postlist']);
+        }
       }
     );
-    this.router.navigate(['/postlist']);
   }
+
+  setError(error: boolean, message: string) {
+    this.error = error;
+    this.errormessage = message;
+  }
+
 }

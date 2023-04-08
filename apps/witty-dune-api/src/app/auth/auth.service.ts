@@ -4,13 +4,16 @@ import { JwtService } from '@nestjs/jwt';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 import { User } from '../users/schemas/user.schema';
 import * as bcrypt from 'bcrypt';
+import { CreateUserQuery } from '../neo/cypher.queries';
+import { Neo4jService } from '../neo/neo4j.service';
 
 @Injectable()
 export class AuthService {
 
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private neo4jService: Neo4jService
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
@@ -23,8 +26,16 @@ export class AuthService {
 
   @ApiCreatedResponse({ description: 'User created successfully.' })
   public async register(credentials: User): Promise<any> {
-    const user = await this.usersService.create(credentials);
-    return user;
+    try {
+      const user = await this.usersService.create(credentials);
+      await this.neo4jService.write(CreateUserQuery, {
+        idParam: user._id.toString(),
+        usernameParam: user.username,
+      });
+      return 'User registered successfully.';
+    } catch (error) {
+      return error.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g, '');
+    }
   }
 
   @ApiCreatedResponse({ description: 'User retrieved successfully.' })

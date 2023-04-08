@@ -41,20 +41,21 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  public async create(
-    @Body() post: ForumPost,
-    @AuthUser() user: any
-  ): Promise<ForumPost> {
-    const newPost = await this.postsService.create(post);
-    await this.Neo4JService.write(CreatePostQuery, {
-      idParam: newPost._id.toString(),
-    }).then(() => {
-      this.Neo4JService.write(LinkPostToUserQuery, {
-        userIdParam: user.userId,
-        postIdParam: newPost._id.toString(),
+  public async create(@Body() post: ForumPost, @AuthUser() user: any) {
+    try {
+      const newPost = await this.postsService.create(post);
+      await this.Neo4JService.write(CreatePostQuery, {
+        idParam: newPost._id.toString(),
+      }).then(() => {
+        this.Neo4JService.write(LinkPostToUserQuery, {
+          userIdParam: user.userId,
+          postIdParam: newPost._id.toString(),
+        });
       });
-    });
-    return newPost;
+      return 'Post created successfully.';
+    } catch (error) {
+      return error.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g, '');
+    }
   }
 
   @UseGuards(JwtAuthGuard)

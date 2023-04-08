@@ -17,7 +17,7 @@ export class GamesService {
   @ApiOkResponse({ description: 'Games retrieved successfully.' })
   public findAll(): Promise<Game[]> | any {
     this.logger.log('Returning all games.');
-    return this.gameModel.find().sort({ name : 1}).exec();
+    return this.gameModel.find().sort({ name: 1 }).exec();
   }
 
   @ApiOkResponse({ description: 'Game retrieved successfully.' })
@@ -34,14 +34,17 @@ export class GamesService {
   }
 
   @ApiCreatedResponse({ description: 'Game created successfully.' })
-  public async create(game: Game): Promise<Game> {
+  public async create(game: Game) {
     this.logger.log(`Attempting to create new game with name: ${game.name}.`);
     const blogGame: Game = {
       ...game,
     };
-    this.logger.log(`Creating new game with name: ${game.name}.`);
-    this.gameModel.create(blogGame);
-    return blogGame;
+    try {
+      await this.gameModel.create(blogGame);
+    } catch (err) {
+      return err.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g, '');
+    }
+    return 'Game created successfully.';
   }
 
   @ApiOkResponse({ description: 'Game deleted successfully.' })

@@ -16,6 +16,8 @@ export class GamecreateComponent implements OnInit {
     logo: '',
   };
   submitted = false;
+  error: boolean = false;
+  errormessage: string = '';
 
   constructor(
     private GameService: GameService,
@@ -37,16 +39,22 @@ export class GamecreateComponent implements OnInit {
       logo: this.game.logo,
     };
 
-    await this.GameService.create(data).subscribe(
+    this.GameService.create(data).subscribe(
       (response) => {
-        console.log(response);
-        this.submitted = true;
+        this.setError(false, '');
       },
       (error) => {
-        console.log(error);
+        this.setError(true, error.error.text);
+        if (error.error.text == 'Game created successfully.') {
+          this.submitted = true;
+          this.router.navigate(['/gamelist']);
+        }
       }
     );
+  }
 
-    this.router.navigate(['/gamelist']);
+  setError(error: boolean, message: string) {
+    this.error = error;
+    this.errormessage = message;
   }
 }

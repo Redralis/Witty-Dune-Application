@@ -41,10 +41,12 @@ export class RegisterComponent implements OnInit {
     await this.UserService.register(data).subscribe(
       (response) => {
         console.log(response);
-        this.router.navigate(['/login']);
       },
       (error) => {
-        console.log(error);
+        this.setError(true, error.error.text);
+        if (error.error.text == 'User registered successfully.') {
+          this.router.navigate(['/login']);
+        }
       }
     );
   }
@@ -65,4 +67,10 @@ export class RegisterComponent implements OnInit {
   backClicked() {
     this._location.back();
   }
+
+  setError(hasError: boolean, errorMessage: string): void {
+    this.hasError = hasError;
+    this.errorMessage = errorMessage;
+  }
+  
 }

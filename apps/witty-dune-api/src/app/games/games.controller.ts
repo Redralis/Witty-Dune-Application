@@ -30,8 +30,8 @@ export class GamesController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  public async create(@Body() game: Game): Promise<Game> {
-    return this.gamesService.create(game);
+  public async create(@Body() game: Game) {
+    return await this.gamesService.create(game);
   }
 
   @UseGuards(JwtAuthGuard)

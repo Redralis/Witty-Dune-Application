@@ -24,10 +24,6 @@ export class AppController {
   @Post('auth/register')
   async register(@Body() user: User) {
     const newUser = await this.authService.register(user);
-    await this.neo4jService.write(CreateUserQuery, {
-      idParam: newUser._id.toString(),
-      usernameParam: newUser.username,
-    });
     return newUser;
   }
 }

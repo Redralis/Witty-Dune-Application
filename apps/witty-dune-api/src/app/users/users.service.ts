@@ -91,7 +91,7 @@ export class UsersService {
   }
 
   @ApiCreatedResponse({ description: 'User created successfully.' })
-  public async create(user: User): Promise<User> {
+  public async create(user: User) {
     this.logger.log(
       `Attempting to create new user with username: ${user.username}.`
     );

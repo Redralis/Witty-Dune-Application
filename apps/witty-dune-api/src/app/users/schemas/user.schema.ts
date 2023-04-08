@@ -6,31 +6,28 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @Prop()
+  @Prop({ unique: true, required: true })
   @ApiProperty({ type: String })
   username: string;
-  @Prop()
+  @Prop({ required: true})
   @ApiProperty({ type: String })
   password: string;
-  @Prop()
+  @Prop({ required: true })
   @ApiProperty({ type: String })
   firstname: string;
-  @Prop()
+  @Prop({ required: true })
   @ApiProperty({ type: String })
   lastname: string;
-  @Prop()
+  @Prop({ required: true })
   @ApiProperty({ type: String })
   email: string;
-  @Prop()
-  @ApiProperty({ type: Boolean })
-  iseighteen: boolean;
-  @Prop()
+  @Prop({ required: true })
   @ApiProperty({ type: String })
   profilepic: string;
   @ApiProperty({ type: String, format: 'date-time' })
-  @Prop()
+  @Prop({ required: true })
   dateofbirth: Date;
-  @Prop()
+  @Prop({ required: true })
   @ApiProperty({ type: String })
   country: string;
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })

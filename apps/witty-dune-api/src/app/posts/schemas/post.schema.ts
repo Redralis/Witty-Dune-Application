@@ -10,22 +10,22 @@ export type PostDocument = HydratedDocument<Post>;
 @Schema()
 export class Post {
   @ApiProperty({ type: String })
-  @Prop()
+  @Prop({ required: true })
   postedBy: string;
   @ApiProperty({ type: String })
-  @Prop()
+  @Prop({ required: true })
   title: string;
   @ApiProperty({ type: String })
-  @Prop()
+  @Prop({ required: true })
   content: string;
-  @Prop()
   @ApiProperty({ type: Number })
+  @Prop()
   likes: number;
   @ApiProperty({ type: Number })
   @Prop()
   dislikes: number;
   @ApiProperty({ type: String, format: 'date-time' })
-  @Prop()
+  @Prop({ required: true })
   publicationdate: Date;
   @Prop({ type: [{ type: mongoose.Schema.Types.Array }] })
   @ApiProperty({ type: [Comment] })
