@@ -65,7 +65,7 @@ export class GamesService {
 
   @ApiOkResponse({ description: 'Game updated successfully.' })
   @ApiNotFoundResponse({ description: 'Game not found.' })
-  public async update(id: string, game: Game): Promise<Game> {
+  public async update(id: string, game: Game) {
     this.logger.log(`Attempting to update game with id: ${id}.`);
     const blogGame: Game = {
       ...game,
@@ -73,6 +73,10 @@ export class GamesService {
     const res = await this.gameModel.findByIdAndUpdate(id, blogGame);
     if (res == null) throw new NotFoundException('Game not found.');
     this.logger.log(`Updating game with id: ${id}.`);
-    return blogGame;
+    return {
+      statuscode: 200,
+      message: 'Game updated successfully.',
+      body: blogGame
+    }
   }
 }

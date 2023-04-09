@@ -54,14 +54,17 @@ export class PostsController {
       });
       return {
         statuscode: 201,
-        message: 'Post created successfully.',	
+        message: 'Post created successfully.',
         body: newPost,
-      }
+      };
     } catch (error) {
       return {
         statuscode: 400,
-        message: error.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g , ''),
-      }
+        message: error.message.replace(
+          /\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g,
+          ''
+        ),
+      };
     }
   }
 
@@ -76,10 +79,7 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  public update(
-    @Param('id') id: string,
-    @Body() post: ForumPost
-  ): Promise<ForumPost> {
+  public update(@Param('id') id: string, @Body() post: ForumPost) {
     return this.postsService.update(id, post);
   }
 }

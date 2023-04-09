@@ -107,15 +107,22 @@ export class UsersService {
 
   @ApiOkResponse({ description: 'User updated successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
-  public async update(id: string, user: User): Promise<User> {
+  public async update(id: string, user: User) {
     this.logger.log(`Attempting to update user with id: ${id}.`);
+    const saltOrRounds = 10;
+    const hash = await bcrypt.hash(user.password, saltOrRounds);
     const newUser: User = {
       ...user,
+      password: hash,
     };
     const res = await this.userModel.findByIdAndUpdate(id, newUser);
     if (res == null) throw new NotFoundException('User not found.');
     this.logger.log(`Updating user with id: ${id}.`);
-    return newUser;
+    return {
+      statuscode: 200,
+      message: 'User updated successfully.',
+      body: newUser
+    }
   }
 
   @ApiOkResponse({ description: 'User deleted successfully.' })

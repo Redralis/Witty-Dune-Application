@@ -42,7 +42,7 @@ export class GamesController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  public update(@Param('id') id: string, @Body() game: Game): Promise<Game> {
+  public update(@Param('id') id: string, @Body() game: Game) {
     return this.gamesService.update(id, game);
   }
 }

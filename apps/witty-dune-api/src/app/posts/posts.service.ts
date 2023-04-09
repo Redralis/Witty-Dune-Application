@@ -119,7 +119,7 @@ export class PostsService {
 
   @ApiOkResponse({ description: 'Post updated successfully.' })
   @ApiNotFoundResponse({ description: 'Post not found.' })
-  public async update(id: string, post: Post): Promise<Post> {
+  public async update(id: string, post: Post) {
     this.logger.log(`Attempting to update post with id: ${id}.`);
     const blogPost: Post = {
       ...post,
@@ -127,6 +127,10 @@ export class PostsService {
     const res = await this.postModel.findByIdAndUpdate(id, blogPost);
     if (res == null) throw new NotFoundException('Post not found.');
     this.logger.log(`Updating post with id: ${id}.`);
-    return blogPost;
+    return {
+      statuscode: 200,
+      message: 'Post updated successfully.',
+      body: blogPost
+    }
   }
 }
