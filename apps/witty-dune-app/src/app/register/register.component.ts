@@ -40,11 +40,15 @@ export class RegisterComponent implements OnInit {
 
     await this.UserService.register(data).subscribe(
       (response) => {
-        console.log(response);
+        const res = JSON.parse(JSON.stringify(response));
+        this.setError(true, res.message);
+        if (res.message == 'User registered successfully.') {
+          this.router.navigate(['/login']);
+        }
       },
       (error) => {
-        this.setError(true, error.error.text);
-        if (error.error.text == 'User registered successfully.') {
+        this.setError(true, error.message);
+        if (error.message == 'User registered successfully.') {
           this.router.navigate(['/login']);
         }
       }

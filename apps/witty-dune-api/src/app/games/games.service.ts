@@ -42,9 +42,15 @@ export class GamesService {
     try {
       await this.gameModel.create(blogGame);
     } catch (err) {
-      return err.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g, '');
+      return {
+        statuscode: 400,
+        message: err.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g, ''),
+      }
     }
-    return 'Game created successfully.';
+    return {
+      statuscode: 201,
+      message: 'Game created successfully.'
+    }
   }
 
   @ApiOkResponse({ description: 'Game deleted successfully.' })

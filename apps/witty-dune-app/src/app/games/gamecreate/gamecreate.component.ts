@@ -41,7 +41,12 @@ export class GamecreateComponent implements OnInit {
 
     this.GameService.create(data).subscribe(
       (response) => {
-        this.setError(false, '');
+        const res = JSON.parse(JSON.stringify(response));
+        this.setError(true, res.message);
+        if (res.message == 'Game created successfully.') {
+          this.submitted = true;
+          this.router.navigate(['/gamelist']);
+        }
       },
       (error) => {
         this.setError(true, error.error.text);

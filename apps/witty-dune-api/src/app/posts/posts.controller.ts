@@ -52,9 +52,16 @@ export class PostsController {
           postIdParam: newPost._id.toString(),
         });
       });
-      return 'Post created successfully.';
+      return {
+        statuscode: 201,
+        message: 'Post created successfully.',	
+        body: newPost,
+      }
     } catch (error) {
-      return error.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g, '');
+      return {
+        statuscode: 400,
+        message: error.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g , ''),
+      }
     }
   }
 

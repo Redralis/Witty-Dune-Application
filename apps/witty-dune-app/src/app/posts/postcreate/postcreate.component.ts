@@ -54,11 +54,17 @@ export class PostCreateComponent implements OnInit {
 
     await this.PostService.create(data).subscribe(
       (response) => {
-        console.log(response);
+        const res = JSON.parse(JSON.stringify(response));
+        this.setError(true, res.message);
+        if (res.message == 'Post created successfully.') {
+          this.submitted = true;
+          this.router.navigate(['/postlist']);
+        }
       },
       (error) => {
-        this.setError(true, error.error.text);
-        if (error.error.text == 'Post created successfully.') {
+        console.log(error)
+        this.setError(true, error.error.message);
+        if (error.error.message == 'Post created successfully.') {
           this.submitted = true;
           this.router.navigate(['/postlist']);
         }

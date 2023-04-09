@@ -32,9 +32,16 @@ export class AuthService {
         idParam: user._id.toString(),
         usernameParam: user.username,
       });
-      return 'User registered successfully.';
+      return {
+        statusCode: 201,
+        message: 'User registered successfully.',
+        body: user,
+      }
     } catch (error) {
-      return error.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g, '');
+      return {
+        statusCode: 400,
+        message: error.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g, ''),
+      } 
     }
   }
 
