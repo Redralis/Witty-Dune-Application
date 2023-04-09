@@ -1,52 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GamesController } from './games.controller';
 import { GamesService } from './games.service';
-import { Game } from './schemas/game.schema';
-
-const date = new Date();
-
-const model: Game = {
-  "id": "0",
-  "name": "Escape from Tarkov",
-  "description": "Escape from Tarkov is a multiplayer tactical first-person shooter video game in development by Battlestate Games for Windows. The game is set in the fictional Norvinsk region, where a war is taking place between two private military companies (United Security \"USEC\" and the Battle Encounter Assault Regiment \"BEAR\"). Players join matches called \"raids\" in which they fight other players and bots for loot and aim to survive and escape.",
-  "releasedate": date,
-  "logo": "https://i.pinimg.com/originals/d7/6b/85/d76b85fdceaf0c0e4d32df008616dfb4.jpg",
-};
 
 describe('GamesController', () => {
-  let controller: GamesController;
-  let service: GamesService;
+  let app: TestingModule;
+  let gamesController: GamesController;
+  let gamesService: GamesService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    app = await Test.createTestingModule({
       controllers: [GamesController],
       providers: [
         {
+          // mock the service, to avoid providing its dependencies
           provide: GamesService,
           useValue: {
-            create: jest
-              .fn()
-              .mockImplementation((game: Game) =>
-                Promise.resolve({ id: '1', ...game }),
-              ),
-            findAll: jest.fn().mockResolvedValue([
-              {
-                id: "0",
-                name: "Escape from Tarkov",
-                description: "Escape from Tarkov is a multiplayer tactical first-person shooter video game in development by Battlestate Games for Windows. The game is set in the fictional Norvinsk region, where a war is taking place between two private military companies (United Security \"USEC\" and the Battle Encounter Assault Regiment \"BEAR\"). Players join matches called \"raids\" in which they fight other players and bots for loot and aim to survive and escape.",
-                releasedate: date,
-                logo: "https://i.pinimg.com/originals/d7/6b/85/d76b85fdceaf0c0e4d32df008616dfb4.jpg",
-              },
-            ]),
-            findOne: jest.fn().mockImplementation((id: string) =>
-              Promise.resolve({
-                id: "0",
-                name: "Escape from Tarkov",
-                description: "Escape from Tarkov is a multiplayer tactical first-person shooter video game in development by Battlestate Games for Windows. The game is set in the fictional Norvinsk region, where a war is taking place between two private military companies (United Security \"USEC\" and the Battle Encounter Assault Regiment \"BEAR\"). Players join matches called \"raids\" in which they fight other players and bots for loot and aim to survive and escape.",
-                releasedate: date,
-                logo: "https://i.pinimg.com/originals/d7/6b/85/d76b85fdceaf0c0e4d32df008616dfb4.jpg",
-              }),
-            ),
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            create: jest.fn(),
             delete: jest.fn(),
             update: jest.fn(),
           },
@@ -54,55 +25,183 @@ describe('GamesController', () => {
       ],
     }).compile();
 
-    service = module.get<GamesService>(GamesService);
-    controller = module.get<GamesController>(GamesController);
+    gamesController = app.get<GamesController>(GamesController);
+    gamesService = app.get<GamesService>(GamesService);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+  beforeEach(() => {
+    jest.clearAllMocks();
+  })
 
   describe('findAll', () => {
-    it('should return an array of games', async () => {
-      controller.findAll();
-      expect(controller.findAll()).resolves.toEqual([{
-        id: "0",
-        name: "Escape from Tarkov",
-        description: "Escape from Tarkov is a multiplayer tactical first-person shooter video game in development by Battlestate Games for Windows. The game is set in the fictional Norvinsk region, where a war is taking place between two private military companies (United Security \"USEC\" and the Battle Encounter Assault Regiment \"BEAR\"). Players join matches called \"raids\" in which they fight other players and bots for loot and aim to survive and escape.",
-        releasedate: date,
-        logo: "https://i.pinimg.com/originals/d7/6b/85/d76b85fdceaf0c0e4d32df008616dfb4.jpg",
-      }]);
+    it('should get all games from service and return them', async () => {
+      const findAll = jest
+        .spyOn(gamesService, 'findAll')
+        .mockImplementation(async () => {
+          return [
+            {
+              _id: '63921105733608daad199357',
+              name: 'Among Us',
+              description:
+                'Play with 4-15 player online or via local WiFi as you attempt to prepare your spaceship for departure, but beware as one or more random players among the Crew are Impostors bent on killing everyone!',
+              releasedate: '2018-11-16T00:00:00.000Z',
+              logo: 'examplelogo',
+              __v: 0,
+            },
+          ];
+        });
+
+      const games = await gamesController.findAll();
+
+      expect(findAll).toHaveBeenCalledTimes(1);
+      expect(games).toHaveLength(1);
+      expect(games[0]).toHaveProperty('_id', '63921105733608daad199357');
+      expect(games[0]).toHaveProperty('name', 'Among Us');
+      expect(games[0]).toHaveProperty(
+        'description',
+        'Play with 4-15 player online or via local WiFi as you attempt to prepare your spaceship for departure, but beware as one or more random players among the Crew are Impostors bent on killing everyone!'
+      );
+      expect(games[0]).toHaveProperty(
+        'releasedate',
+        '2018-11-16T00:00:00.000Z'
+      );
+      expect(games[0]).toHaveProperty('logo', 'examplelogo');
+      expect(games[0]).toHaveProperty('__v', 0);
     });
   });
 
-  describe('findOne', () => {
-    it('should return a game', async () => {
-      controller.findOne('mdw89aihfoiawekl');
-      expect(controller.findOne('mdw89aihfoiawekl')).resolves.toEqual({
-        id: "0",
-        name: "Escape from Tarkov",
-        description: "Escape from Tarkov is a multiplayer tactical first-person shooter video game in development by Battlestate Games for Windows. The game is set in the fictional Norvinsk region, where a war is taking place between two private military companies (United Security \"USEC\" and the Battle Encounter Assault Regiment \"BEAR\"). Players join matches called \"raids\" in which they fight other players and bots for loot and aim to survive and escape.",
-        releasedate: date,
-        logo: "https://i.pinimg.com/originals/d7/6b/85/d76b85fdceaf0c0e4d32df008616dfb4.jpg",
+  describe('getOne', () => {
+    it('calls getOne on the service', async () => {
+      const game = {
+        _id: '63921105733608daad199357',
+        name: 'Among Us',
+        description:
+          'Play with 4-15 player online or via local WiFi as you attempt to prepare your spaceship for departure, but beware as one or more random players among the Crew are Impostors bent on killing everyone!',
+        releasedate: '2018-11-16T00:00:00.000Z',
+        logo: 'examplelogo',
+        __v: 0,
+      };
+
+      const getOne = jest.spyOn(gamesService, 'findOne')
+        .mockImplementation(async () => game);
+
+      const result = await gamesController.findOne(game._id);
+
+      expect(getOne).toBeCalledTimes(1);
+      expect(getOne).toBeCalledWith(game._id);
+      expect(result).toStrictEqual(game);
+    });
+  });
+
+  describe('create', () => {
+    it('should call create on the service successfully', async () => {
+      const create = jest
+        .spyOn(gamesService, 'create')
+        .mockImplementation(async (game) => {
+          return { statuscode: 200, message: 'Game created successfully' };
+        });
+
+      const name = 'Among Us';
+      const description =
+        'Play with 4-15 player online or via local WiFi as you attempt to prepare your spaceship for departure, but beware as one or more random players among the Crew are Impostors bent on killing everyone!';
+      const releasedate = new Date('2018-11-16T00:00:00.000Z');
+      const logo = 'examplelogo';
+
+      const result = await gamesController.create({
+        name,
+        description,
+        releasedate,
+        logo,
       });
+
+      expect(create).toBeCalledTimes(1);
+      expect(result).toHaveProperty('statuscode', 200);
+      expect(result).toHaveProperty('message', 'Game created successfully');
+    });
+
+    it('returns an error if the game is missing a name', async () => {
+      const create = jest
+        .spyOn(gamesService, 'create')
+        .mockImplementation(async (game) => {
+          return { statuscode: 400, message: 'Game validation failed: name: Path `name` is required.' };
+        });
+
+      const name = '';
+      const description =
+        'Play with 4-15 player online or via local WiFi as you attempt to prepare your spaceship for departure, but beware as one or more random players among the Crew are Impostors bent on killing everyone!';
+      const releasedate = new Date('2018-11-16T00:00:00.000Z');
+      const logo = 'examplelogo';
+
+      const result = await gamesController.create({
+        name,
+        description,
+        releasedate,
+        logo,
+      });
+
+      expect(create).toBeCalledTimes(1);
+      expect(result).toHaveProperty('statuscode', 400);
+      expect(result).toHaveProperty('message', 'Game validation failed: name: Path `name` is required.');
+    });
+
+    it('returns an error if the game is missing a name and a description', async () => {
+      const create = jest
+        .spyOn(gamesService, 'create')
+        .mockImplementation(async (game) => {
+          return { statuscode: 400, message: 'Game validation failed: description: Path `description` is required, name: Path `name` is required.' };
+        });
+
+      const name = '';
+      const description = '';
+      const releasedate = new Date('2018-11-16T00:00:00.000Z');
+      const logo = 'examplelogo';
+
+      const result = await gamesController.create({
+        name,
+        description,
+        releasedate,
+        logo,
+      });
+
+      expect(create).toBeCalledTimes(1);
+      expect(result).toHaveProperty('statuscode', 400);
+      expect(result).toHaveProperty('message', 'Game validation failed: description: Path `description` is required, name: Path `name` is required.');
     });
   });
 
-  it('should remove the user', () => {
-    controller.delete('mdw89aihfoiawekl');
-    expect(service.delete).toHaveBeenCalled();
+  describe('delete', () => {
+    it('should call delete on the service', async () => {
+      const deleteExample = jest.spyOn(gamesService, 'delete')
+        .mockImplementation(async () => {});
+
+      const _id = "63921105733608daad199357";
+      
+      await gamesController.delete(_id);
+
+      expect(deleteExample).toHaveBeenCalledWith(_id);
+    });
   });
 
   describe('update', () => {
-    it('should update a game', async () => {
-      controller.update('mdw89aihfoiawekl', model);
-      expect(controller.findOne('mdw89aihfoiawekl')).resolves.toEqual({
-        id: "0",
-        name: "Escape from Tarkov",
-        description: "Escape from Tarkov is a multiplayer tactical first-person shooter video game in development by Battlestate Games for Windows. The game is set in the fictional Norvinsk region, where a war is taking place between two private military companies (United Security \"USEC\" and the Battle Encounter Assault Regiment \"BEAR\"). Players join matches called \"raids\" in which they fight other players and bots for loot and aim to survive and escape.",
-        releasedate: date,
-        logo: "https://i.pinimg.com/originals/d7/6b/85/d76b85fdceaf0c0e4d32df008616dfb4.jpg",
+    const game = {
+      name: 'Among Us',
+      description:
+        'Play with 4-15 player online or via local WiFi as you attempt to prepare your spaceship for departure, but beware as one or more random players among the Crew are Impostors bent on killing everyone!',
+      releasedate: new Date('2018-11-16T00:00:00.000Z'),
+      logo: 'examplelogo',
+    };
+
+    it('should call update on the service', async () => {
+      const update = jest.spyOn(gamesService, 'update')
+      .mockImplementation(async () => {
+        return { statuscode: 200, message: 'Game updated successfully', body: game };
       });
+
+      const _id = "63921105733608daad199357";
+      
+      await gamesController.update(_id, game);
+
+      expect(update).toHaveBeenCalledWith(_id, game);
     });
   });
 });
