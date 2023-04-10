@@ -97,7 +97,7 @@ describe('GamesController', () => {
     it('should call create on the service successfully', async () => {
       const create = jest
         .spyOn(gamesService, 'create')
-        .mockImplementation(async (game) => {
+        .mockImplementation(async () => {
           return { statuscode: 200, message: 'Game created successfully' };
         });
 

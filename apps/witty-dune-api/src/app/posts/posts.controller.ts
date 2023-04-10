@@ -35,7 +35,7 @@ export class PostsController {
   }
 
   @Get(':id')
-  public findOne(@Param('id') id: string): Promise<ForumPost> {
+  public findOne(@Param('id') id: string) {
     return this.postsService.findOne(id);
   }
 
