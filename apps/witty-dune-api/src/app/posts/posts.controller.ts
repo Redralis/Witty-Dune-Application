@@ -70,16 +70,29 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  public async delete(@Param('id') id: string) {
-    await this.postsService.delete(id);
-    await this.Neo4JService.write(DeletePostAndRelationshipQuery, {
-      idParam: id,
-    });
+  public async delete(@Param('id') id: string, @AuthUser() user: any) {
+    const post = await this.postsService.findOne(id);
+    if (user.username == post.postedBy) {
+      await this.postsService.delete(id);
+      await this.Neo4JService.write(DeletePostAndRelationshipQuery, {
+        idParam: id,
+      });
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  public update(@Param('id') id: string, @Body() post: ForumPost) {
-    return this.postsService.update(id, post);
+  public update(
+    @Param('id') id: string,
+    @Body() post: ForumPost,
+    @AuthUser() user: any
+  ) {
+    if (user.username == post.postedBy) {
+      return this.postsService.update(id, post);
+    }
+    return {
+      statuscode: 401,
+      message: 'Unauthorized',
+    };
   }
 }
