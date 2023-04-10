@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
+    "build:back": "nx run witty-dune-api:build --verbose",
     "test": "nx test"
   },
   "private": true,
