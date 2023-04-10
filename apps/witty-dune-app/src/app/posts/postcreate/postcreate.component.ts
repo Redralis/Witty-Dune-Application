@@ -7,13 +7,7 @@ import { FuncsService } from '../../services/funcs.services';
 @Component({
   selector: 'witty-dune-postcreate',
   templateUrl: './postcreate.component.html',
-  styles: [
-    'button { background-color: #0E246D !important; margin-top: 15px; margin-right: 16px; width: 30%; } ',
-    '.post-card { padding: 12px 35px; }',
-    '.wrapper { margin-bottom: 25px; margin-right: 10px; margin-top: 10px; margin-left: -15px; }',
-    '.bottom-button { margin-top: 15px; }',
-    '.bottom-col { padding: 0px }',
-  ],
+  styleUrls: ['postcreate.component.scss'],
 })
 export class PostCreateComponent implements OnInit {
   post = {
@@ -28,11 +22,15 @@ export class PostCreateComponent implements OnInit {
   selected: any;
   games: any;
   submitted = false;
+  error: boolean = false;
+  errormessage: string = '';
 
-  constructor(private PostService: PostService,
+  constructor(
+    private PostService: PostService,
     private GameService: GameService,
     private router: Router,
-    private funcs: FuncsService) {}
+    private funcs: FuncsService
+  ) {}
 
   ngOnInit(): void {
     if (this.funcs.isExpired) {
@@ -56,14 +54,27 @@ export class PostCreateComponent implements OnInit {
 
     await this.PostService.create(data).subscribe(
       (response) => {
-        console.log(response);
-        this.submitted = true;
+        const res = JSON.parse(JSON.stringify(response));
+        this.setError(true, res.message);
+        if (res.message == 'Post created successfully.') {
+          this.submitted = true;
+          this.router.navigate(['/postlist']);
+        }
       },
       (error) => {
-        console.log(error);
+        console.log(error)
+        this.setError(true, error.error.message);
+        if (error.error.message == 'Post created successfully.') {
+          this.submitted = true;
+          this.router.navigate(['/postlist']);
+        }
       }
     );
-    this.router.navigate(['/postlist']);
+  }
+
+  setError(error: boolean, message: string) {
+    this.error = error;
+    this.errormessage = message;
   }
 
 }

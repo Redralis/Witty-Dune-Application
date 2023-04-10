@@ -1,0 +1,54 @@
+<div class="wrapper">
+  <div class="row text-center" style="margin-top: 10px;">
+    <button class="col-4 btn btn-primary" style="border-top-right-radius : 0; border-bottom-right-radius: 0;"(click)="this.getPosts('', '')">All</button>
+    <button class="col-4 btn btn-primary" style="border-radius: 0;" (click)="this.getPosts('following', this.userId)">Following</button>
+    <button class="col-4 btn btn-primary" style="border-top-left-radius : 0; border-bottom-left-radius: 0;" (click)="this.getPosts('foryou', this.userId)">For you</button>
+  </div>
+  <ul class="list-group row">
+    <li *ngFor="let post of posts" class="list-group-item">
+      <div class="row">
+        <div class="col-1 like-dislike-col">
+          <div *ngIf="liked" class="icon">
+            <img class="text-center" src="assets/images/upvote-filled.png" />
+          </div>
+          <div *ngIf="!liked" class="icon">
+            <img src="assets/images/upvote.png" />
+          </div>
+          <p class="karma text-center">{{ post.likes - post.dislikes }}</p>
+          <div *ngIf="liked" class="icon">
+            <img src="assets/images/downvote-filled.png" />
+          </div>
+          <div *ngIf="!liked" class="icon">
+            <img src="assets/images/downvote.png" />
+          </div>
+        </div>
+        <div class="col-11 postcontent">
+          <h4>
+            {{ post.title }}
+            <img
+              class="float-right"
+              *ngIf="post.associatedgame[0] != null"
+              [src]="post.associatedgame[0].logo"
+              routerLink="/gamelist/{{ post.associatedgame[0]._id }}"
+            />
+          </h4>
+          <p class="text-muted">
+            Posted on {{ post.publicationdate.substring(0, 10) }} by
+            <a
+              style="color: #707070; font-weight: bold"
+              routerLink="/user/{{ post.postedBy }}"
+              >{{ post.postedBy }}</a
+            >
+          </p>
+          <p>{{ post.content.substring(0, 40) }}...</p>
+          <p class="text-muted">
+            {{ post.likes }} likes - {{ post.dislikes }} dislikes
+          </p>
+          <button class="btn btn-primary" routerLink="/postlist/{{ post._id }}">
+            Details
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

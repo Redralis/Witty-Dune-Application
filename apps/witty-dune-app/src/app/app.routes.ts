@@ -21,5 +21,5 @@ export const appRoutes: Route[] = [
   { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'auth/:username', component: ProfileComponent },
+  { path: 'user/:username', component: ProfileComponent },
 ];

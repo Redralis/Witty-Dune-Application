@@ -5,12 +5,10 @@ import { ApiProperty } from '@nestjs/swagger';
 export type CommentDocument = HydratedDocument<Comment>;
 
 export class Comment {
-  @Prop()
-  id: string;
+  @Prop({ required: true})
   @ApiProperty({ type: String })
-  @Prop()
   postedBy: string;
-  @Prop()
+  @Prop({ required: true})
   @ApiProperty({ type: String })
   content: string;
   @Prop()
@@ -19,7 +17,7 @@ export class Comment {
   @Prop()
   @ApiProperty({ type: Number })
   dislikes: number;
-  @Prop()
+  @Prop({ required: true })
   @ApiProperty({ type: String, format: 'date-time' })
   publicationdate: Date;
 }

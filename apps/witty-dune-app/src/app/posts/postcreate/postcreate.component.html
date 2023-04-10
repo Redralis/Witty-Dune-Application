@@ -1,4 +1,7 @@
 <div class="wrapper">
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ errormessage }}
+  </div>
   <div class="card post-card">
     <!-- Input for new title -->
     <div class="form-group">

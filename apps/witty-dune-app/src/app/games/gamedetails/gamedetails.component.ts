@@ -7,23 +7,13 @@ import { FuncsService } from '../../services/funcs.services';
 @Component({
   selector: 'witty-dune-gamedetails',
   templateUrl: './gamedetails.component.html',
-  styles: [
-    '.wrapper { margin-bottom: 25px; margin-right: 10px; }',
-    '.content { margin-top: 10px; margin-left: -15px }',
-    '.post-card { padding: 12px 35px; }',
-    'button { background-color: #0E246D !important; margin-right: 16px; width: 30%; }',
-    '.bottom-button { margin-top: 15px; }',
-    '.text-muted { font-size: 14px; }',
-    'img { height: 70px; width: 70px; }',
-    '.name-and-releasedate { margin-left: 20px; margin-top: 5px; }',
-    '.description { margin-top: 15px; }',
-  ],
+  styleUrls: ['gamedetails.component.scss'],
 })
 export class GamedetailsComponent implements OnInit {
   isEditing: boolean = false;
+  isLoggedIn: boolean = false;
   currentGame: any;
   result: any;
-  isLoggedIn: boolean = false;
   message = '';
 
   constructor(

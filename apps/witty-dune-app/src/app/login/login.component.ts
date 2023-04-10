@@ -5,61 +5,8 @@ import { Location } from '@angular/common';
 
 @Component({
   selector: 'witty-dune-login',
-  template: `
-    <div class="wrapper">
-      <div class="card post-card">
-        <h4>Log in</h4>
-        <div *ngIf="hasError" class="alert alert-danger" role="alert">
-          {{ errorMessage }}
-        </div>
-        <!-- Input for username -->
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            class="form-control"
-            id="username"
-            required
-            [(ngModel)]="user.username"
-            name="username"
-          />
-        </div>
-        <!-- End of input for username -->
-
-        <!-- Input for password -->
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            class="form-control"
-            type="password"
-            id="password"
-            required
-            [(ngModel)]="user.password"
-            name="password"
-          />
-        </div>
-        <!-- End of input for password -->
-        <p>
-          Don't have an account? Create one
-          <a routerLink="/register" routerLinkActive="active">here</a>.
-        </p>
-      </div>
-      <button (click)="backClicked()" class="btn btn-success bottom-button">
-        Back
-      </button>
-      <button (click)="validate()" class="btn btn-success bottom-button">
-        Log in
-      </button>
-    </div>
-  `,
-  styles: [
-    'button { background-color: #0E246D !important; margin-top: 15px; margin-right: 16px; width: 30%; } ',
-    '.post-card { padding: 12px 35px; }',
-    '.wrapper { margin-bottom: 25px; margin-right: 10px; margin-top: 10px; margin-left: -15px; }',
-    '.bottom-button { margin-top: 15px; }',
-    '.bottom-col { padding: 0px }',
-    'h4 { margin-bottom: 20px }',
-  ],
+  templateUrl: 'login.component.html',
+  styleUrls: ['login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   user = {

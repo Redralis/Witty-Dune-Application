@@ -6,13 +6,7 @@ import { FuncsService } from '../../services/funcs.services';
 @Component({
   selector: 'witty-dune-gamecreate',
   templateUrl: './gamecreate.component.html',
-  styles: [
-    'button { background-color: #0E246D !important; margin-top: 15px; margin-right: 16px; width: 30%; } ',
-    '.post-card { padding: 12px 35px; }',
-    '.wrapper { margin-bottom: 25px; margin-right: 10px; margin-top: 10px; margin-left: -15px; }',
-    '.bottom-button { margin-top: 15px; }',
-    '.bottom-col { padding: 0px }',
-  ],
+  styleUrls: ['gamecreate.component.scss'],
 })
 export class GamecreateComponent implements OnInit {
   game = {
@@ -22,6 +16,8 @@ export class GamecreateComponent implements OnInit {
     logo: '',
   };
   submitted = false;
+  error: boolean = false;
+  errormessage: string = '';
 
   constructor(
     private GameService: GameService,
@@ -43,16 +39,27 @@ export class GamecreateComponent implements OnInit {
       logo: this.game.logo,
     };
 
-    await this.GameService.create(data).subscribe(
+    this.GameService.create(data).subscribe(
       (response) => {
-        console.log(response);
-        this.submitted = true;
+        const res = JSON.parse(JSON.stringify(response));
+        this.setError(true, res.message);
+        if (res.message == 'Game created successfully.') {
+          this.submitted = true;
+          this.router.navigate(['/gamelist']);
+        }
       },
       (error) => {
-        console.log(error);
+        this.setError(true, error.error.text);
+        if (error.error.text == 'Game created successfully.') {
+          this.submitted = true;
+          this.router.navigate(['/gamelist']);
+        }
       }
     );
+  }
 
-    this.router.navigate(['/gamelist']);
+  setError(error: boolean, message: string) {
+    this.error = error;
+    this.errormessage = message;
   }
 }

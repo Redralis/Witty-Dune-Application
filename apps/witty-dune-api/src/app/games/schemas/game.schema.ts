@@ -6,18 +6,16 @@ export type GameDocument = HydratedDocument<Game>;
 
 @Schema()
 export class Game {
-  @Prop()
-  id: string;
-  @Prop()
+  @Prop({ required: true, unique: true })
   @ApiProperty({ type: String })
   name: string;
-  @Prop()
+  @Prop({ required: true })
   @ApiProperty({ type: String })
   description: string;
-  @Prop()
+  @Prop({ required: true })
   @ApiProperty({ type: String, format: 'date-time' })
   releasedate: Date;
-  @Prop()
+  @Prop({ required: true })
   @ApiProperty({ type: String })
   logo: string;
 }

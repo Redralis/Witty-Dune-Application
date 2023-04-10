@@ -1,34 +1,48 @@
-import { Body, Injectable, Logger } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 import { User } from '../users/schemas/user.schema';
-import { UsersModule } from '../users/users.module';
 import * as bcrypt from 'bcrypt';
+import { CreateUserQuery } from '../neo/cypher.queries';
+import { Neo4jService } from '../neo/neo4j.service';
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(UsersService.name);
 
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService
-  ) {}  
+    private jwtService: JwtService,
+    private neo4jService: Neo4jService
+  ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.usersService.findOne(username);
-
-    if (user && await bcrypt.compare(password, user.password)) {
-      const { password, ...result } = user;
-      return result;
+    if (user && (await bcrypt.compare(password, user.password))) {
+      return { username: user.username, objectId: user._id };
     }
     return null;
   }
 
   @ApiCreatedResponse({ description: 'User created successfully.' })
   public async register(credentials: User): Promise<any> {
-    const user = await this.usersService.create(credentials);
-    return user;
+    try {
+      const user = await this.usersService.create(credentials);
+      await this.neo4jService.write(CreateUserQuery, {
+        idParam: user._id.toString(),
+        usernameParam: user.username,
+      });
+      return {
+        statusCode: 201,
+        message: 'User registered successfully.',
+        body: user,
+      }
+    } catch (error) {
+      return {
+        statusCode: 400,
+        message: error.message.replace(/\.(?=\,)|(?<=(?<!^)\b[a-z]+)(?=\s*:)/g, ''),
+      } 
+    }
   }
 
   @ApiCreatedResponse({ description: 'User retrieved successfully.' })
@@ -49,14 +63,9 @@ export class AuthService {
     return result;
   }
 
-  @ApiCreatedResponse({ description: 'User created successfully.' })
-  public async delete(id: string): Promise<any> {
-    const result = await this.usersService.delete(id);
-    return result;
-  }
-
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    const loggedInUser = await this.usersService.findOne(user.username)
+    const payload = { username: user.username, sub: loggedInUser._id.toString()};
     return {
       access_token: this.jwtService.sign(payload),
       username: user.username,

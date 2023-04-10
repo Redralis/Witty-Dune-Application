@@ -6,15 +6,15 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class PostService {
-  private url = environment.API_URL + "/posts";
+  private url = environment.API_URL + '/posts';
   private headers = new HttpHeaders()
-  .set('content-type', 'application/json')
-  .set("Authorization", "Bearer " + localStorage.getItem('jwt'));
+    .set('content-type', 'application/json')
+    .set('Authorization', 'Bearer ' + localStorage.getItem('jwt'));
 
   constructor(private httpClient: HttpClient) {}
 
-  getAll() {
-    return this.httpClient.get(this.url);
+  getAll(filter: String, userId: String) {
+    return this.httpClient.get(this.url + '?filter=' + filter + '&userId=' + userId);
   }
 
   get(id: any) {
@@ -22,14 +22,18 @@ export class PostService {
   }
 
   create(data: any) {
-    return this.httpClient.post(this.url, data, { 'headers': this.headers });
+    return this.httpClient.post(this.url, data, { headers: this.headers });
   }
 
   update(id: any, data: any) {
-    return this.httpClient.put(`${this.url}/${id}`, data, { 'headers': this.headers });
+    return this.httpClient.put(`${this.url}/${id}`, data, {
+      headers: this.headers,
+    });
   }
 
   delete(id: any) {
-    return this.httpClient.delete(`${this.url}/${id}`, { 'headers': this.headers });
+    return this.httpClient.delete(`${this.url}/${id}`, {
+      headers: this.headers,
+    });
   }
 }

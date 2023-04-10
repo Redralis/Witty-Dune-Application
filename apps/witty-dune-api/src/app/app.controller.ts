@@ -1,24 +1,19 @@
-import {
-  Controller,
-  Request,
-  Post,
-  Put,
-  UseGuards,
-  Get,
-  Body,
-  Delete,
-  Param,
-} from '@nestjs/common';
+import { Controller, Post, UseGuards, Get, Body, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { User } from './users/schemas/user.schema';
+import { Neo4jService } from './neo/neo4j.service';
+import { CreateUserQuery } from './neo/cypher.queries';
 
 @Controller()
 @ApiTags('Auth')
 export class AppController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private readonly neo4jService: Neo4jService
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
@@ -28,24 +23,7 @@ export class AppController {
 
   @Post('auth/register')
   async register(@Body() user: User) {
-    return this.authService.register(user);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('auth/:username')
-  getProfile(@Param('username') username: string) {
-    return this.authService.profile(username);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Put('auth/')
-  async update(@Body() user: User) {
-    return this.authService.update(user);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete('auth/:id')
-  async delete(@Param('id') id: string) {
-    return this.authService.delete(id);
+    const newUser = await this.authService.register(user);
+    return newUser;
   }
 }

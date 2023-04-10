@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   UseGuards,
@@ -31,8 +30,8 @@ export class GamesController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  public async create(@Body() game: Game): Promise<Game> {
-    return this.gamesService.create(game);
+  public async create(@Body() game: Game) {
+    return await this.gamesService.create(game);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -43,10 +42,7 @@ export class GamesController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  public update(
-    @Param('id') id: string,
-    @Body() game: Game
-  ): Promise<Game> {
+  public update(@Param('id') id: string, @Body() game: Game) {
     return this.gamesService.update(id, game);
   }
 }
