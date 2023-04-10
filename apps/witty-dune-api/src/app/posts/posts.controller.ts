@@ -82,17 +82,7 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  public update(
-    @Param('id') id: string,
-    @Body() post: ForumPost,
-    @AuthUser() user: any
-  ) {
-    if (user.username == post.postedBy) {
-      return this.postsService.update(id, post);
-    }
-    return {
-      statuscode: 401,
-      message: 'Unauthorized',
-    };
+  public update(@Param('id') id: string, @Body() post: ForumPost) {
+    return this.postsService.update(id, post);
   }
 }
